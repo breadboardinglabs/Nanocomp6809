@@ -1,0 +1,881 @@
+PIA                           =  0x4000
+PORTA                         =  0x00
+PORTB                         =  0x01
+CTRLA                         =  0x02
+CTRLB                         =  0x03
+PORTAL                        =  0x4000
+PORTBL                        =  0x4001
+CTRLAL                        =  0x4002
+CTRLBL                        =  0x4003
+10KDEC                        =  0x2710
+1KDEC                         =  0x03E8
+GETKEY                        =  0x7C20
+GETKEY0                       =  0x7C26
+GETKEY1                       =  0x7C40
+GETKEY2                       =  0x7C3B
+GETKEY3                       =  0x7C5B
+GETKEY4                       =  0x7C50
+GETKEY5                       =  0x7C6D
+GETKEY6                       =  0x7C6C
+DISPRESH                      =  0x7C7B
+DISP1                         =  0x7CAA
+DISP2                         =  0x7C98
+DISP3                         =  0x7C9F
+BADDR1                        =  0x7CAF
+BADDR                         =  0x7CB5
+HEXIN                         =  0x7CCC
+HEXCON                        =  0x7CE7
+HEXCON1                       =  0x7CEE
+KEYHEX                        =  0x7CE4
+L7SEG                         =  0x7CFF
+R7SEG                         =  0x7D03
+R71                           =  0x7D0A
+R72                           =  0x7D11
+SVNHEX                        =  0x7D15
+SVNHEX1                       =  0x7D1D
+toresume2                     =  0x7D21
+SVNHEX2                       =  0x7D26
+MEMDISP                       =  0x7D28
+MEM0                          =  0x7D31
+MEM1                          =  0x7D3F
+MEM2                          =  0x7D52
+RESET                         =  0x7D89
+NMISR                         =  0x7D8D
+RESUME                        =  0x7D97
+reset3                        =  0x7DC2
+go                            =  0x7DC6
+CONT                          =  0x7DD8
+CLEARDISP                     =  0x7DDC
+CLEARDISP1                    =  0x7DE4
+REGDISPCHAR                   =  0x7DEB
+REGDISPCHAR2                  =  0x7DEF
+REGCHAREND                    =  0x7DF4
+REGDISP                       =  0x7DFF
+REGDISP1                      =  0x7E06
+SHOWLEFT                      =  0x7E13
+SHOWBYTE                      =  0x7E27
+RECVBIT                       =  0x7E47
+RETRY                         =  0x7E49
+RECV1                         =  0x7E4B
+RECV2                         =  0x7E51
+RECV3                         =  0x7E5C
+RECV4                         =  0x7E69
+RECVBYTE                      =  0x7E6F
+RBYTE1                        =  0x7E71
+RBYTE3                        =  0x7E77
+RBYTE2                        =  0x7E7F
+LOAD                          =  0x7E85
+RELOAD                        =  0x7E9D
+messageF                      =  0x7EAD
+LOAD2                         =  0x7EB1
+LDLOOP                        =  0x7ECB
+LDDONE                        =  0x7ED9
+ERRSTOP                       =  0x7EE3
+DEAD                          =  0x7EE8
+SAVE                          =  0x7EED
+SAVE1                         =  0x7F11
+SAVE4                         =  0x7F17
+SAVE2                         =  0x7F21
+SAVE3                         =  0x7F3C
+ENDBLOCK                      =  0x7F50
+SENDEOF                       =  0x7F71
+SENDSTART                     =  0x7F7C
+SENDBYTE                      =  0x7F84
+SEND                          =  0x7F86
+NEXTBIT                       =  0x7F8E
+SAVE8                         =  0x7F94
+DELAY1                        =  0x7F9D
+DELAY2                        =  0x7FA5
+KEYCODE                       =  0x7C00
+SVNSEG                        =  0x7C10
+count                         =  0x13EB
+countdp                       =  0xEB
+chksumdp                      =  0xED
+chksum                        =  0x13ED
+ptrdp                         =  0xEE
+ptrdp+1                       =  0xEF
+ptr                           =  0x13EE
+addr                          =  0x13F0
+addrdp                        =  0xF0
+addr+1                        =  0x13F1
+addrdp+1                      =  0xF1
+tmp3                          =  0x43ED
+tmp3DP                        =  0x40ED
+tmp2                          =  0x13EC
+tmp2DP                        =  0xEC
+tmpX                          =  0x13F6
+tmpXDP                        =  0xF6
+tmpXDP+1                      =  0xF7
+usrsp                         =  0x13D0
+usrspdp                       =  0xD0
+dbuf                          =  0x13FA
+stackstart                    =  0x13F8
+stackstartdp                  =  0xF8
+dbuf+0                        =  0xFA
+dbuf+1                        =  0xFB
+dbuf+2                        =  0xFC
+dbuf+2L                       =  0x13FC
+dbuf+3                        =  0xFD
+dbuf+4                        =  0xFE
+dbuf+5                        =  0xFF
+SWI3VEC                       =  0x13E5
+SWI2VEC                       =  0x13E7
+FIRQVEC                       =  0x13E9
+NMIVEC                        =  0x13F2
+IRQVEC                        =  0x13F4
+SWI3INTR                      =  0x7FF2
+SWI2INTR                      =  0x7FF4
+FIRQINTR                      =  0x7FF6
+INTRQ                         =  0x7FF8
+SWINTR                        =  0x7FFA
+NMINTR                        =  0x7FFC
+RESETBOOT                     =  0x7FFE
+keyCN                         =  0x25
+keyG                          =  0x35
+keyI                          =  0x32
+keyL                          =  0x05
+keyM                          =  0x31
+keyP                          =  0x15
+keyR                          =  0x30
+
+KEYCODE:
+7C00: 22 24 02 12 14 00 10 04 
+7C08: 01 11 03 13 23 33 21 20 
+
+SVNSEG:
+7C10: 7E 06 5B 1F 27 3D 7D 0E 
+7C18: 7F 3F 6F 75 78 57 79 69 
+
+GETKEY:
+7C20: 34 2C          pshs     y,dp,b
+7C22: 86 40          lda      #40
+7C24: 1F 8B          tfr      a,dp
+
+;   Set up I/O port
+GETKEY0:
+7C26: 8D 53          bsr      DISPRESH
+7C28: 4F             clra     
+7C29: 97 02          sta      CTRLA
+7C2B: 97 03          sta      CTRLB 
+7C2D: 97 00          sta      PORTA 
+7C2F: 86 0F          lda      #0F
+7C31: 97 01          sta      PORTB 
+7C33: 86 04          lda      #04
+7C35: 97 02          sta      CTRLA
+7C37: 97 03          sta      CTRLB 
+7C39: 86 FF          lda      #FF
+GETKEY2:
+7C3B: 5C             incb     
+7C3C: C1 04          cmpb     #04
+7C3E: 27 E6          beq      GETKEY0
+GETKEY1:
+7C40: D7 01          stb      PORTB 
+7C42: 96 00          lda      PORTA 
+7C44: 43             coma     
+7C45: 27 F4          beq      GETKEY2
+
+;   Found a key: decode it
+7C47: F7 13 EC       stb      tmp2 
+7C4A: B7 13 ED       sta      chksum 
+7C4D: 4F             clra     
+7C4E: C6 01          ldb      #01
+GETKEY4:
+7C50: F1 13 ED       cmpb     chksum 
+7C53: 27 06          beq      GETKEY3
+7C55: 4C             inca     
+7C56: 58             aslb     
+7C57: 27 E2          beq      GETKEY2
+7C59: 20 F5          bra      GETKEY4
+
+GETKEY3:
+7C5B: F6 13 EC       ldb      tmp2 
+7C5E: 58             aslb     
+7C5F: 58             aslb     
+7C60: 58             aslb     
+7C61: 58             aslb     
+7C62: 34 04          pshs     b
+7C64: AB E0          adda     ,s+
+
+;   Wait for the key to be released
+7C66: 34 02          pshs     a
+7C68: 10 8E 00 08    ldy      #$08
+GETKEY6:
+7C6C: 5F             clrb     
+GETKEY5:
+7C6D: 96 00          lda      PORTA 
+7C6F: 43             coma     
+7C70: 26 FA          bne      GETKEY6
+7C72: 5A             decb     
+7C73: 26 F8          bne      GETKEY5
+7C75: 31 3F          leay     -$01,y
+7C77: 26 F4          bne      GETKEY5
+7C79: 35 AE          puls     a,b,dp,y,pc ;(pul? pc=rts)
+
+DISPRESH:
+7C7B: 34 16          pshs     x,b,a
+
+;   Set output ports for display
+7C7D: 8E 40 00       ldx      #PIA 
+7C80: 4F             clra     
+7C81: A7 02          sta      CTRLA,x
+7C83: A7 03          sta      CTRLB ,x
+7C85: 86 7F          lda      #7F
+7C87: A7 84          sta      ,x
+7C89: 86 0F          lda      #0F
+7C8B: A7 01          sta      PORTB ,x
+7C8D: 86 04          lda      #04
+7C8F: A7 02          sta      CTRLA,x
+7C91: A7 03          sta      CTRLB ,x
+
+;   Initialise loop over digits
+7C93: 8E 13 FA       ldx      #dbuf                   ;They are numbered 4..9 to correspond to outputs from the 7442 decoder.
+7C96: C6 03          ldb      #03
+DISP2:
+7C98: 5C             incb     
+7C99: C1 0A          cmpb     #0A
+7C9B: 26 02          bne      DISP3
+
+;   Finished
+7C9D: 35 96          puls     a,b,x,pc ;(pul? pc=rts)
+
+
+;   Light up the next digit
+DISP3:
+7C9F: F7 40 01       stb      PORTBL 
+7CA2: A6 80          lda      ,x+
+7CA4: 43             coma     
+7CA5: B7 40 00       sta      PIA 
+
+;   Delay loop
+7CA8: 86 A0          lda      #A0
+DISP1:
+7CAA: 4A             deca     
+7CAB: 26 FD          bne      DISP1
+7CAD: 20 E9          bra      DISP2
+
+BADDR1:
+7CAF: 1E 89          exg      a,b
+7CB1: 1F 01          tfr      d,x
+7CB3: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+
+;   Input 2 byte address into X; result also at [addr]
+BADDR:
+7CB5: 34 06          pshs     b,a
+7CB7: 4F             clra     
+7CB8: 5F             clrb     
+7CB9: FD 13 FA       std      dbuf
+7CBC: FD 13 FC       std      dbuf+2L
+7CBF: 8E 13 FA       ldx      #dbuf
+7CC2: 8D 08          bsr      HEXIN
+7CC4: 34 02          pshs     a
+7CC6: 8D 04          bsr      HEXIN
+7CC8: 35 04          puls     b
+7CCA: 20 E3          bra      BADDR1
+
+
+;   Input 2 hex digits into A and update display at X
+HEXIN:
+7CCC: 8D 16          bsr      KEYHEX
+7CCE: 48             asla     
+7CCF: 48             asla     
+7CD0: 48             asla     
+7CD1: 48             asla     
+7CD2: 34 02          pshs     a
+7CD4: 8D 29          bsr      L7SEG
+7CD6: A7 80          sta      ,x+
+7CD8: 8D 0A          bsr      KEYHEX
+7CDA: AB E0          adda     ,s+
+7CDC: 34 02          pshs     a
+7CDE: 8D 23          bsr      R7SEG
+7CE0: A7 80          sta      ,x+
+7CE2: 35 82          puls     a,pc ;(pul? pc=rts)
+
+KEYHEX:
+7CE4: 17 FF 39       lbsr     GETKEY
+
+;   Fall-thru
+HEXCON:
+7CE7: 34 14          pshs     x,b
+7CE9: 8E 7C 00       ldx      #KEYCODE
+7CEC: C6 FF          ldb      #FF
+HEXCON1:
+7CEE: 5C             incb     
+7CEF: 8C 7C 10       cmpx     #SVNSEG
+7CF2: 27 2D          beq      toresume2
+7CF4: A1 80          cmpa     ,x+
+7CF6: 26 F6          bne      HEXCON1
+7CF8: 1F 98          tfr      b,a
+7CFA: 35 94          puls     b,x,pc ;(pul? pc=rts)
+
+7CFC: 12             nop      
+7CFD: 12             nop      
+7CFE: 12             nop      
+
+;   Fall-thru
+L7SEG:
+7CFF: 47             asra     
+7D00: 47             asra     
+7D01: 47             asra     
+7D02: 47             asra     
+
+;   Convert low-order 4 bits of A to 7seg
+R7SEG:
+7D03: 34 10          pshs     x
+7D05: 8E 7C 10       ldx      #SVNSEG
+7D08: 84 0F          anda     #0F
+R71:
+7D0A: 27 05          beq      R72
+7D0C: 30 01          leax     PORTB ,x
+7D0E: 4A             deca     
+7D0F: 20 F9          bra      R71
+
+R72:
+7D11: A6 84          lda      ,x
+7D13: 35 90          puls     x,pc ;(pul? pc=rts)
+
+
+;   Convert 7seg to hex
+SVNHEX:
+7D15: 34 14          pshs     x,b
+7D17: 8E 7C 10       ldx      #SVNSEG
+7D1A: 1F 89          tfr      a,b
+7D1C: 4F             clra     
+SVNHEX1:
+7D1D: E1 80          cmpb     ,x+
+7D1F: 27 05          beq      SVNHEX2
+toresume2:
+7D21: 27 74          beq      RESUME
+7D23: 4C             inca     
+7D24: 20 F7          bra      SVNHEX1
+
+SVNHEX2:
+7D26: 35 94          puls     b,x,pc ;(pul? pc=rts)
+
+
+;   Prompt for address with 'M' and display memory contents
+MEMDISP:
+7D28: 4F             clra     
+7D29: 97 FE          sta      dbuf+4
+7D2B: 86 6E          lda      #6E
+7D2D: 97 FF          sta      dbuf+5
+7D2F: 8D 84          bsr      BADDR
+MEM0:
+7D31: A6 84          lda      ,x
+7D33: 34 02          pshs     a
+7D35: 8D C8          bsr      L7SEG
+7D37: 97 FE          sta      dbuf+4
+7D39: 35 02          puls     a
+7D3B: 8D C6          bsr      R7SEG
+7D3D: 97 FF          sta      dbuf+5
+
+;   Check for I key
+MEM1:
+7D3F: 17 FE DE       lbsr     GETKEY
+7D42: 81 32          cmpa     #32
+7D44: 27 0C          beq      MEM2
+7D46: 8D 9F          bsr      HEXCON
+7D48: D6 FF          ldb      dbuf+5
+7D4A: D7 FE          stb      dbuf+4
+7D4C: 8D B5          bsr      R7SEG
+7D4E: 97 FF          sta      dbuf+5
+7D50: 20 ED          bra      MEM1
+
+
+;   Store and increment
+MEM2:
+7D52: 96 FE          lda      dbuf+4
+7D54: 8D BF          bsr      SVNHEX
+7D56: 48             asla     
+7D57: 48             asla     
+7D58: 48             asla     
+7D59: 48             asla     
+7D5A: 34 02          pshs     a
+7D5C: 96 FF          lda      dbuf+5
+7D5E: 8D B5          bsr      SVNHEX
+7D60: AB E0          adda     ,s+
+7D62: 1F 89          tfr      a,b
+7D64: A7 84          sta      ,x
+7D66: A6 80          lda      ,x+
+7D68: 34 04          pshs     b
+7D6A: A1 E0          cmpa     ,s+
+7D6C: 26 29          bne      RESUME
+7D6E: 1F 10          tfr      x,d
+7D70: 8D 8D          bsr      L7SEG
+7D72: 97 FA          sta      dbuf+0 
+7D74: 1F 10          tfr      x,d
+7D76: 8D 8B          bsr      R7SEG
+7D78: 97 FB          sta      dbuf+1
+7D7A: 1F 98          tfr      b,a
+7D7C: 8D 81          bsr      L7SEG
+7D7E: 97 FC          sta      dbuf+2
+7D80: 1F 98          tfr      b,a
+7D82: 17 FF 7E       lbsr     R7SEG
+7D85: 97 FD          sta      dbuf+3
+7D87: 20 A8          bra      MEM0
+
+
+;   Reset Handler
+RESET:
+7D89: 10 CE 13 D0    lds      #usrsp
+NMISR:
+7D8D: 10 FF 13 F8    sts      stackstart
+
+;   Set up NMI to point here
+7D91: 8E 7D 8D       ldx      #NMISR
+7D94: BF 13 F2       stx      NMIVEC
+RESUME:
+7D97: 10 CE 13 D0    lds      #usrsp
+7D9B: 86 13          lda      #13
+7D9D: 1F 8B          tfr      a,dp
+7D9F: 8D 3B          bsr      CLEARDISP
+
+;   Show '-' at left
+7DA1: 86 01          lda      #01
+7DA3: 97 FA          sta      dbuf+0 
+7DA5: 17 FE 78       lbsr     GETKEY
+
+;   If key is 'M'
+7DA8: 81 31          cmpa     #31
+7DAA: 10 27 FF 7A    lbeq     MEMDISP
+
+;   If key is 'R'
+7DAE: 81 30          cmpa     #30
+7DB0: 27 4D          beq      REGDISP
+
+;   If key is 'CN'
+7DB2: 81 25          cmpa     #25
+7DB4: 27 22          beq      CONT
+
+;   If key is 'CL'
+7DB6: 81 05          cmpa     #05
+7DB8: 10 27 00 C9    lbeq     LOAD
+
+;   If key is 'P'
+7DBC: 81 15          cmpa     #15
+7DBE: 10 27 01 2B    lbeq     SAVE
+
+;   If key is 'G'
+reset3:
+7DC2: 81 35          cmpa     #35
+7DC4: 26 D1          bne      RESUME
+
+;   Prompt and accept start address
+go:
+7DC6: 86 7C          lda      #7C
+7DC8: 97 FF          sta      dbuf+5
+7DCA: 17 FE E8       lbsr     BADDR
+7DCD: 10 9E F8       ldy      stackstartdp
+7DD0: AF 2A          stx      $0A,y
+7DD2: 86 80          lda      #80
+7DD4: AA A4          ora      ,y
+7DD6: A7 A4          sta      ,y
+CONT:
+7DD8: 10 DE F8       lds      stackstartdp
+7DDB: 3B             rti      
+
+
+;   Clear display
+CLEARDISP:
+7DDC: 34 16          pshs     x,b,a
+7DDE: 4F             clra     
+7DDF: C6 06          ldb      #06
+7DE1: 8E 13 FA       ldx      #dbuf
+CLEARDISP1:
+7DE4: A7 80          sta      ,x+
+7DE6: 5A             decb     
+7DE7: 26 FB          bne      CLEARDISP1
+7DE9: 35 96          puls     a,b,x,pc ;(pul? pc=rts)
+
+
+;   Characters for Reg Display  C b A b d H Y U P S 
+REGDISPCHAR:
+7DEB: 78 6F 75 57 67 37 76 6B 3D 
+
+REGCHAREND :
+7DF4: 86 13          lda      #13
+7DF6: 1F 8B          tfr      a,dp
+7DF8: 10 DF F8       sts      stackstartdp
+7DFB: 10 CE 13 D0    lds      #usrsp
+REGDISP:
+7DFF: 8D DB          bsr      CLEARDISP
+7E01: 9E F8          ldx      stackstartdp
+
+;   Read characters from REGDISPCHAR
+7E03: 31 8C E5       leay     -$1B,pc ; ($7DEB)
+REGDISP1:
+7E06: A6 A0          lda      ,y+
+7E08: 97 FF          sta      dbuf+5
+7E0A: 10 8C 7D F4    cmpy     #REGCHAREND 
+7E0E: 26 03          bne      SHOWLEFT
+7E10: 8E 13 F8       ldx      #stackstart
+SHOWLEFT:
+7E13: 10 8C 7D EF    cmpy     #REGDISPCHAR2
+7E17: 23 0E          bls      SHOWBYTE
+7E19: A6 84          lda      ,x
+7E1B: 17 FE E1       lbsr     L7SEG
+7E1E: 97 FA          sta      dbuf+0 
+7E20: A6 80          lda      ,x+
+7E22: 17 FE DE       lbsr     R7SEG
+7E25: 97 FB          sta      dbuf+1
+SHOWBYTE:
+7E27: A6 84          lda      ,x
+7E29: 17 FE D3       lbsr     L7SEG
+7E2C: 97 FC          sta      dbuf+2
+7E2E: A6 80          lda      ,x+
+7E30: 17 FE D0       lbsr     R7SEG
+7E33: 97 FD          sta      dbuf+3
+7E35: 17 FD E8       lbsr     GETKEY
+7E38: 81 32          cmpa     #32
+7E3A: 10 26 FF 59    lbne     RESUME
+7E3E: 10 8C 7D F4    cmpy     #REGCHAREND 
+7E42: 26 C2          bne      REGDISP1
+7E44: 16 FF 50       lbra     RESUME
+
+RECVBIT:
+7E47: 34 06          pshs     b,a
+RETRY:
+7E49: C6 06          ldb      #06
+
+;   Listen for a high signal on PORTB[7]
+RECV1:
+7E4B: B6 40 01       lda      PORTBL 
+7E4E: 48             asla     
+7E4F: 24 FA          bcc      RECV1
+
+;   Wait a moment
+RECV2:
+7E51: 5A             decb     
+7E52: 26 FD          bne      RECV2
+
+;   Check the signal is still high
+7E54: B6 40 01       lda      PORTBL 
+7E57: 48             asla     
+7E58: 24 EF          bcc      RETRY
+
+;   Time until the signal is low
+7E5A: C6 24          ldb      #24
+RECV3:
+7E5C: 5A             decb     
+7E5D: B6 40 01       lda      PORTBL 
+7E60: 48             asla     
+7E61: 25 F9          bcs      RECV3
+
+;   Show a bit pattern in the display
+7E63: 86 EF          lda      #EF
+7E65: 5D             tstb     
+7E66: 2B 01          bmi      RECV4
+7E68: 47             asra     
+RECV4:
+7E69: B7 40 00       sta      PIA 
+
+;   Set CC with the result: positive for a 1
+7E6C: 5D             tstb     
+7E6D: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+
+;   Receive a byte and return in B
+RECVBYTE:
+7E6F: 34 02          pshs     a
+
+;   Wait for start bit
+RBYTE1:
+7E71: 8D D4          bsr      RECVBIT
+7E73: 2A FC          bpl      RBYTE1
+
+;   Prepare to gather 8 bits
+7E75: 86 08          lda      #08
+
+;   Loop once per bit, LSB first
+RBYTE3:
+7E77: 8D CE          bsr      RECVBIT
+7E79: 1C FE          andcc    #FE
+7E7B: 2B 02          bmi      RBYTE2
+7E7D: 1A 01          orcc     #01
+RBYTE2:
+7E7F: 56             rorb     
+7E80: 4A             deca     
+7E81: 26 F4          bne      RBYTE3
+7E83: 35 82          puls     a,pc ;(pul? pc=rts)
+
+
+;   Set up I/O Ports
+LOAD:
+7E85: CC 00 00       ldd      #PORTA 
+7E88: FD 40 02       std      CTRLAL
+7E8B: CC FF 7F       ldd      #$FF7F
+7E8E: FD 40 00       std      PIA 
+7E91: CC 04 04       ldd      #$0404
+7E94: FD 40 02       std      CTRLAL
+7E97: CC FF 04       ldd      #$FF04
+7E9A: FD 40 00       std      PIA 
+RELOAD:
+7E9D: 8D D0          bsr      RECVBYTE
+
+;   Wait for 0x53 = S
+7E9F: C1 53          cmpb     #53
+7EA1: 26 FA          bne      RELOAD
+7EA3: 8D CA          bsr      RECVBYTE
+
+;   Code S1 begins a record
+7EA5: C1 31          cmpb     #31
+7EA7: 27 08          beq      LOAD2
+
+;   Code SJ means EOF
+7EA9: C1 4A          cmpb     #4A
+7EAB: 26 F0          bne      RELOAD
+
+;   Show F in display forever
+messageF:
+7EAD: 86 69          lda      #69
+7EAF: 20 32          bra      ERRSTOP
+
+
+;   Get count, initialise checksum
+LOAD2:
+7EB1: 8D BC          bsr      RECVBYTE
+7EB3: D7 EC          stb      tmp2DP
+7EB5: 96 EC          lda      tmp2DP
+
+;   Get two-byte address, accumulating checksum in A
+7EB7: 8D B6          bsr      RECVBYTE
+7EB9: D7 F6          stb      tmpXDP
+7EBB: 34 04          pshs     b
+7EBD: AB E0          adda     ,s+
+7EBF: 0A EC          dec      tmp2DP
+7EC1: 8D AC          bsr      RECVBYTE
+7EC3: D7 F7          stb      tmpXDP+1
+7EC5: 34 04          pshs     b
+7EC7: AB E0          adda     ,s+
+7EC9: 9E F6          ldx      tmpXDP
+LDLOOP:
+7ECB: 0A EC          dec      tmp2DP
+7ECD: 27 0A          beq      LDDONE
+7ECF: 8D 9E          bsr      RECVBYTE
+7ED1: E7 80          stb      ,x+
+7ED3: 34 04          pshs     b
+7ED5: AB E0          adda     ,s+
+7ED7: 20 F2          bra      LDLOOP
+
+
+;   Verify checksum
+LDDONE:
+7ED9: 8D 94          bsr      RECVBYTE
+7EDB: 34 04          pshs     b
+7EDD: AB E0          adda     ,s+
+7EDF: 27 BC          beq      RELOAD
+7EE1: 86 78          lda      #78
+
+;   Fall-thru
+ERRSTOP:
+7EE3: 17 FE F6       lbsr     CLEARDISP
+7EE6: 97 FA          sta      dbuf+0 
+DEAD:
+7EE8: 17 FD 90       lbsr     DISPRESH
+7EEB: 20 FB          bra      DEAD
+
+
+;   Save to tape Prompt S and get start address
+SAVE:
+7EED: 8E 00 3D       ldx      #$3D
+7EF0: 9F FE          stx      dbuf+4
+7EF2: 17 FD C0       lbsr     BADDR
+7EF5: 9F EE          stx      ptrdp
+
+;   Prompt F and get finish address
+7EF7: 86 69          lda      #69
+7EF9: 97 FF          sta      dbuf+5
+7EFB: 17 FD B7       lbsr     BADDR
+7EFE: 9F F0          stx      addrdp
+
+;   Set up output port
+7F00: 4F             clra     
+7F01: B7 40 03       sta      CTRLBL 
+7F04: 4A             deca     
+7F05: B7 40 01       sta      PORTBL 
+7F08: 86 04          lda      #04
+7F0A: B7 40 03       sta      CTRLBL 
+7F0D: 4F             clra     
+7F0E: B7 40 01       sta      PORTBL 
+
+;   Send two bytes of all ones
+SAVE1:
+7F11: 86 FF          lda      #FF
+7F13: 8D 71          bsr      SEND
+7F15: 8D 6F          bsr      SEND
+
+;   Send block start
+SAVE4:
+7F17: 8D 63          bsr      SENDSTART
+7F19: 86 FF          lda      #FF
+7F1B: D6 EF          ldb      ptrdp+1
+7F1D: 34 04          pshs     b
+7F1F: A0 E0          suba     ,s+
+
+;   Send length code and init checksum
+SAVE2:
+7F21: 84 0F          anda     #0F
+7F23: 8B 03          adda     #03
+7F25: 8D 5F          bsr      SEND
+7F27: 97 ED          sta      chksumdp 
+
+;   Send (half of) address and add to checksum
+7F29: 8E 13 EE       ldx      #ptr
+7F2C: 8D 56          bsr      SENDBYTE
+7F2E: 9B ED          adda     chksumdp 
+7F30: 97 ED          sta      chksumdp 
+
+;   Send other half of address and add to checksum
+7F32: 30 01          leax     PORTB ,x
+7F34: 8D 4E          bsr      SENDBYTE
+7F36: 9B ED          adda     chksumdp 
+7F38: 97 ED          sta      chksumdp 
+7F3A: 9E EE          ldx      ptrdp
+
+;   Send a data byte and add to checksum
+SAVE3:
+7F3C: 8D 46          bsr      SENDBYTE
+7F3E: 9B ED          adda     chksumdp 
+7F40: 97 ED          sta      chksumdp 
+7F42: 9C F0          cmpx     addrdp
+7F44: 27 0A          beq      ENDBLOCK
+7F46: 30 01          leax     PORTB ,x
+7F48: 9F EE          stx      ptrdp
+7F4A: 96 EF          lda      ptrdp+1
+7F4C: 85 0F          bita     #0F
+7F4E: 26 EC          bne      SAVE3
+
+;   Send checksum
+ENDBLOCK:
+7F50: 96 ED          lda      chksumdp 
+7F52: 40             nega     
+7F53: 8D 31          bsr      SEND
+
+;   Test if all finished
+7F55: 9C F0          cmpx     addrdp
+7F57: 27 18          beq      SENDEOF
+
+;   Test if another full block to send
+7F59: 96 EE          lda      ptrdp
+7F5B: 91 F0          cmpa     addrdp
+7F5D: 2B B8          bmi      SAVE4
+7F5F: D6 EF          ldb      ptrdp+1
+7F61: 96 F1          lda      addrdp+1
+7F63: 84 F0          anda     #F0
+7F65: 34 04          pshs     b
+7F67: A1 E0          cmpa     ,s+
+7F69: 26 AC          bne      SAVE4
+
+;   Last block may be short
+7F6B: 8D 0F          bsr      SENDSTART
+7F6D: 96 F1          lda      addrdp+1
+7F6F: 20 B0          bra      SAVE2
+
+
+;   Send eof code 534a = 'SJ'
+SENDEOF:
+7F71: 86 53          lda      #53
+7F73: 8D 11          bsr      SEND
+7F75: 86 4A          lda      #4A
+7F77: 8D 0D          bsr      SEND
+7F79: 16 FF 31       lbra     messageF
+
+
+;   Send magic code 'S1'
+SENDSTART:
+7F7C: 86 53          lda      #53
+7F7E: 8D 06          bsr      SEND
+7F80: 86 31          lda      #31
+7F82: 20 02          bra      SEND
+
+
+;   Transmit byte from (X)
+SENDBYTE:
+7F84: A6 84          lda      ,x
+
+;   Transmit byte from A
+SEND:
+7F86: 34 06          pshs     b,a
+
+;   Total of 10 bits to send, including start and stop
+7F88: C6 0A          ldb      #0A
+7F8A: D7 EB          stb      countdp
+
+;   Set up start bit
+7F8C: 1C FE          andcc    #FE
+
+;   Next bit in C flag: set B to delay count
+NEXTBIT:
+7F8E: C6 90          ldb      #90
+7F90: 24 02          bcc      SAVE8
+7F92: C6 24          ldb      #24
+SAVE8:
+7F94: 34 04          pshs     b
+
+;   Set bit in output port
+7F96: C6 40          ldb      #40
+7F98: F7 40 01       stb      PORTBL 
+7F9B: E6 E4          ldb      ,s
+DELAY1:
+7F9D: 5A             decb     
+7F9E: 26 FD          bne      DELAY1
+
+;   Clear bit in output port
+7FA0: F7 40 01       stb      PORTBL 
+
+;   Same delay loop again
+7FA3: 35 04          puls     b
+DELAY2:
+7FA5: 5A             decb     
+7FA6: 26 FD          bne      DELAY2
+
+;   Rotate a 1 bit into A, so stop bit will be a 1
+7FA8: 1A 01          orcc     #01
+7FAA: 46             rora     
+7FAB: 0A EB          dec      countdp
+7FAD: 26 DF          bne      NEXTBIT
+7FAF: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+7FB1: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+7FC1: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+7FD0: BE 13 E7       ldx      SWI2VEC
+7FD3: 6E 84          jmp      ,x
+
+7FD5: BE 13 E5       ldx      SWI3VEC
+7FD8: 6E 84          jmp      ,x
+
+7FDA: BE 13 E9       ldx      FIRQVEC
+7FDD: 6E 84          jmp      ,x
+
+7FDF: BE 13 F4       ldx      IRQVEC
+7FE2: 6E 84          jmp      ,x
+
+7FE4: BE 13 F2       ldx      NMIVEC
+7FE7: 6E 84          jmp      ,x
+
+7FE9: 00 00 00 00 00 00 00 00 00 
+
+
+;   Interrupt vectors
+SWI3INTR:
+7FF2: 7F D5 
+
+SWI2INTR:
+7FF4: 7F D0 
+
+FIRQINTR:
+7FF6: 7F DA 
+
+INTRQ:
+7FF8: 7F DF 
+
+SWINTR:
+7FFA: 7D F4 
+
+NMINTR:
+7FFC: 7F E4 
+
+RESETBOOT:
+7FFE: 7D 89 
+

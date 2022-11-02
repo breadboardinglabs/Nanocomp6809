@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" height="0.50999999in" id="svg251" gorn="0" y="0in" viewBox="0 0 114.48 36.719993"  width="1.59in" x="0in">
+    <desc >
+        <referenceFile >7segment_x4.svg</referenceFile>
+    </desc>
+    <defs id="defs255" />
+    <polygon id="polygon172" gorn="0.2" fill="#323232" points="113.365,0 114.48,1 114.48,36.864 1,36.864 0,35.557 0,0 " />
+    <polygon id="polygon174" gorn="0.3" style="fill:#ff0000" fill="#646464" points="22.16,3.491 22.989,4.319 21.329,6.808 10.545,6.808 8.889,4.319 9.718,3.491 " />
+    <polygon id="polygon176" gorn="0.4" fill="#ef1818" points="24.648,6.808 22.989,15.934 21.329,17.591 19.672,15.934 21.329,7.636 23.819,5.148 " />
+    <polygon id="polygon178" gorn="0.5" fill="#ef1818" points="22.16,20.078 20.501,29.204 18.842,30.863 17.183,29.204 18.842,20.911 21.329,18.42 " />
+    <polygon id="polygon180" gorn="0.6" style="fill:#ff0000" fill="#646464" points="4.74,32.522 3.91,31.69 5.569,29.204 16.354,29.204 18.012,31.692 17.183,32.522 " />
+    <polygon id="polygon182" gorn="0.7" fill="#ef1818" points="2.252,29.204 3.91,20.078 5.569,18.42 7.227,20.078 5.569,28.373 3.08,30.863 " />
+    <polygon id="polygon184" gorn="0.8" fill="#ef1818" points="4.74,15.934 6.4,6.808 8.057,5.148 9.718,6.808 8.057,15.104 5.569,17.591 " />
+    <polyline id="polyline186" gorn="0.9" fill="#ef1818" points="6.4,17.591,8.057,15.934,18.842,15.934,20.501,17.591,18.842,19.25,8.057,19.25" />
+    <circle id="circle188" gorn="0.10" cy="30.858999" cx="22.634001" fill="#646464"  r="1.748"/>
+    <polygon id="polygon192" gorn="0.11" fill="#ef1818" points="53.436,6.808 51.777,15.934 50.117,17.591 48.46,15.934 50.117,7.636 52.607,5.148 " />
+    <polygon id="polygon194" gorn="0.12" fill="#ef1818" points="50.948,20.078 49.289,29.204 47.63,30.863 45.971,29.204 47.63,20.911 50.117,18.42 " />
+    <polygon id="polygon198" gorn="0.13" fill="#ef1818" points="31.04,29.204 32.698,20.078 34.357,18.42 36.015,20.078 34.357,28.373 31.868,30.863 " />
+    <polygon id="polygon200" gorn="0.14" fill="#ef1818" points="33.528,15.934 35.188,6.808 36.845,5.148 38.506,6.808 36.845,15.104 34.357,17.591 " />
+    <polyline id="polyline202" gorn="0.15" fill="#ef1818" points="35.188,17.591,36.845,15.934,47.63,15.934,49.289,17.591,47.63,19.25,36.845,19.25" />
+    <polygon id="polygon214" gorn="0.16" style="fill:#ff0000" fill="#646464" points="82.236,6.808 80.577,15.934 78.917,17.591 77.26,15.934 78.917,7.636 81.406,5.148 " />
+    <polygon id="polygon216" gorn="0.17" style="fill:#ff0000" fill="#646464" points="79.748,20.078 78.089,29.204 76.429,30.863 74.771,29.204 76.429,20.911 78.917,18.42 " />
+    <polygon id="polygon220" gorn="0.18" fill="#ef1818" points="59.84,29.204 61.498,20.078 63.157,18.42 64.815,20.078 63.157,28.373 60.668,30.863 " />
+    <polygon id="polygon222" gorn="0.19" fill="#ef1818" points="62.328,15.934 63.988,6.808 65.645,5.148 67.305,6.808 65.645,15.104 63.157,17.591 " />
+    <polyline id="polyline224" gorn="0.20" style="fill:#ff0000" fill="#646464" points="63.988,17.591,65.645,15.934,76.429,15.934,78.089,17.591,76.429,19.25,65.645,19.25" />
+    <polygon id="polygon228" gorn="0.21" fill="#ef1818" points="108.623,3.491 109.452,4.319 107.792,6.808 97.008,6.808 95.351,4.319 96.18,3.491 " />
+    <polygon id="polygon230" gorn="0.22" fill="#ef1818" points="111.111,6.808 109.452,15.934 107.792,17.591 106.135,15.934 107.792,7.636 110.281,5.148 " />
+    <polygon id="polygon232" gorn="0.23" fill="#ef1818" points="108.623,20.078 106.964,29.204 105.304,30.863 103.646,29.204 105.304,20.911 107.792,18.42 " />
+    <polygon id="polygon234" gorn="0.24" fill="#ef1818" points="91.203,32.522 90.373,31.69 92.032,29.204 102.816,29.204 104.474,31.692 103.646,32.522 " />
+    <polygon id="polygon236" gorn="0.25" fill="#ef1818" points="88.715,29.204 90.373,20.078 92.032,18.42 93.69,20.078 92.032,28.373 89.543,30.863 " />
+    <polygon id="polygon238" gorn="0.26" fill="#ef1818" points="91.203,15.934 92.863,6.808 94.52,5.148 96.18,6.808 94.52,15.104 92.032,17.591 " />
+    <polyline id="polyline240" gorn="0.27" style="fill:#ff0000" fill="#646464" points="92.863,17.591,94.52,15.934,105.304,15.934,106.964,17.591,105.304,19.25,94.52,19.25" />
+    <circle id="circle242" gorn="0.28" cy="30.858999" cx="109.097" fill="#646464"  r="1.748"/>
+    <polygon id="polygon244" gorn="0.29" fill="#c7c7c7" points="114.48,36.864 113.48,35.557 0,35.557 1,36.864 " />
+    <polygon id="polygon246" gorn="0.30" fill="#aaaaaa" points="113.365,0 113.365,35.557 114.48,36.864 114.48,1 " />
+    <polygon id="polygon196" gorn="0.31" style="fill:#ff0000" fill="#646464" points="33.528,32.522 32.698,31.69 34.357,29.204 45.142,29.204 46.8,31.692 45.971,32.522 " />
+    <circle id="circle204" gorn="0.32" cy="30.858999" cx="51.422001" fill="#646464"  r="1.748"/>
+    <polygon id="polygon218" gorn="0.33" fill="#ef1818" points="62.328,32.522 61.498,31.69 63.157,29.204 73.941,29.204 75.599,31.692 74.771,32.522 " />
+    <circle id="circle226" gorn="0.34" cy="30.858999" cx="80.222" fill="#646464"  r="1.748"/>
+    <circle id="connector9pin" stroke="#9a916c" gorn="0.35" cy="4.0320001" stroke-width="0.4898" cx="53.639999" fill="none"  r="1.97"/>
+    <circle id="connector8pin" stroke="#9a916c" gorn="0.36" cy="4.0320001" stroke-width="0.4898" cx="60.540001" fill="none"  r="1.97"/>
+    <polygon id="polygon190" gorn="0.37" fill="#ef1818" points="50.948,3.491 51.777,4.319 50.117,6.808 39.333,6.808 37.677,4.319 38.506,3.491 " />
+    <polygon id="polygon212" gorn="0.38" style="fill:#ff0000" fill="#646464" points="79.748,3.491 80.577,4.319 78.917,6.808 68.133,6.808 66.476,4.319 67.305,3.491 " />
+    <circle id="connector11pin" stroke="#9a916c" gorn="0.39" cy="4.0320001" stroke-width="0.4898" cx="39.240002" fill="none"  r="1.97"/>
+    <circle id="connector0pin" stroke="#9a916c" gorn="0.40" cy="32.832001" stroke-width="0.4898" cx="39.240002" fill="none"  r="1.97"/>
+    <circle id="connector1pin" stroke="#9a916c" gorn="0.41" cy="32.832001" stroke-width="0.4898" cx="46.439999" fill="none"  r="1.97"/>
+    <circle id="connector2pin" stroke="#9a916c" gorn="0.42" cy="32.832001" stroke-width="0.4898" cx="53.639999" fill="none"  r="1.97"/>
+    <rect height="0.0088596" id="connector2terminal" stroke="none" gorn="0.43" y="32.9101" stroke-width="0" fill="none"  x="53.7181" width="0.0088596"/>
+    <circle id="connector3pin" stroke="#9a916c" gorn="0.44" cy="32.832001" stroke-width="0.4898" cx="60.84" fill="none"  r="1.97"/>
+    <circle id="connector4pin" stroke="#9a916c" gorn="0.45" cy="32.832001" stroke-width="0.4898" cx="68.040001" fill="none"  r="1.97"/>
+    <circle id="connector5pin" stroke="#9a916c" gorn="0.46" cy="32.832001" stroke-width="0.4898" cx="75.239998" fill="none"  r="1.97"/>
+    <circle id="connector10pin" stroke="#9a916c" gorn="0.47" cy="4.0320001" stroke-width="0.4898" cx="46.439999" fill="none"  r="1.97"/>
+    <circle id="connector7pin" stroke="#9a916c" gorn="0.48" cy="4.0320001" stroke-width="0.4898" cx="68.040001" fill="none"  r="1.97"/>
+    <circle id="connector6pin" stroke="#9a916c" gorn="0.49" cy="4.0320001" stroke-width="0.4898" cx="76.440002" fill="none"  r="1.97"/>
+</svg>

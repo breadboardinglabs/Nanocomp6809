@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+
+<svg
+   x="0in"
+   version="1.2"
+   width="0.1in"
+   height="0.1in"
+   y="0in"
+   viewBox="0 0 7.2 7.1999963"
+   id="svg123"
+   sodipodi:docname="track_break.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs127" />
+  <sodipodi:namedview
+     id="namedview125"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in"
+     showgrid="false"
+     inkscape:zoom="20.187146"
+     inkscape:cx="9.0651744"
+     inkscape:cy="20.161344"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g121" />
+  <g
+     partID="855452000"
+     id="g121"
+     transform="scale(0.45819499,1)">
+    <rect
+       fill="none"
+       x="2.2084301"
+       width="2.7831199"
+       height="2.7831199"
+       y="2.2084301"
+       id="connector0pin" />
+    <g
+       fill="none"
+       x="2.51834"
+       width="2.15829"
+       height="2.25658"
+       y="2.47054"
+       id="connector0terminal" />
+    <polygon
+       fill="#2a2a29"
+       points="4.99156,2.20843 6.01654,1.18445 1.18445,1.18445 2.20843,2.20843 "
+       id="polygon100"
+       style="fill:#ff0000;fill-opacity:1" />
+    <polygon
+       fill="#474747"
+       points="4.99156,4.99156 6.01654,6.01654 6.01654,1.18445 4.99156,2.20843 "
+       id="polygon102"
+       style="fill:#ff0000" />
+    <polygon
+       fill="#595959"
+       points="2.20843,4.99156 1.18445,6.01654 6.01654,6.01654 4.99156,4.99156 "
+       id="polygon104"
+       style="fill:#ff0000" />
+    <polygon
+       fill="#373737"
+       points="2.20843,2.20843 1.18445,1.18445 1.18445,6.01654 2.20843,4.99156 "
+       id="polygon106"
+       style="fill:#ff0000" />
+    <rect
+       fill="none"
+       x="9.4084597"
+       width="2.7831199"
+       height="2.7831199"
+       y="2.2084301"
+       id="connector1pin" />
+    <rect
+       fill="none"
+       x="9.7183399"
+       width="2.1582899"
+       height="2.2565801"
+       y="2.47054"
+       id="connector1terminal" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.90928px;line-height:1.25;font-family:sans-serif;stroke-width:1.10799"
+       x="0.43908736"
+       y="7.5193729"
+       id="text1034"
+       transform="scale(1.4773209,0.67690101)"
+       inkscape:transform-center-x="-0.85450413"><tspan
+         sodipodi:role="line"
+         id="tspan1032"
+         style="fill:#ff0000;stroke-width:1.10799"
+         x="0.43908736"
+         y="7.5193729">X</tspan></text>
+  </g>
+</svg>

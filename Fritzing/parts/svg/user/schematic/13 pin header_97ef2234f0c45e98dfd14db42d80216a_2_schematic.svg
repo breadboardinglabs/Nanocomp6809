@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" height="1.2655482in" id="svg109"  viewBox="0 0 14.508585 91.119321" version="1.2" y="0in" width="0.20150813in" gorn="0" x="0in">
+    <desc >
+        <referenceFile >13_pin_socket_schem.svg</referenceFile>
+    </desc>
+    <defs id="defs113" />
+    <line y1="2.8045907" stroke-linejoin="round" stroke-linecap="round" id="connector0pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.2" stroke="#000000" y2="2.8045907"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector0terminal"  y="3.504" width="0.546" fill="none" gorn="0.3.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,5.557,9.928,3.6,14.1,1.643" stroke-linejoin="round" stroke-linecap="round" id="polyline29"  stroke-width="0.7" fill="none" gorn="0.4.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="2.8045907" stroke-linejoin="round" stroke-linecap="round" id="line"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.5" stroke="#000000" y2="2.8045907"/>
+    <text text-anchor="middle" class="text" id="text32"  font-size="2" y="1.7845908" stroke-width="0" fill="#8c8c8c" gorn="0.6" stroke="none" font-family="Droid Sans" x="5.1085854">1</text>
+    <line y1="10.004591" stroke-linejoin="round" stroke-linecap="round" id="connector1pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.7" stroke="#000000" y2="10.004591"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector1terminal"  y="10.704" width="0.546" fill="none" gorn="0.8.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,12.757,9.928,10.8,14.1,8.843" stroke-linejoin="round" stroke-linecap="round" id="polyline36"  stroke-width="0.7" fill="none" gorn="0.9.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="10.004591" stroke-linejoin="round" stroke-linecap="round" id="line38"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.10" stroke="#000000" y2="10.004591"/>
+    <text text-anchor="middle" class="text" id="text40"  font-size="2" y="8.9845905" stroke-width="0" fill="#8c8c8c" gorn="0.11" stroke="none" font-family="Droid Sans" x="5.1085854">2</text>
+    <line y1="17.204592" stroke-linejoin="round" stroke-linecap="round" id="connector2pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.12" stroke="#000000" y2="17.204592"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector2terminal"  y="17.904" width="0.546" fill="none" gorn="0.13.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,19.957,9.928,18,14.1,16.043" stroke-linejoin="round" stroke-linecap="round" id="polyline44"  stroke-width="0.7" fill="none" gorn="0.14.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="17.204592" stroke-linejoin="round" stroke-linecap="round" id="line46"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.15" stroke="#000000" y2="17.204592"/>
+    <text text-anchor="middle" class="text" id="text48"  font-size="2" y="16.184591" stroke-width="0" fill="#8c8c8c" gorn="0.16" stroke="none" font-family="Droid Sans" x="5.1085854">3</text>
+    <line y1="24.404593" stroke-linejoin="round" stroke-linecap="round" id="connector3pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.17" stroke="#000000" y2="24.404593"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector3terminal"  y="25.104" width="0.546" fill="none" gorn="0.18.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,27.157,9.928,25.2,14.1,23.243" stroke-linejoin="round" stroke-linecap="round" id="polyline52"  stroke-width="0.7" fill="none" gorn="0.19.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="24.404593" stroke-linejoin="round" stroke-linecap="round" id="line54"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.20" stroke="#000000" y2="24.404593"/>
+    <text text-anchor="middle" class="text" id="text56"  font-size="2" y="23.384592" stroke-width="0" fill="#8c8c8c" gorn="0.21" stroke="none" font-family="Droid Sans" x="5.1085854">4</text>
+    <line y1="31.604593" stroke-linejoin="round" stroke-linecap="round" id="connector4pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.22" stroke="#000000" y2="31.604593"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector4terminal"  y="32.304" width="0.546" fill="none" gorn="0.23.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,34.357,9.928,32.4,14.1,30.443" stroke-linejoin="round" stroke-linecap="round" id="polyline60"  stroke-width="0.7" fill="none" gorn="0.24.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="31.604593" stroke-linejoin="round" stroke-linecap="round" id="line62"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.25" stroke="#000000" y2="31.604593"/>
+    <text text-anchor="middle" class="text" id="text64"  font-size="2" y="30.584591" stroke-width="0" fill="#8c8c8c" gorn="0.26" stroke="none" font-family="Droid Sans" x="5.1085854">5</text>
+    <line y1="38.804588" stroke-linejoin="round" stroke-linecap="round" id="connector5pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.27" stroke="#000000" y2="38.804588"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector5terminal"  y="39.504" width="0.546" fill="none" gorn="0.28.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,41.557,9.928,39.6,14.1,37.643" stroke-linejoin="round" stroke-linecap="round" id="polyline68"  stroke-width="0.7" fill="none" gorn="0.29.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="38.804588" stroke-linejoin="round" stroke-linecap="round" id="line70"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.30" stroke="#000000" y2="38.804588"/>
+    <text text-anchor="middle" class="text" id="text72"  font-size="2" y="37.784592" stroke-width="0" fill="#8c8c8c" gorn="0.31" stroke="none" font-family="Droid Sans" x="5.1085854">6</text>
+    <line y1="46.004589" stroke-linejoin="round" stroke-linecap="round" id="connector6pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.32" stroke="#000000" y2="46.004589"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector6terminal"  y="46.704" width="0.546" fill="none" gorn="0.33.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,48.757,9.928,46.8,14.1,44.843" stroke-linejoin="round" stroke-linecap="round" id="polyline76"  stroke-width="0.7" fill="none" gorn="0.34.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="46.004589" stroke-linejoin="round" stroke-linecap="round" id="line78"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.35" stroke="#000000" y2="46.004589"/>
+    <text text-anchor="middle" class="text" id="text80"  font-size="2" y="44.984589" stroke-width="0" fill="#8c8c8c" gorn="0.36" stroke="none" font-family="Droid Sans" x="5.1085854">7</text>
+    <line y1="53.20459" stroke-linejoin="round" stroke-linecap="round" id="connector7pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.37" stroke="#000000" y2="53.20459"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector7terminal"  y="53.904" width="0.546" fill="none" gorn="0.38.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,55.957,9.928,54,14.1,52.043" stroke-linejoin="round" stroke-linecap="round" id="polyline84"  stroke-width="0.7" fill="none" gorn="0.39.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="53.20459" stroke-linejoin="round" stroke-linecap="round" id="line86"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.40" stroke="#000000" y2="53.20459"/>
+    <text text-anchor="middle" class="text" id="text88"  font-size="2" y="52.184589" stroke-width="0" fill="#8c8c8c" gorn="0.41" stroke="none" font-family="Droid Sans" x="5.1085854">8</text>
+    <line y1="60.404591" stroke-linejoin="round" stroke-linecap="round" id="connector8pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.42" stroke="#000000" y2="60.404591"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector8terminal"  y="61.104" width="0.546" fill="none" gorn="0.43.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,63.157,9.928,61.2,14.1,59.243" stroke-linejoin="round" stroke-linecap="round" id="polyline92"  stroke-width="0.7" fill="none" gorn="0.44.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="60.404591" stroke-linejoin="round" stroke-linecap="round" id="line94"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.45" stroke="#000000" y2="60.404591"/>
+    <text text-anchor="middle" class="text" id="text96"  font-size="2" y="59.38459" stroke-width="0" fill="#8c8c8c" gorn="0.46" stroke="none" font-family="Droid Sans" x="5.1085854">9</text>
+    <line y1="67.604591" stroke-linejoin="round" stroke-linecap="round" id="connector9pin"  x2="7.4045854" stroke-width="0.7" x1="0.40858513" fill="none" gorn="0.47" stroke="#000000" y2="67.604591"/>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <g height="0.208" id="connector9terminal"  y="68.304" width="0.546" fill="none" gorn="0.48.0.0" x="-0.252"/>
+        </g>
+    </g>
+    <g  transform="translate(0.05858514,-0.79540913)">
+        <g >
+            <polyline points="14.1,70.357,9.928,68.4,14.1,66.443" stroke-linejoin="round" stroke-linecap="round" id="polyline100"  stroke-width="0.7" fill="none" gorn="0.49.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="67.604591" stroke-linejoin="round" stroke-linecap="round" id="line102"  x2="4.8625851" stroke-width="0.7" x1="10.168585" fill="none" gorn="0.50" stroke="#000000" y2="67.604591"/>
+    <text text-anchor="middle" class="text" id="text104"  font-size="2" y="66.584587" stroke-width="0" fill="#8c8c8c" gorn="0.51" stroke="none" font-family="Droid Sans" x="5.1085854">10</text>
+    <line y1="74.412384" stroke-linejoin="round" stroke-linecap="round" id="connector11pin"  x2="7.3459992" stroke-width="0.7" x1="0.34999999" fill="none" gorn="0.52" stroke="#000000" y2="74.412384"/>
+    <g  transform="translate(1.6712883e-7,20.412389)">
+        <g >
+            <polyline points="14.1,55.957,9.928,54,14.1,52.043" stroke-linejoin="round" stroke-linecap="round" id="polyline84-6"  stroke-width="0.7" fill="none" gorn="0.53.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="74.412384" stroke-linejoin="round" stroke-linecap="round" id="line86-0"  x2="4.8039994" stroke-width="0.7" x1="10.109999" fill="none" gorn="0.54" stroke="#000000" y2="74.412384"/>
+    <g text-anchor="middle" class="text" id="text88-8"  font-size="2" stroke-width="0" fill="#8c8c8c" gorn="0.55" stroke="none" font-family="Droid Sans" style="font-size:2.5px;font-family:Droid Sans;text-anchor:middle;fill:#8c8c8c;stroke:none;stroke-width:0">
+        <text id="tspan559"  y="73.392387" gorn="0.55.0" x="5.0499997">11</text>
+    </g>
+    <line y1="81.612389" stroke-linejoin="round" stroke-linecap="round" id="connector12pin"  x2="7.3459992" stroke-width="0.7" x1="0.34999999" fill="none" gorn="0.56" stroke="#000000" y2="81.612389"/>
+    <g  transform="translate(1.6712883e-7,20.412389)">
+        <g >
+            <polyline points="14.1,63.157,9.928,61.2,14.1,59.243" stroke-linejoin="round" stroke-linecap="round" id="polyline92-4"  stroke-width="0.7" fill="none" gorn="0.57.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="81.612389" stroke-linejoin="round" stroke-linecap="round" id="line94-8"  x2="4.8039994" stroke-width="0.7" x1="10.109999" fill="none" gorn="0.58" stroke="#000000" y2="81.612389"/>
+    <text text-anchor="middle" class="text" id="text96-7"  font-size="2" y="80.592384" stroke-width="0" fill="#8c8c8c" gorn="0.59" stroke="none" font-family="Droid Sans" x="5.0499997">12</text>
+    <line y1="88.812386" stroke-linejoin="round" stroke-linecap="round" id="connector13pin"  x2="7.3459992" stroke-width="0.7" x1="0.34999999" fill="none" gorn="0.60" stroke="#000000" y2="88.812386"/>
+    <g  transform="translate(1.6712883e-7,20.412389)">
+        <g >
+            <polyline points="14.1,70.357,9.928,68.4,14.1,66.443" stroke-linejoin="round" stroke-linecap="round" id="polyline100-4"  stroke-width="0.7" fill="none" gorn="0.61.0.0" stroke="#000000"/>
+        </g>
+    </g>
+    <line y1="88.812386" stroke-linejoin="round" stroke-linecap="round" id="line102-4"  x2="4.8039994" stroke-width="0.7" x1="10.109999" fill="none" gorn="0.62" stroke="#000000" y2="88.812386"/>
+    <g text-anchor="middle" class="text" id="text104-7"  font-size="2" stroke-width="0" fill="#8c8c8c" gorn="0.63" stroke="none" font-family="Droid Sans" style="font-size:2.5px;font-family:Droid Sans;text-anchor:middle;fill:#8c8c8c;stroke:none;stroke-width:0">
+        <text id="tspan555"  y="87.792381" gorn="0.63.0" x="5.0499997">13</text>
+    </g>
+</svg>

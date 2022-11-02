@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE svg>
+<!-- Generator: Adobe Illustrator 15.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="basic" width="0.245014in" id="Ebene_1" y="0px" viewBox="0 0 17.641 23.608" xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:space="preserve" x="0px" height="0.327889in" gorn="0" version="1.1" >
+    <desc>
+        <referenceFile>TACTILE-PTH.svg</referenceFile>
+    </desc>
+    <g >
+        <path d="M17.641,16.204c0,0.793-0.646,1.438-1.438,1.438H1.438C0.648,17.642,0,16.996,0,16.204V1.438C0.002,0.646,0.648,0,1.438,0h14.768c0.793,0,1.438,0.646,1.438,1.438L17.641,16.204L17.641,16.204z" fill="#999999" />
+        <circle cy="2.57" r="1.529" cx="2.57" />
+        <circle cy="2.596" r="1.529" cx="15.116" />
+        <circle cy="15.141" r="1.528" cx="15.09" />
+        <circle cy="15.114" r="1.528" cx="2.545" />
+        <circle cy="8.822" r="5.145" fill="#3F3F3F" cx="8.821" />
+        <linearGradient id="SVGID_1_" gradientTransform="matrix(0.7195 0 0 0.7195 -44.442 -2043.5012)" x1="66.8782" y2="2852.4309" y1="2852.4309" gradientUnits="userSpaceOnUse" x2="81.1799" >
+            <stop style="stop-color:#333333" offset="0" />
+            <stop style="stop-color:#3C3C3C" offset="1" />
+        </linearGradient>
+        <circle cy="8.822" r="5.145" fill="url(#SVGID_1_)" cx="8.821" />
+        <circle cy="9.432" opacity="0.6" r="4.527" cx="8.912" />
+        <circle cy="8.852" r="4.412" fill="#735348" cx="8.829" />
+        <path d="M2.374,2.49c0.028-0.071,0.085-0.128,0.163-0.142l-0.15-0.962c-0.06,0.01-0.119,0.002-0.177,0.021V1.4C1.853,1.509,1.588,1.776,1.45,2.115L2.374,2.49z" opacity="0.5" fill="#FFFFFF" />
+        <path d="M14.918,2.517c0.027-0.073,0.085-0.129,0.164-0.143l-0.149-0.963c-0.06,0.011-0.118,0.002-0.177,0.02l-0.002-0.006C14.4,1.533,14.131,1.799,13.996,2.14L14.918,2.517z" opacity="0.5" fill="#FFFFFF" />
+        <path d="M14.891,15.06c0.029-0.072,0.083-0.129,0.163-0.143l-0.146-0.963c-0.062,0.012-0.118,0.002-0.179,0.021l-0.001-0.008c-0.354,0.106-0.623,0.375-0.759,0.715L14.891,15.06z" opacity="0.5" fill="#FFFFFF" />
+        <path d="M2.346,15.035c0.029-0.072,0.085-0.127,0.165-0.142L2.36,13.929c-0.059,0.014-0.117,0.002-0.176,0.021l-0.002-0.007c-0.354,0.107-0.622,0.375-0.76,0.714L2.346,15.035z" opacity="0.5" fill="#FFFFFF" />
+        <path d="M10.406,4.74c-0.342-0.134-0.7-0.229-1.08-0.273C8.378,4.361,7.47,4.571,6.695,5.001L6.599,5.252c0.866-0.463,1.873-0.678,2.923-0.562c0.323,0.038,0.639,0.11,0.938,0.205L10.406,4.74z" opacity="0.6" fill="#FFFFFF" />
+    </g>
+</svg>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<svg baseProfile="full" height="1.0069219246157437in" version="1.1" viewBox="0 0 37467 74213" width="0.508346in" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs />
+<rect fill="#FEFEFE" height="73701" stroke="#373435" stroke-linecap="round" stroke-width="511.857" width="29481" x="7730" y="256" />
+<line fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" x1="33525" x2="33525" y1="7626" y2="66586" />
+<line fill="none" id="connector0pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="7626" y2="7626" />
+<rect fill="none" height="74" id="connector0terminal" width="74" x="321" y="7589" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="6551.4">
+1</text>
+<line fill="none" id="connector1pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="14996" y2="14996" />
+<rect fill="none" height="74" id="connector1terminal" width="74" x="321" y="14959" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="13921.4">
+2</text>
+<line fill="none" id="connector2pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="22366" y2="22366" />
+<rect fill="none" height="74" id="connector2terminal" width="74" x="321" y="22329" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="21291.4">
+3</text>
+<line fill="none" id="connector3pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="29736" y2="29736" />
+<rect fill="none" height="74" id="connector3terminal" width="74" x="321" y="29699" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="28661.4">
+4</text>
+<line fill="none" id="connector4pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="37106" y2="37106" />
+<rect fill="none" height="74" id="connector4terminal" width="74" x="321" y="37069" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="36031.4">
+5</text>
+<line fill="none" id="connector5pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="44476" y2="44476" />
+<rect fill="none" height="74" id="connector5terminal" width="74" x="321" y="44439" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="43401.4">
+6</text>
+<line fill="none" id="connector6pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="51846" y2="51846" />
+<rect fill="none" height="74" id="connector6terminal" width="74" x="321" y="51809" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="50771.4">
+7</text>
+<line fill="none" id="connector7pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="59216" y2="59216" />
+<rect fill="none" height="74" id="connector7terminal" width="74" x="321" y="59179" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="58141.4">
+8</text>
+<line fill="none" id="connector8pin" stroke="#787878" stroke-linecap="round" stroke-width="716.426" x1="358" x2="7720" y1="66586" y2="66586" />
+<rect fill="none" height="74" id="connector8terminal" width="74" x="321" y="66549" />
+<text fill="#606062" font-family="Droid Sans" font-size="3582.71" font-weight="normal" x="3057.2" y="65511.4">
+9</text>
+<line fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" x1="7730" x2="33526" y1="7625" y2="7625" />
+<path d="M 27998 14996 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 22366 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 29736 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 37106 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 44476 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 51846 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 59216 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<path d="M 27998 66586 l5527 0m-6265 2949l737 -2949m-2579 -2948l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-3685 0l1843 -5897m-3685 0l1842 5897m-2948 -2949l1106 -2948m-6633 2948l5527 0" fill="none" stroke="#606062" stroke-linecap="round" stroke-width="511.857" />
+<circle cx="33451" cy="14996" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+<circle cx="33451" cy="22366" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+<circle cx="33451" cy="29736" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+<circle cx="33451" cy="37106" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+<circle cx="33451" cy="44476" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+<circle cx="33451" cy="51846" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+<circle cx="33451" cy="59216" fill="#606062" r="663" stroke="#606062" stroke-width="221.109" />
+</svg>

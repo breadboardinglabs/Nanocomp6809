@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<svg baseProfile="full" height="0.11in" version="1.1" viewBox="0 0 25415 3072" width="0.9100431281044241in" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs />
+<g id="pcb">
+<g id="silkscreen">
+<rect fill="none" height="2793" stroke="#FEFEFE" stroke-width="279.267" width="25139" x="140" y="140" />
+<line fill="none" stroke="white" stroke-width="139.629" x1="1117" x2="140" y1="2932" y2="1955" />
+</g>
+<g id="copper1">
+<g id="copper0">
+<circle cx="1536" cy="1536" fill="none" id="connector0pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="4329" cy="1536" fill="none" id="connector1pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="7122" cy="1536" fill="none" id="connector2pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="9915" cy="1536" fill="none" id="connector3pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="12708" cy="1536" fill="none" id="connector4pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="15501" cy="1536" fill="none" id="connector5pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="18294" cy="1536" fill="none" id="connector6pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="21087" cy="1536" fill="none" id="connector7pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+<circle cx="23880" cy="1536" fill="none" id="connector8pin" r="810" stroke="#FFBF00" stroke-width="558.514" />
+</g>
+</g>
+</g>
+</svg>

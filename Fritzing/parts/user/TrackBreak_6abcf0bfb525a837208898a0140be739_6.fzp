@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module moduleId="TrackBreak_6abcf0bfb525a837208898a0140be739_6" referenceFile="generic_female_pin_header_2_100mil.fzp" fritzingVersion="0.2.2.b.03.04.2550">
+ <version>4</version>
+ <author>Fritzing Part-o-matic</author>
+ <title>Generic female header - 2 pins</title>
+ <label>J</label>
+ <date>Sat Aug 13 2022</date>
+ <tags/>
+ <properties>
+  <property name="family">Pin Header</property>
+  <property name="hole size"/>
+  <property name="Pins">2</property>
+  <property name="Form">♀ (female)</property>
+  <property name="Pin Spacing">0.1in (2.54mm)</property>
+  <property name="Row">single</property>
+  <property name="package">THT</property>
+  <property name="Position"/>
+  <property name="package">THT</property>
+  <property name="mpn"/>
+  <property name="layer"/>
+  <property name="part number"/>
+  <property name="mn"/>
+  <property name="variant">variant 1</property>
+ </properties>
+ <description>Generic female header</description>
+ <views>
+  <iconView>
+   <layers image="icon/TrackBreak_6abcf0bfb525a837208898a0140be739_6_icon.svg">
+    <layer layerId="icon"/>
+   </layers>
+  </iconView>
+  <breadboardView>
+   <layers image="breadboard/TrackBreak_6abcf0bfb525a837208898a0140be739_6_breadboard.svg">
+    <layer layerId="breadboard"/>
+   </layers>
+  </breadboardView>
+  <schematicView fliphorizontal="true">
+   <layers image="schematic/TrackBreak_6abcf0bfb525a837208898a0140be739_6_schematic.svg">
+    <layer layerId="schematic"/>
+   </layers>
+  </schematicView>
+  <pcbView>
+   <layers image="pcb/TrackBreak_6abcf0bfb525a837208898a0140be739_6_pcb.svg">
+    <layer layerId="copper0"/>
+    <layer layerId="silkscreen"/>
+    <layer layerId="copper1"/>
+   </layers>
+  </pcbView>
+ </views>
+ <connectors>
+  <connector name="pin1" id="connector0" type="male">
+   <description>pin 1</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector0terminal" layer="breadboard" svgId="connector0pin"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector0terminal" layer="schematic" svgId="connector0pin"/>
+    </schematicView>
+    <pcbView>
+     <p layer="copper0" svgId="connector0pin"/>
+     <p layer="copper1" svgId="connector0pin"/>
+    </pcbView>
+   </views>
+  </connector>
+ </connectors>
+</module>

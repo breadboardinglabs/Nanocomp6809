@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+
+<svg
+   width="0.551in"
+   y="0in"
+   viewBox="0 0 39.671989 39.685028"
+   x="0in"
+   height="0.55118108in"
+   version="1.2"
+   id="svg766"
+   sodipodi:docname="key_swicth_medium.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs770" />
+  <sodipodi:namedview
+     id="namedview768"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in"
+     showgrid="true"
+     inkscape:zoom="9.4766141"
+     inkscape:cx="21.526676"
+     inkscape:cy="44.214104"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg766">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1234"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
+  <path
+     stroke-width="0"
+     d="M 0.09479336,-0.15828434 0.01152507,17.821543 A 1.9977319,2.6810877 89.66877 0 1 -0.00697847,21.81706 L -0.09024676,39.796887 H 39.679931 l 0.18504,-39.95517134 z"
+     stroke="none"
+     fill="#1f7a34"
+     id="path661" />
+  <g
+     id="g714"
+     transform="matrix(1,0,0,1.3790334,12.695559,36.710472)">
+    <rect
+       width="2.29896"
+       y="0"
+       id="connector0pin"
+       x="0"
+       height="2.2967999"
+       fill="#8d8c8c" />
+    <rect
+       width="1.18398"
+       y="0.556952"
+       x="0.56098998"
+       height="1.18189"
+       fill="#8c8663"
+       id="rect704" />
+    <polygon
+       points="0,2.2968 0.56099,1.73785 0.56099,0.501957 0,0 "
+       fill="#b8af82"
+       id="polygon706" />
+    <polygon
+       points="1.74297,0.558951 0.56899,0.558951 0,0 2.29896,0 "
+       fill="#80795b"
+       id="polygon708" />
+    <polygon
+       points="1.74297,1.73785 1.74297,0.558951 2.29896,0 2.29896,2.2968 "
+       fill="#5e5b43"
+       id="polygon710" />
+    <polygon
+       points="0,2.2968 0.56699,1.73785 1.74297,1.73785 2.29896,2.2968 "
+       fill="#9a916c"
+       id="polygon712" />
+  </g>
+  <g
+     id="g729"
+     transform="matrix(1,0,0,1.3101182,12.220706,-0.0018072)">
+    <rect
+       width="2.29896"
+       y="0"
+       id="connector3pin"
+       x="0"
+       height="2.2967999"
+       fill="#8d8c8c" />
+    <rect
+       width="1.18398"
+       y="0.556952"
+       x="0.56098998"
+       height="1.18189"
+       fill="#8c8663"
+       id="rect719" />
+    <polygon
+       points="0,2.2968 0.56099,1.73785 0.56099,0.501957 0,0 "
+       fill="#b8af82"
+       id="polygon721" />
+    <polygon
+       points="1.74297,0.558951 0.56899,0.558951 0,0 2.29896,0 "
+       fill="#80795b"
+       id="polygon723" />
+    <polygon
+       points="1.74297,1.73785 1.74297,0.558951 2.29896,0 2.29896,2.2968 "
+       fill="#5e5b43"
+       id="polygon725" />
+    <polygon
+       points="0,2.2968 0.56699,1.73785 1.74297,1.73785 2.29896,2.2968 "
+       fill="#9a916c"
+       id="polygon727" />
+  </g>
+  <g
+     id="g744"
+     transform="matrix(1,0,0,1.4479485,26.14779,36.473046)">
+    <rect
+       width="2.29896"
+       y="0"
+       id="connector1pin"
+       x="0"
+       height="2.2967999"
+       fill="#8d8c8c" />
+    <rect
+       width="1.18398"
+       y="0.556952"
+       x="0.56098998"
+       height="1.18189"
+       fill="#8c8663"
+       id="rect734" />
+    <polygon
+       points="0.56099,1.73785 0.56099,0.501957 0,0 0,2.2968 "
+       fill="#b8af82"
+       id="polygon736" />
+    <polygon
+       points="0.56899,0.558951 0,0 2.29896,0 1.74297,0.558951 "
+       fill="#80795b"
+       id="polygon738" />
+    <polygon
+       points="1.74297,0.558951 2.29896,0 2.29896,2.2968 1.74297,1.73785 "
+       fill="#5e5b43"
+       id="polygon740" />
+    <polygon
+       points="0.56699,1.73785 1.74297,1.73785 2.29896,2.2968 0,2.2968 "
+       fill="#9a916c"
+       id="polygon742" />
+  </g>
+  <g
+     id="g759"
+     transform="matrix(1,0,0,1.2067455,25.752079,0.07733501)">
+    <rect
+       width="2.29896"
+       y="0"
+       id="connector2pin"
+       x="0"
+       height="2.2967999"
+       fill="#8d8c8c" />
+    <rect
+       width="1.18398"
+       y="0.556952"
+       x="0.56098998"
+       height="1.18189"
+       fill="#8c8663"
+       id="rect749" />
+    <polygon
+       points="0.56099,0.501957 0,0 0,2.2968 0.56099,1.73785 "
+       fill="#b8af82"
+       id="polygon751" />
+    <polygon
+       points="0,0 2.29896,0 1.74297,0.558951 0.56899,0.558951 "
+       fill="#80795b"
+       id="polygon753" />
+    <polygon
+       points="2.29896,0 2.29896,2.2968 1.74297,1.73785 1.74297,0.558951 "
+       fill="#5e5b43"
+       id="polygon755" />
+    <polygon
+       points="1.74297,1.73785 2.29896,2.2968 0,2.2968 0.56699,1.73785 "
+       fill="#9a916c"
+       id="polygon757" />
+  </g>
+  <g
+     transform="translate(2.7776932,2.6985515)"
+     id="g63">
+    <g
+       id="g61">
+      <polygon
+         points="31.0307,0 2.98398,0 0,2.98398 0,31.0307 2.98398,34.0157 31.0317,34.0157 34.0157,31.0307 34.0157,2.98398 "
+         id="polygon29" />
+      <g
+         id="g59">
+        <path
+           d="m 31.7917,29.3847 c 0,1.32799 -1.07999,2.41198 -2.41098,2.41198 l -24.74776,2e-5 c -1.32599,0 -2.40898,-1.08399 -2.40898,-2.41198 V 4.63195 c 0,-1.32599 1.08299,-2.40898 2.40898,-2.40898 h 24.7518 c 1.32699,0 2.40697,1.08299 2.40697,2.40898 z"
+           fill="#999999"
+           id="path31" />
+        <circle
+           cy="6.5299401"
+           r="2.56198"
+           cx="6.5289402"
+           id="circle33" />
+        <circle
+           cy="6.5759401"
+           r="2.5609801"
+           cx="27.558701"
+           id="circle35" />
+        <circle
+           cy="27.603701"
+           r="2.56198"
+           cx="27.512699"
+           id="circle37" />
+        <circle
+           cy="27.555799"
+           r="2.56198"
+           cx="6.4839401"
+           id="circle39" />
+        <circle
+           cy="17.008801"
+           r="8.6239405"
+           fill="#3f3f3f"
+           cx="17.0058"
+           id="circle41" />
+        <circle
+           cy="17.008801"
+           r="8.6239405"
+           fill="#2d2d2d"
+           cx="17.0058"
+           id="circle43" />
+        <circle
+           cy="18.032801"
+           opacity="0.6"
+           r="7.5879402"
+           cx="17.156799"
+           id="circle45" />
+        <circle
+           cy="17.059799"
+           r="7.3948998"
+           fill="#313131"
+           cx="17.017799"
+           id="circle47" />
+        <path
+           d="m 6.19794,6.39594 c 0.052,-0.119 0.143,-0.213 0.276,-0.234 l -0.254,-1.61598 c -0.097,0.016 -0.199,0.003 -0.29399,0.034 L 5.92394,4.57196 C 5.32595,4.75495 4.88095,5.20095 4.64995,5.76894 Z"
+           opacity="0.5"
+           fill="#ffffff"
+           id="path49" />
+        <path
+           d="m 27.2247,6.44094 c 0.05,-0.122999 0.141998,-0.215998 0.274998,-0.236998 L 27.2507,4.589952 c -0.101999,0.018 -0.198998,0.003 -0.297997,0.031 l -0.004,-0.009 c -0.590995,0.182998 -1.03899,0.627994 -1.26798,1.19699 z"
+           opacity="0.5"
+           fill="#ffffff"
+           id="path51" />
+        <path
+           d="m 27.1817,27.4687 c 0.051,-0.124998 0.140998,-0.216998 0.274998,-0.237997 L 27.2047,25.617713 c -0.098,0.018 -0.198998,0.004 -0.293997,0.033 l -0.004,-0.014 c -0.594994,0.183998 -1.04299,0.628994 -1.26899,1.19899 z"
+           opacity="0.5"
+           fill="#ffffff"
+           id="path53" />
+        <path
+           d="m 6.15194,27.4237 c 0.051,-0.122999 0.142998,-0.212998 0.276998,-0.235998 l -0.253997,-1.61498 c -0.097999,0.023 -0.198998,0.004 -0.294997,0.033 l -0.003,-0.008 c -0.596994,0.179999 -1.04199,0.626994 -1.27199,1.19699 z"
+           opacity="0.5"
+           fill="#ffffff"
+           id="path55" />
+        <path
+           d="M 19.6638,10.1669 C 19.091805,9.943902 18.48881,9.783904 17.85082,9.709904 16.26184,9.533906 14.74285,9.884902 13.44386,10.604893 l -0.160998,0.420996 c 1.44999,-0.774994 3.13997,-1.13599 4.89795,-0.937994 0.541995,0.063 1.06799,0.183998 1.56699,0.343997 z"
+           opacity="0.6"
+           fill="#ffffff"
+           id="path57" />
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,1518 @@
+PORTA                         =  0x4000
+PORTB                         =  0x4001
+CTRLA                         =  0x4002
+CTRLB                         =  0x4003
+PORTADP                       =  0x00
+PORTBDP                       =  0x01
+CTRLADP                       =  0x02
+CTRLBDP                       =  0x03
+DEC10K                        =  0x2710
+DEC1K                         =  0x03E8
+HEXTODEC                      =  0x7800
+HEXTODEC1                     =  0x7804
+HEXTODEC2                     =  0x7817
+HEXTODEC3                     =  0x7827
+HEXTODEC4                     =  0x7842
+HEXTODEC5                     =  0x7848
+HEXTODEC6                     =  0x7855
+HEXTODEC7                     =  0x7857
+HEXTODEC8                     =  0x7869
+HEXTODEC9                     =  0x786B
+HEXTODEC10                    =  0x787D
+HEXTODEC11                    =  0x787F
+HEXTODEC12                    =  0x7891
+HEXTODEC13                    =  0x78BD
+HEXTODEC14                    =  0x78C7
+HEXTODEC141                   =  0x78CB
+HEXTODEC15                    =  0x78E3
+HEXTODEC16                    =  0x78EE
+HEXTODEC17                    =  0x78F4
+HEXTODEC18                    =  0x78FF
+HEXTODEC19                    =  0x7907
+HEXTODEC20                    =  0x790E
+HEXTODEC21                    =  0x7914
+HEXTODEC22                    =  0x791B
+HEXTODEC23                    =  0x791E
+HEXTODEC24                    =  0x7922
+HEXTODEC25                    =  0x7929
+CALCOFFSET                    =  0x7A00
+CALCOFFSET1                   =  0x7A08
+CALCOFFSET2                   =  0x7A10
+CALCOFFSET3                   =  0x7A29
+CALCOFFSET4                   =  0x7A6E
+CALCOFFSET5                   =  0x7A77
+MASTERMIND                    =  0x7A80
+MASTERM1                      =  0x7A94
+MASTERM2                      =  0x7AA4
+MASTERM3                      =  0x7AB7
+MASTERM4                      =  0x7AD7
+MASTERM5                      =  0x7AD9
+MASTERM6                      =  0x7ADF
+MASTERM7                      =  0x7AE0
+MASTERM8                      =  0x7AE9
+MASTERM9                      =  0x7B0F
+MASTERM10                     =  0x7B1D
+MASTERM11                     =  0x7B23
+MASTERM12                     =  0x7B2D
+MASTERM13                     =  0x7B3F
+MASTERM14                     =  0x7B48
+MASTERM15                     =  0x7B52
+MASTERM16                     =  0x7B57
+MASTERM17                     =  0x7B5C
+MASTERM18                     =  0x7B61
+MASTERM19                     =  0x7B64
+MASTERM20                     =  0x7B6B
+MASTERM21                     =  0x7B79
+MASTERM22                     =  0x7B90
+MASTERM23                     =  0x7BA3
+MASTERM24                     =  0x7BA4
+DUCKSHOOT                     =  0x7940
+DUCKSHOOT0                    =  0x7953
+DUCKSHOOT1                    =  0x796B
+DUCKSHOOT2                    =  0x796F
+DUCKSHOOT3                    =  0x7977
+DUCKSHOOT4                    =  0x797D
+DUCKSHOOT5                    =  0x7986
+DUCKSHOOT6                    =  0x798E
+DUCKSHOOT7                    =  0x7992
+DUCKSHOOT8                    =  0x7997
+DUCKSHOOT9                    =  0x79A1
+DUCKSHOOT10                   =  0x79BA
+DUCKSHOOT11                   =  0x79CF
+DUCKSHOOT12                   =  0x79DD
+DUCKSHOOT13                   =  0x79EF
+GETKEY                        =  0x7C20
+GETKEY0                       =  0x7C26
+GETKEY1                       =  0x7C40
+GETKEY2                       =  0x7C3B
+GETKEY3                       =  0x7C5B
+GETKEY4                       =  0x7C50
+GETKEY5                       =  0x7C6D
+GETKEY6                       =  0x7C6C
+DISPRESH                      =  0x7C7B
+DISP1                         =  0x7CAA
+DISP2                         =  0x7C98
+DISP3                         =  0x7C9F
+BADDR1                        =  0x7CAF
+BADDR                         =  0x7CB5
+HEXIN                         =  0x7CCC
+HEXCON                        =  0x7CE7
+HEXCON1                       =  0x7CEE
+KEYHEX                        =  0x7CE4
+L7SEG                         =  0x7CFF
+R7SEG                         =  0x7D03
+R71                           =  0x7D0A
+R72                           =  0x7D11
+SVNHEX                        =  0x7D15
+SVNHEX1                       =  0x7D1D
+TORESUME2                     =  0x7D21
+SVNHEX2                       =  0x7D26
+MEMDISP                       =  0x7D28
+MEM0                          =  0x7D31
+MEM1                          =  0x7D3F
+MEM2                          =  0x7D52
+RESET                         =  0x7D89
+NMISR                         =  0x7D8D
+RESUME                        =  0x7D97
+reset3                        =  0x7DC2
+go                            =  0x7DC6
+CONT                          =  0x7DD8
+CLEARDISP                     =  0x7DDC
+CLEARDISP1                    =  0x7DE4
+REGDISPCHAR                   =  0x7DEB
+REGDISPCHAR2                  =  0x7DEF
+REGCHAREND                    =  0x7DF4
+REGDISP                       =  0x7DFF
+REGDISP1                      =  0x7E06
+SHOWLEFT                      =  0x7E13
+SHOWBYTE                      =  0x7E27
+RECVBIT                       =  0x7E47
+RETRY                         =  0x7E49
+RECV1                         =  0x7E4B
+RECV2                         =  0x7E51
+RECV3                         =  0x7E5C
+RECV4                         =  0x7E69
+RECVBYTE                      =  0x7E6F
+RBYTE1                        =  0x7E71
+RBYTE3                        =  0x7E77
+RBYTE2                        =  0x7E7F
+LOAD                          =  0x7E85
+RELOAD                        =  0x7E9D
+MESSAGEF                      =  0x7EAD
+LOAD2                         =  0x7EB1
+LDLOOP                        =  0x7ECB
+LDDONE                        =  0x7ED9
+ERRSTOP                       =  0x7EE3
+DEAD                          =  0x7EE8
+SAVE                          =  0x7EED
+SAVE1                         =  0x7F11
+SAVE4                         =  0x7F17
+SAVE2                         =  0x7F21
+SAVE3                         =  0x7F3C
+ENDBLOCK                      =  0x7F50
+SENDEOF                       =  0x7F71
+SENDSTART                     =  0x7F7C
+SENDBYTE                      =  0x7F84
+SEND                          =  0x7F86
+NEXTBIT                       =  0x7F8E
+SAVE8                         =  0x7F94
+DELAY1                        =  0x7F9D
+DELAY2                        =  0x7FA5
+KEYCODE                       =  0x7C00
+SVNSEG                        =  0x7C10
+count                         =  0x13EB
+countdp                       =  0xEB
+chksumdp                      =  0xED
+chksum                        =  0x13ED
+allzeros                      =  0x00
+ptrdp                         =  0xEE
+ptrdp+1                       =  0xEF
+ptr                           =  0x13EE
+addr                          =  0x13F0
+addr+1                        =  0x13F1
+addrdp                        =  0xF0
+addrdp+1                      =  0xF1
+tmp3                          =  0xED
+tmp2                          =  0xEC
+tmpX                          =  0xF6
+usrspdp                       =  0x13D0
+usrsp                         =  0xD0
+stackstart                    =  0x13F8
+stackstartdp                  =  0xF8
+dbuf                          =  0x13FA
+dbuf+0                        =  0xFA
+dbuf+1                        =  0xFB
+dbuf+2                        =  0xFC
+dbuf+3                        =  0xFD
+dbuf+4                        =  0xFE
+dbuf+5                        =  0xFF
+SWI3VEC                       =  0x13E5
+SWI2VEC                       =  0x13E7
+FIRQVEC                       =  0x13E9
+NMIVEC                        =  0x13F2
+IRQVEC                        =  0x13F4
+SWI3INTR                      =  0x7FF2
+SWI2INTR                      =  0x7FF4
+FIRQINTR                      =  0x7FF6
+INTRQ                         =  0x7FF8
+SWINTR                        =  0x7FFA
+NMINTR                        =  0x7FFC
+RESETBOOT                     =  0x7FFE
+keyCN                         =  0x25
+keyG                          =  0x35
+keyI                          =  0x32
+keyL                          =  0x05
+keyM                          =  0x31
+keyP                          =  0x15
+keyR                          =  0x30
+
+HEXTODEC:
+7800: 10 CE 13 90    lds      #$1390
+HEXTODEC1:
+7804: BD 7D DC       jsr      CLEARDISP
+7807: 86 13          lda      #13
+7809: 1F 8B          tfr      a,dp
+780B: 4F             clra     
+780C: 5F             clrb     
+780D: 97 07          sta      $07
+780F: DD 08          std      $08
+7811: DD 0A          std      $0A
+7813: DD 0C          std      $0C
+7815: DD 0E          std      $0E
+HEXTODEC2:
+7817: BD 7C 20       jsr      GETKEY
+
+;   P pressed for Hex to Decimal
+781A: 81 15          cmpa     #15
+781C: 10 27 00 AB    lbeq     HEXTODEC141
+
+;   L pressed for Decimal to Hex
+7820: 81 05          cmpa     #05
+7822: 26 F3          bne      HEXTODEC2
+7824: 8E 13 09       ldx      #$1309
+HEXTODEC3:
+7827: BD 7C 20       jsr      GETKEY
+
+;   I pressed to display Hex
+782A: 81 32          cmpa     #32
+782C: 27 14          beq      HEXTODEC4
+782E: 30 01          leax     PORTBDP ,x
+7830: BD 7C E7       jsr      HEXCON
+7833: 81 09          cmpa     #09
+7835: 22 CD          bhi      HEXTODEC1
+7837: A7 84          sta      ,x
+7839: BD 7D 03       jsr      R7SEG
+783C: A7 89 00 F0    sta      $00F0,x
+7840: 20 E5          bra      HEXTODEC3
+
+HEXTODEC4:
+7842: A6 84          lda      ,x
+7844: 97 09          sta      $09
+7846: 8D 75          bsr      HEXTODEC13
+HEXTODEC5:
+7848: C6 0A          ldb      #0A
+784A: 81 00          cmpa     #00
+784C: 27 07          beq      HEXTODEC6
+784E: DB 09          addb     $09
+7850: D7 09          stb      $09
+7852: 4A             deca     
+7853: 20 F3          bra      HEXTODEC5
+
+HEXTODEC6:
+7855: 8D 66          bsr      HEXTODEC13
+HEXTODEC7:
+7857: 81 00          cmpa     #00
+7859: 27 0E          beq      HEXTODEC8
+785B: 34 02          pshs     a
+785D: CC 00 64       ldd      #$64
+7860: D3 08          addd     $08
+7862: DD 08          std      $08
+7864: 35 02          puls     a
+7866: 4A             deca     
+7867: 20 EE          bra      HEXTODEC7
+
+HEXTODEC8:
+7869: 8D 52          bsr      HEXTODEC13
+HEXTODEC9:
+786B: 81 00          cmpa     #00
+786D: 27 0E          beq      HEXTODEC10
+786F: 34 02          pshs     a
+7871: CC 03 E8       ldd      #DEC1K
+7874: D3 08          addd     $08
+7876: DD 08          std      $08
+7878: 35 02          puls     a
+787A: 4A             deca     
+787B: 20 EE          bra      HEXTODEC9
+
+HEXTODEC10:
+787D: 8D 3E          bsr      HEXTODEC13
+HEXTODEC11:
+787F: 81 00          cmpa     #00
+7881: 27 0E          beq      HEXTODEC12
+7883: 34 02          pshs     a
+7885: CC 27 10       ldd      #DEC10K
+7888: D3 08          addd     $08
+788A: DD 08          std      $08
+788C: 35 02          puls     a
+788E: 4A             deca     
+788F: 20 EE          bra      HEXTODEC11
+
+HEXTODEC12:
+7891: BD 7D DC       jsr      CLEARDISP
+7894: 96 07          lda      $07
+7896: BD 7D 03       jsr      R7SEG
+7899: 97 FA          sta      dbuf+0 
+789B: 96 08          lda      $08
+789D: BD 7C FF       jsr      L7SEG
+78A0: 97 FB          sta      dbuf+1 
+78A2: 96 08          lda      $08
+78A4: BD 7D 03       jsr      R7SEG
+78A7: 97 FC          sta      dbuf+2 
+78A9: 96 09          lda      $09
+78AB: BD 7C FF       jsr      L7SEG
+78AE: 97 FD          sta      dbuf+3 
+78B0: 96 09          lda      $09
+78B2: BD 7D 03       jsr      R7SEG
+78B5: 97 FE          sta      dbuf+4
+78B7: BD 7C 20       jsr      GETKEY
+78BA: 16 FF 47       lbra     HEXTODEC1
+
+HEXTODEC13:
+78BD: 30 1F          leax     -$01,x
+78BF: 8C 13 09       cmpx     #$1309
+78C2: 27 03          beq      HEXTODEC14
+78C4: A6 84          lda      ,x
+78C6: 39             rts      
+
+HEXTODEC14:
+78C7: 32 62          leas     CTRLADP,s
+78C9: 20 C6          bra      HEXTODEC12
+
+HEXTODEC141:
+78CB: 86 67          lda      #67
+78CD: 97 FF          sta      dbuf+5
+78CF: BD 7C B5       jsr      BADDR
+78D2: 9F 0A          stx      $0A
+78D4: 8E 13 0A       ldx      #$130A
+78D7: 10 8E 13 07    ldy      #$1307
+78DB: E6 84          ldb      ,x
+78DD: 54             lsrb     
+78DE: 54             lsrb     
+78DF: 54             lsrb     
+78E0: 54             lsrb     
+78E1: 27 0B          beq      HEXTODEC16
+HEXTODEC15:
+78E3: 86 40          lda      #40
+78E5: 8D 37          bsr      HEXTODEC23
+78E7: 86 96          lda      #96
+78E9: 8D 37          bsr      HEXTODEC24
+78EB: 5A             decb     
+78EC: 26 F5          bne      HEXTODEC15
+HEXTODEC16:
+78EE: E6 84          ldb      ,x
+78F0: C4 0F          andb     #0F
+78F2: 27 0B          beq      HEXTODEC18
+HEXTODEC17:
+78F4: 86 02          lda      #02
+78F6: 8D 26          bsr      HEXTODEC23
+78F8: 86 56          lda      #56
+78FA: 8D 26          bsr      HEXTODEC24
+78FC: 5A             decb     
+78FD: 26 F5          bne      HEXTODEC17
+HEXTODEC18:
+78FF: E6 01          ldb      PORTBDP ,x
+7901: 54             lsrb     
+7902: 54             lsrb     
+7903: 54             lsrb     
+7904: 54             lsrb     
+7905: 27 07          beq      HEXTODEC20
+HEXTODEC19:
+7907: 86 16          lda      #16
+7909: 8D 17          bsr      HEXTODEC24
+790B: 5A             decb     
+790C: 26 F9          bne      HEXTODEC19
+HEXTODEC20:
+790E: E6 01          ldb      PORTBDP ,x
+7910: C4 0F          andb     #0F
+7912: 27 07          beq      HEXTODEC22
+HEXTODEC21:
+7914: 86 01          lda      #01
+7916: 8D 0A          bsr      HEXTODEC24
+7918: 5A             decb     
+7919: 26 F9          bne      HEXTODEC21
+HEXTODEC22:
+791B: 16 FF 73       lbra     HEXTODEC12
+
+HEXTODEC23:
+791E: 1C FE          andcc    #FE
+7920: 20 07          bra      HEXTODEC25
+
+HEXTODEC24:
+7922: AB 22          adda     CTRLADP,y
+7924: 19             daa      
+7925: A7 22          sta      CTRLADP,y
+7927: 86 00          lda      #00
+HEXTODEC25:
+7929: A9 21          adca     PORTBDP ,y
+792B: 19             daa      
+792C: A7 21          sta      PORTBDP ,y
+792E: 86 00          lda      #00
+7930: A9 A4          adca     ,y
+7932: 19             daa      
+7933: A7 A4          sta      ,y
+7935: 39             rts      
+
+7936: 00 00 00 00 00 00 00 00 00 00 
+
+DUCKSHOOT:
+7940: 10 CE 13 90    lds      #$1390
+7944: 86 13          lda      #13
+7946: 1F 8B          tfr      a,dp
+7948: BD 7D DC       jsr      CLEARDISP
+794B: 86 1F          lda      #1F
+794D: 97 FD          sta      dbuf+3 
+794F: 97 FF          sta      dbuf+5
+7951: 8D 3B          bsr      DUCKSHOOT6
+DUCKSHOOT0:
+7953: BD 7C E7       jsr      HEXCON
+7956: 81 06          cmpa     #06
+7958: 22 15          bhi      DUCKSHOOT2
+795A: 81 00          cmpa     #00
+795C: 27 11          beq      DUCKSHOOT2
+795E: 8E 13 F9       ldx      #$13F9
+7961: 30 86          leax     a,x
+7963: A6 84          lda      ,x
+7965: 27 04          beq      DUCKSHOOT1
+7967: 6F 84          clr      ,x
+7969: 20 04          bra      DUCKSHOOT2
+
+DUCKSHOOT1:
+796B: 86 1F          lda      #1F
+796D: A7 84          sta      ,x
+DUCKSHOOT2:
+796F: 31 3F          leay     -$01,y
+7971: 27 04          beq      DUCKSHOOT3
+7973: 8D 1D          bsr      DUCKSHOOT7
+7975: 20 F8          bra      DUCKSHOOT2
+
+DUCKSHOOT3:
+7977: 8D 04          bsr      DUCKSHOOT4
+7979: 8D 13          bsr      DUCKSHOOT6
+797B: 20 F2          bra      DUCKSHOOT2
+
+DUCKSHOOT4:
+797D: 8E 13 FF       ldx      #$13FF
+7980: A6 84          lda      ,x
+7982: 97 F9          sta      $00F9
+7984: C6 06          ldb      #06
+DUCKSHOOT5:
+7986: A6 82          lda      ,-x
+7988: A7 01          sta      PORTBDP ,x
+798A: 5A             decb     
+798B: 26 F9          bne      DUCKSHOOT5
+798D: 39             rts      
+
+DUCKSHOOT6:
+798E: 10 BE 10 00    ldy      $1000
+DUCKSHOOT7:
+7992: 8E 13 FA       ldx      #dbuf 
+7995: C6 06          ldb      #06
+DUCKSHOOT8:
+7997: A6 80          lda      ,x+
+7999: 26 06          bne      DUCKSHOOT9
+799B: 5A             decb     
+799C: 26 F9          bne      DUCKSHOOT8
+799E: 7E 7D 89       jmp      RESET
+
+DUCKSHOOT9:
+79A1: 4F             clra     
+79A2: B7 40 02       sta      CTRLA
+79A5: B7 40 03       sta      CTRLB 
+79A8: B7 40 00       sta      PORTA
+79AB: 86 0F          lda      #0F
+79AD: B7 40 01       sta      PORTB 
+79B0: 86 04          lda      #04
+79B2: B7 40 02       sta      CTRLA
+79B5: B7 40 03       sta      CTRLB 
+79B8: C6 FF          ldb      #FF
+DUCKSHOOT10:
+79BA: 5C             incb     
+79BB: C1 04          cmpb     #04
+79BD: 26 10          bne      DUCKSHOOT11
+79BF: BD 7C 7B       jsr      DISPRESH
+79C2: 33 8C 8E       leau     -$72,pc ; ($7953)
+79C5: EF E4          stu      ,s
+79C7: 31 3F          leay     -$01,y
+79C9: 26 C7          bne      DUCKSHOOT7
+79CB: 8D B0          bsr      DUCKSHOOT4
+79CD: 20 BF          bra      DUCKSHOOT6
+
+DUCKSHOOT11:
+79CF: F7 40 01       stb      PORTB 
+79D2: B6 40 00       lda      PORTA
+79D5: 43             coma     
+79D6: 27 E2          beq      DUCKSHOOT10
+79D8: 34 04          pshs     b
+79DA: 4F             clra     
+79DB: C6 01          ldb      #01
+DUCKSHOOT12:
+79DD: 34 02          pshs     a
+79DF: B6 40 00       lda      PORTA
+79E2: 43             coma     
+79E3: 34 04          pshs     b
+79E5: A1 E0          cmpa     ,s+
+79E7: 35 02          puls     a
+79E9: 27 04          beq      DUCKSHOOT13
+79EB: 4C             inca     
+79EC: 58             aslb     
+79ED: 20 EE          bra      DUCKSHOOT12
+
+DUCKSHOOT13:
+79EF: 35 04          puls     b
+79F1: 58             aslb     
+79F2: 58             aslb     
+79F3: 58             aslb     
+79F4: 58             aslb     
+79F5: 34 04          pshs     b
+79F7: AB E0          adda     ,s+
+79F9: 39             rts      
+
+79FA: 00 00 00 00 00 00 
+
+CALCOFFSET:
+7A00: 10 CE 13 90    lds      #$1390
+7A04: 86 13          lda      #13
+7A06: 1F 8B          tfr      a,dp
+CALCOFFSET1:
+7A08: CC 00 3D       ldd      #$3D
+7A0B: DD FE          std      dbuf+4
+7A0D: BD 7C B5       jsr      BADDR
+CALCOFFSET2:
+7A10: BD 7C 20       jsr      GETKEY
+7A13: 81 32          cmpa     #32
+7A15: 26 F9          bne      CALCOFFSET2
+7A17: 9F 68          stx      $68
+7A19: 86 57          lda      #57
+7A1B: 97 FF          sta      dbuf+5
+7A1D: BD 7C B5       jsr      BADDR
+7A20: 9F F0          stx      addrdp
+7A22: BD 7D DC       jsr      CLEARDISP
+7A25: 86 75          lda      #75
+7A27: 97 FF          sta      dbuf+5
+CALCOFFSET3:
+7A29: BD 7C E4       jsr      KEYHEX
+7A2C: 81 01          cmpa     #01
+7A2E: 23 F9          bls      CALCOFFSET3
+7A30: 0F 6A          clr      $6A
+7A32: 97 6B          sta      $6B
+7A34: DC F0          ldd      addrdp
+7A36: 93 6A          subd     $6A
+7A38: 93 68          subd     $68
+7A3A: DD 68          std      $68
+7A3C: BD 7C FF       jsr      L7SEG
+7A3F: 97 FC          sta      dbuf+2 
+7A41: 96 68          lda      $68
+7A43: BD 7D 03       jsr      R7SEG
+7A46: 97 FD          sta      dbuf+3 
+7A48: 96 69          lda      $69
+7A4A: BD 7C FF       jsr      L7SEG
+7A4D: 97 FE          sta      dbuf+4
+7A4F: 96 69          lda      $69
+7A51: BD 7D 03       jsr      R7SEG
+7A54: 97 FF          sta      dbuf+5
+7A56: 5F             clrb     
+7A57: D7 FA          stb      dbuf+0 
+7A59: D7 FB          stb      dbuf+1 
+7A5B: 96 6B          lda      $6B
+7A5D: 81 02          cmpa     #02
+7A5F: 26 0D          bne      CALCOFFSET4
+7A61: D7 FD          stb      dbuf+3 
+7A63: D7 FC          stb      dbuf+2 
+7A65: DC 68          ldd      $68
+7A67: 59             rolb     
+7A68: 49             rola     
+7A69: 27 03          beq      CALCOFFSET4
+7A6B: 43             coma     
+7A6C: 26 09          bne      CALCOFFSET5
+CALCOFFSET4:
+7A6E: BD 7C 20       jsr      GETKEY
+7A71: 81 32          cmpa     #32
+7A73: 26 F9          bne      CALCOFFSET4
+7A75: 20 91          bra      CALCOFFSET1
+
+CALCOFFSET5:
+7A77: CC 01 01       ldd      #$0101
+7A7A: DD FE          std      dbuf+4
+7A7C: 20 F0          bra      CALCOFFSET4
+
+7A7E: 00 00 
+
+MASTERMIND:
+7A80: 10 CE 13 90    lds      #$1390
+7A84: 86 13          lda      #13
+7A86: 1F 8B          tfr      a,dp
+7A88: BD 7D DC       jsr      CLEARDISP
+7A8B: 86 06          lda      #06
+7A8D: 97 FF          sta      dbuf+5
+7A8F: 5F             clrb     
+7A90: DD 10          std      $10
+7A92: DD 12          std      $12
+MASTERM1:
+7A94: 8D 21          bsr      MASTERM3
+7A96: 27 3F          beq      MASTERM4
+7A98: 8E 13 10       ldx      #$1310
+7A9B: A6 84          lda      ,x
+7A9D: 4C             inca     
+7A9E: A7 84          sta      ,x
+7AA0: 85 08          bita     #08
+7AA2: 27 F0          beq      MASTERM1
+MASTERM2:
+7AA4: 4F             clra     
+7AA5: A7 80          sta      ,x+
+7AA7: 8C 13 14       cmpx     #$1314
+7AAA: 27 E8          beq      MASTERM1
+7AAC: A6 84          lda      ,x
+7AAE: 4C             inca     
+7AAF: A7 84          sta      ,x
+7AB1: 85 08          bita     #08
+7AB3: 27 DF          beq      MASTERM1
+7AB5: 20 ED          bra      MASTERM2
+
+MASTERM3:
+7AB7: BD 7C 7B       jsr      DISPRESH
+7ABA: 8E 00 00       ldx      #PORTADP
+7ABD: BF 40 02       stx      CTRLA
+7AC0: 8E 00 0F       ldx      #$0F
+7AC3: BF 40 00       stx      PORTA
+7AC6: 8E 04 04       ldx      #$0404
+7AC9: BF 40 02       stx      CTRLA
+7ACC: 86 03          lda      #03
+7ACE: B7 40 01       sta      PORTB 
+7AD1: B6 40 00       lda      PORTA
+7AD4: 85 04          bita     #04
+7AD6: 39             rts      
+
+MASTERM4:
+7AD7: 0F 0E          clr      $0E
+MASTERM5:
+7AD9: BD 7D DC       jsr      CLEARDISP
+7ADC: 8E 13 00       ldx      #$1300
+MASTERM6:
+7ADF: 5F             clrb     
+MASTERM7:
+7AE0: B6 40 00       lda      PORTA
+7AE3: 43             coma     
+7AE4: 26 F9          bne      MASTERM6
+7AE6: 5A             decb     
+7AE7: 26 F7          bne      MASTERM7
+MASTERM8:
+7AE9: BD 7C E4       jsr      KEYHEX
+7AEC: 81 07          cmpa     #07
+7AEE: 22 F9          bhi      MASTERM8
+7AF0: A7 80          sta      ,x+
+7AF2: BD 7D 03       jsr      R7SEG
+7AF5: A7 89 00 F9    sta      $00F9,x
+7AF9: 8C 13 04       cmpx     #$1304
+7AFC: 26 EB          bne      MASTERM8
+7AFE: 86 01          lda      #01
+7B00: 9B 0E          adda     $0E
+7B02: 19             daa      
+7B03: 97 0E          sta      $0E
+7B05: C6 FE          ldb      #FE
+7B07: 4F             clra     
+7B08: 97 0C          sta      $0C
+7B0A: 97 0D          sta      $0D
+7B0C: 8E 13 04       ldx      #$1304
+MASTERM9:
+7B0F: A6 0C          lda      $0C,x
+7B11: A7 04          sta      $04,x
+7B13: A7 80          sta      ,x+
+7B15: 8C 13 08       cmpx     #$1308
+7B18: 26 F5          bne      MASTERM9
+7B1A: 8E 13 00       ldx      #$1300
+MASTERM10:
+7B1D: A6 84          lda      ,x
+7B1F: A1 04          cmpa     $04,x
+7B21: 27 25          beq      MASTERM14
+MASTERM11:
+7B23: 30 01          leax     PORTBDP ,x
+7B25: 8C 13 04       cmpx     #$1304
+7B28: 26 F3          bne      MASTERM10
+7B2A: 8E 13 00       ldx      #$1300
+MASTERM12:
+7B2D: A6 84          lda      ,x
+7B2F: 91 04          cmpa     $04
+7B31: 27 1F          beq      MASTERM15
+7B33: 91 05          cmpa     keyL
+7B35: 27 20          beq      MASTERM16
+7B37: 91 06          cmpa     $06
+7B39: 27 21          beq      MASTERM17
+7B3B: 91 07          cmpa     $07
+7B3D: 27 22          beq      MASTERM18
+MASTERM13:
+7B3F: 30 01          leax     PORTBDP ,x
+7B41: 8C 13 04       cmpx     #$1304
+7B44: 27 25          beq      MASTERM20
+7B46: 20 E5          bra      MASTERM12
+
+MASTERM14:
+7B48: 0C 0C          inc      $0C
+7B4A: E7 84          stb      ,x
+7B4C: 5C             incb     
+7B4D: E7 04          stb      $04,x
+7B4F: 5A             decb     
+7B50: 20 D1          bra      MASTERM11
+
+MASTERM15:
+7B52: 5C             incb     
+7B53: D7 04          stb      $04
+7B55: 20 0D          bra      MASTERM19
+
+MASTERM16:
+7B57: 5C             incb     
+7B58: D7 05          stb      keyL
+7B5A: 20 08          bra      MASTERM19
+
+MASTERM17:
+7B5C: 5C             incb     
+7B5D: D7 06          stb      $06
+7B5F: 20 03          bra      MASTERM19
+
+MASTERM18:
+7B61: 5C             incb     
+7B62: D7 07          stb      $07
+MASTERM19:
+7B64: 5A             decb     
+7B65: 0C 0D          inc      $0D
+7B67: E7 84          stb      ,x
+7B69: 20 D4          bra      MASTERM13
+
+MASTERM20:
+7B6B: 96 0C          lda      $0C
+7B6D: BD 7D 03       jsr      R7SEG
+7B70: 97 FE          sta      dbuf+4
+7B72: 96 0D          lda      $0D
+7B74: BD 7D 03       jsr      R7SEG
+7B77: 97 FF          sta      dbuf+5
+MASTERM21:
+7B79: 17 FF 3B       lbsr     MASTERM3
+7B7C: 26 FB          bne      MASTERM21
+7B7E: 96 0C          lda      $0C
+7B80: 81 04          cmpa     #04
+7B82: 10 26 FF 53    lbne     MASTERM5
+7B86: 96 0E          lda      $0E
+7B88: BD 7C FF       jsr      L7SEG
+7B8B: 81 7E          cmpa     #7E
+7B8D: 26 01          bne      MASTERM22
+7B8F: 4F             clra     
+MASTERM22:
+7B90: 97 FA          sta      dbuf+0 
+7B92: 96 0E          lda      $0E
+7B94: BD 7D 03       jsr      R7SEG
+7B97: 97 FB          sta      dbuf+1 
+7B99: CC 7C 7E       ldd      #$7C7E
+7B9C: DD FC          std      dbuf+2 
+7B9E: CC 20 3D       ldd      #$203D
+7BA1: DD FE          std      dbuf+4
+MASTERM23:
+7BA3: 5F             clrb     
+MASTERM24:
+7BA4: B6 40 00       lda      PORTA
+7BA7: 43             coma     
+7BA8: 26 F9          bne      MASTERM23
+7BAA: 5A             decb     
+7BAB: 26 F7          bne      MASTERM24
+7BAD: 16 FE E4       lbra     MASTERM1
+
+7BB0: 00 00 00 00 00 00 00 00 
+7BB8: 00 00 00 00 00 00 00 00 
+7BC0: 00 00 00 00 00 00 00 00 
+7BC8: 00 00 00 00 00 00 00 00 
+7BD0: 00 00 00 00 00 00 00 00 
+7BD8: 00 00 00 00 00 00 00 00 
+7BE0: 00 00 00 00 00 00 00 00 
+7BE8: 00 00 00 00 00 00 00 00 
+7BF0: 00 00 00 00 00 00 00 00 
+7BF8: 00 00 00 00 00 00 00 00 
+
+KEYCODE:
+7C00: 22 24 02 12 14 00 10 04 
+7C08: 01 11 03 13 23 33 21 20 
+
+SVNSEG:
+7C10: 7E 06 5B 1F 27 3D 7D 0E 
+7C18: 7F 3F 6F 75 78 57 79 69 
+
+GETKEY:
+7C20: 34 2C          pshs     y,dp,b
+7C22: 86 40          lda      #40
+7C24: 1F 8B          tfr      a,dp
+
+;   Set up I/O port
+GETKEY0:
+7C26: 8D 53          bsr      DISPRESH
+7C28: 4F             clra     
+7C29: 97 02          sta      CTRLADP
+7C2B: 97 03          sta      CTRLBDP 
+7C2D: 97 00          sta      PORTADP
+7C2F: 86 0F          lda      #0F
+7C31: 97 01          sta      PORTBDP 
+7C33: 86 04          lda      #04
+7C35: 97 02          sta      CTRLADP
+7C37: 97 03          sta      CTRLBDP 
+7C39: 86 FF          lda      #FF
+GETKEY2:
+7C3B: 5C             incb     
+7C3C: C1 04          cmpb     #04
+7C3E: 27 E6          beq      GETKEY0
+GETKEY1:
+7C40: D7 01          stb      PORTBDP 
+7C42: 96 00          lda      PORTADP
+7C44: 43             coma     
+7C45: 27 F4          beq      GETKEY2
+
+;   Found a key - decode it
+7C47: F7 13 EC       stb      $13EC
+7C4A: B7 13 ED       sta      chksum 
+7C4D: 4F             clra     
+7C4E: C6 01          ldb      #01
+GETKEY4:
+7C50: F1 13 ED       cmpb     chksum 
+7C53: 27 06          beq      GETKEY3
+7C55: 4C             inca     
+7C56: 58             aslb     
+7C57: 27 E2          beq      GETKEY2
+7C59: 20 F5          bra      GETKEY4
+
+GETKEY3:
+7C5B: F6 13 EC       ldb      $13EC
+7C5E: 58             aslb     
+7C5F: 58             aslb     
+7C60: 58             aslb     
+7C61: 58             aslb     
+7C62: 34 04          pshs     b
+7C64: AB E0          adda     ,s+
+
+;   Wait for the key to be released
+7C66: 34 02          pshs     a
+7C68: 10 8E 00 08    ldy      #$08
+GETKEY6:
+7C6C: 5F             clrb     
+GETKEY5:
+7C6D: 96 00          lda      PORTADP
+7C6F: 43             coma     
+7C70: 26 FA          bne      GETKEY6
+7C72: 5A             decb     
+7C73: 26 F8          bne      GETKEY5
+7C75: 31 3F          leay     -$01,y
+7C77: 26 F4          bne      GETKEY5
+7C79: 35 AE          puls     a,b,dp,y,pc ;(pul? pc=rts)
+
+DISPRESH:
+7C7B: 34 16          pshs     x,b,a
+
+;   Set output ports for display
+7C7D: 8E 40 00       ldx      #PORTA
+7C80: 4F             clra     
+7C81: A7 02          sta      CTRLADP,x
+7C83: A7 03          sta      CTRLBDP ,x
+7C85: 86 7F          lda      #7F
+7C87: A7 84          sta      ,x
+7C89: 86 0F          lda      #0F
+7C8B: A7 01          sta      PORTBDP ,x
+7C8D: 86 04          lda      #04
+7C8F: A7 02          sta      CTRLADP,x
+7C91: A7 03          sta      CTRLBDP ,x
+
+;   Initialise loop over digits
+7C93: 8E 13 FA       ldx      #dbuf                   ;They are numbered 4..9 to correspond to outputs from the 7442 decoder.
+7C96: C6 03          ldb      #03
+DISP2:
+7C98: 5C             incb     
+7C99: C1 0A          cmpb     #0A
+7C9B: 26 02          bne      DISP3
+
+;   Finished
+7C9D: 35 96          puls     a,b,x,pc ;(pul? pc=rts)
+
+
+;   Light up the next digit
+DISP3:
+7C9F: F7 40 01       stb      PORTB 
+7CA2: A6 80          lda      ,x+
+7CA4: 43             coma     
+7CA5: B7 40 00       sta      PORTA
+
+;   Delay loop
+7CA8: 86 A0          lda      #A0
+DISP1:
+7CAA: 4A             deca     
+7CAB: 26 FD          bne      DISP1
+7CAD: 20 E9          bra      DISP2
+
+BADDR1:
+7CAF: 1E 89          exg      a,b
+7CB1: 1F 01          tfr      d,x
+7CB3: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+
+;   Input 2 byte address into X; result also at [addr]
+BADDR:
+7CB5: 34 06          pshs     b,a
+7CB7: 4F             clra     
+7CB8: 5F             clrb     
+7CB9: FD 13 FA       std      dbuf 
+7CBC: FD 13 FC       std      $13FC
+7CBF: 8E 13 FA       ldx      #dbuf 
+7CC2: 8D 08          bsr      HEXIN
+7CC4: 34 02          pshs     a
+7CC6: 8D 04          bsr      HEXIN
+7CC8: 35 04          puls     b
+7CCA: 20 E3          bra      BADDR1
+
+
+;   Input 2 hex digits into A and update display at X
+HEXIN:
+7CCC: 8D 16          bsr      KEYHEX
+7CCE: 48             asla     
+7CCF: 48             asla     
+7CD0: 48             asla     
+7CD1: 48             asla     
+7CD2: 34 02          pshs     a
+7CD4: 8D 29          bsr      L7SEG
+7CD6: A7 80          sta      ,x+
+7CD8: 8D 0A          bsr      KEYHEX
+7CDA: AB E0          adda     ,s+
+7CDC: 34 02          pshs     a
+7CDE: 8D 23          bsr      R7SEG
+7CE0: A7 80          sta      ,x+
+7CE2: 35 82          puls     a,pc ;(pul? pc=rts)
+
+KEYHEX:
+7CE4: 17 FF 39       lbsr     GETKEY
+
+;   Fall-thru
+HEXCON:
+7CE7: 34 14          pshs     x,b
+7CE9: 8E 7C 00       ldx      #KEYCODE
+7CEC: C6 FF          ldb      #FF
+HEXCON1:
+7CEE: 5C             incb     
+7CEF: 8C 7C 10       cmpx     #SVNSEG
+7CF2: 27 2D          beq      TORESUME2
+7CF4: A1 80          cmpa     ,x+
+7CF6: 26 F6          bne      HEXCON1
+7CF8: 1F 98          tfr      b,a
+7CFA: 35 94          puls     b,x,pc ;(pul? pc=rts)
+
+7CFC: 12             nop      
+7CFD: 12             nop      
+7CFE: 12             nop      
+
+;   Fall-thru
+L7SEG:
+7CFF: 47             asra     
+7D00: 47             asra     
+7D01: 47             asra     
+7D02: 47             asra     
+
+;   Convert low-order 4 bits of A to 7seg
+R7SEG:
+7D03: 34 10          pshs     x
+7D05: 8E 7C 10       ldx      #SVNSEG
+7D08: 84 0F          anda     #0F
+R71:
+7D0A: 27 05          beq      R72
+7D0C: 30 01          leax     PORTBDP ,x
+7D0E: 4A             deca     
+7D0F: 20 F9          bra      R71
+
+R72:
+7D11: A6 84          lda      ,x
+7D13: 35 90          puls     x,pc ;(pul? pc=rts)
+
+
+;   Convert 7seg to hex
+SVNHEX:
+7D15: 34 14          pshs     x,b
+7D17: 8E 7C 10       ldx      #SVNSEG
+7D1A: 1F 89          tfr      a,b
+7D1C: 4F             clra     
+SVNHEX1:
+7D1D: E1 80          cmpb     ,x+
+7D1F: 27 05          beq      SVNHEX2
+TORESUME2:
+7D21: 27 74          beq      RESUME
+7D23: 4C             inca     
+7D24: 20 F7          bra      SVNHEX1
+
+SVNHEX2:
+7D26: 35 94          puls     b,x,pc ;(pul? pc=rts)
+
+
+;   Prompt for address with 'M' and display memory contents
+MEMDISP:
+7D28: 4F             clra     
+7D29: 97 FE          sta      dbuf+4
+7D2B: 86 6E          lda      #6E
+7D2D: 97 FF          sta      dbuf+5
+7D2F: 8D 84          bsr      BADDR
+MEM0:
+7D31: A6 84          lda      ,x
+7D33: 34 02          pshs     a
+7D35: 8D C8          bsr      L7SEG
+7D37: 97 FE          sta      dbuf+4
+7D39: 35 02          puls     a
+7D3B: 8D C6          bsr      R7SEG
+7D3D: 97 FF          sta      dbuf+5
+
+;   Check for I key
+MEM1:
+7D3F: 17 FE DE       lbsr     GETKEY
+7D42: 81 32          cmpa     #32
+7D44: 27 0C          beq      MEM2
+7D46: 8D 9F          bsr      HEXCON
+7D48: D6 FF          ldb      dbuf+5
+7D4A: D7 FE          stb      dbuf+4
+7D4C: 8D B5          bsr      R7SEG
+7D4E: 97 FF          sta      dbuf+5
+7D50: 20 ED          bra      MEM1
+
+
+;   Store and increment
+MEM2:
+7D52: 96 FE          lda      dbuf+4
+7D54: 8D BF          bsr      SVNHEX
+7D56: 48             asla     
+7D57: 48             asla     
+7D58: 48             asla     
+7D59: 48             asla     
+7D5A: 34 02          pshs     a
+7D5C: 96 FF          lda      dbuf+5
+7D5E: 8D B5          bsr      SVNHEX
+7D60: AB E0          adda     ,s+
+7D62: 1F 89          tfr      a,b
+7D64: A7 84          sta      ,x
+7D66: A6 80          lda      ,x+
+7D68: 34 04          pshs     b
+7D6A: A1 E0          cmpa     ,s+
+7D6C: 26 29          bne      RESUME
+7D6E: 1F 10          tfr      x,d
+7D70: 8D 8D          bsr      L7SEG
+7D72: 97 FA          sta      dbuf+0 
+7D74: 1F 10          tfr      x,d
+7D76: 8D 8B          bsr      R7SEG
+7D78: 97 FB          sta      dbuf+1 
+7D7A: 1F 98          tfr      b,a
+7D7C: 8D 81          bsr      L7SEG
+7D7E: 97 FC          sta      dbuf+2 
+7D80: 1F 98          tfr      b,a
+7D82: 17 FF 7E       lbsr     R7SEG
+7D85: 97 FD          sta      dbuf+3 
+7D87: 20 A8          bra      MEM0
+
+
+;   Reset Handler
+RESET:
+7D89: 10 CE 13 D0    lds      #usrspdp
+NMISR:
+7D8D: 10 FF 13 F8    sts      stackstart
+
+;   Set up NMI to point here
+7D91: 8E 7D 8D       ldx      #NMISR
+7D94: BF 13 F2       stx      NMIVEC
+RESUME:
+7D97: 10 CE 13 D0    lds      #usrspdp
+7D9B: 86 13          lda      #13
+7D9D: 1F 8B          tfr      a,dp
+7D9F: 8D 3B          bsr      CLEARDISP
+
+;   Show '-' at left
+7DA1: 86 01          lda      #01
+7DA3: 97 FA          sta      dbuf+0 
+7DA5: 17 FE 78       lbsr     GETKEY
+
+;   If key is 'M'
+7DA8: 81 31          cmpa     #31
+7DAA: 10 27 FF 7A    lbeq     MEMDISP
+
+;   If key is 'R'
+7DAE: 81 30          cmpa     #30
+7DB0: 27 4D          beq      REGDISP
+
+;   If key is 'CN'
+7DB2: 81 25          cmpa     #25
+7DB4: 27 22          beq      CONT
+
+;   If key is 'CL'
+7DB6: 81 05          cmpa     #05
+7DB8: 10 27 00 C9    lbeq     LOAD
+
+;   If key is 'P'
+7DBC: 81 15          cmpa     #15
+7DBE: 10 27 01 2B    lbeq     SAVE
+
+;   If key is 'G'
+reset3:
+7DC2: 81 35          cmpa     #35
+7DC4: 26 D1          bne      RESUME
+
+;   Prompt and accept start address
+go:
+7DC6: 86 7C          lda      #7C
+7DC8: 97 FF          sta      dbuf+5
+7DCA: 17 FE E8       lbsr     BADDR
+7DCD: 10 9E F8       ldy      stackstartdp
+7DD0: AF 2A          stx      $0A,y
+7DD2: 86 80          lda      #80
+7DD4: AA A4          ora      ,y
+7DD6: A7 A4          sta      ,y
+CONT:
+7DD8: 10 DE F8       lds      stackstartdp
+7DDB: 3B             rti      
+
+
+;   Clear display
+CLEARDISP:
+7DDC: 34 16          pshs     x,b,a
+7DDE: 4F             clra     
+7DDF: C6 06          ldb      #06
+7DE1: 8E 13 FA       ldx      #dbuf 
+CLEARDISP1:
+7DE4: A7 80          sta      ,x+
+7DE6: 5A             decb     
+7DE7: 26 FB          bne      CLEARDISP1
+7DE9: 35 96          puls     a,b,x,pc ;(pul? pc=rts)
+
+
+;   Characters for Reg Display  C b A b d H Y U P S 
+REGDISPCHAR:
+7DEB: 78 6F 75 57 67 37 76 6B 3D 
+
+REGCHAREND :
+7DF4: 86 13          lda      #13
+7DF6: 1F 8B          tfr      a,dp
+7DF8: 10 DF F8       sts      stackstartdp
+7DFB: 10 CE 13 D0    lds      #usrspdp
+REGDISP:
+7DFF: 8D DB          bsr      CLEARDISP
+7E01: 9E F8          ldx      stackstartdp
+
+;   Read characters from REGDISPCHAR
+7E03: 31 8C E5       leay     -$1B,pc ; ($7DEB)
+REGDISP1:
+7E06: A6 A0          lda      ,y+
+7E08: 97 FF          sta      dbuf+5
+7E0A: 10 8C 7D F4    cmpy     #REGCHAREND 
+7E0E: 26 03          bne      SHOWLEFT
+7E10: 8E 13 F8       ldx      #stackstart
+SHOWLEFT:
+7E13: 10 8C 7D EF    cmpy     #REGDISPCHAR2
+7E17: 23 0E          bls      SHOWBYTE
+7E19: A6 84          lda      ,x
+7E1B: 17 FE E1       lbsr     L7SEG
+7E1E: 97 FA          sta      dbuf+0 
+7E20: A6 80          lda      ,x+
+7E22: 17 FE DE       lbsr     R7SEG
+7E25: 97 FB          sta      dbuf+1 
+SHOWBYTE:
+7E27: A6 84          lda      ,x
+7E29: 17 FE D3       lbsr     L7SEG
+7E2C: 97 FC          sta      dbuf+2 
+7E2E: A6 80          lda      ,x+
+7E30: 17 FE D0       lbsr     R7SEG
+7E33: 97 FD          sta      dbuf+3 
+7E35: 17 FD E8       lbsr     GETKEY
+7E38: 81 32          cmpa     #32
+7E3A: 10 26 FF 59    lbne     RESUME
+7E3E: 10 8C 7D F4    cmpy     #REGCHAREND 
+7E42: 26 C2          bne      REGDISP1
+7E44: 16 FF 50       lbra     RESUME
+
+RECVBIT:
+7E47: 34 06          pshs     b,a
+RETRY:
+7E49: C6 06          ldb      #06
+
+;   Listen for a high signal on PORTB[7]
+RECV1:
+7E4B: B6 40 01       lda      PORTB 
+7E4E: 48             asla     
+7E4F: 24 FA          bcc      RECV1
+
+;   Wait a moment
+RECV2:
+7E51: 5A             decb     
+7E52: 26 FD          bne      RECV2
+
+;   Check the signal is still high
+7E54: B6 40 01       lda      PORTB 
+7E57: 48             asla     
+7E58: 24 EF          bcc      RETRY
+
+;   Time until the signal is low
+7E5A: C6 24          ldb      #24
+RECV3:
+7E5C: 5A             decb     
+7E5D: B6 40 01       lda      PORTB 
+7E60: 48             asla     
+7E61: 25 F9          bcs      RECV3
+
+;   Show a bit pattern in the display
+7E63: 86 EF          lda      #EF
+7E65: 5D             tstb     
+7E66: 2B 01          bmi      RECV4
+7E68: 47             asra     
+RECV4:
+7E69: B7 40 00       sta      PORTA
+
+;   Set CC with the result - positive for a 1
+7E6C: 5D             tstb     
+7E6D: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+
+;   Receive a byte and return in B
+RECVBYTE:
+7E6F: 34 02          pshs     a
+
+;   Wait for start bit
+RBYTE1:
+7E71: 8D D4          bsr      RECVBIT
+7E73: 2A FC          bpl      RBYTE1
+
+;   Prepare to gather 8 bits
+7E75: 86 08          lda      #08
+
+;   Loop once per bit, LSB first
+RBYTE3:
+7E77: 8D CE          bsr      RECVBIT
+7E79: 1C FE          andcc    #FE
+7E7B: 2B 02          bmi      RBYTE2
+7E7D: 1A 01          orcc     #01
+RBYTE2:
+7E7F: 56             rorb     
+7E80: 4A             deca     
+7E81: 26 F4          bne      RBYTE3
+7E83: 35 82          puls     a,pc ;(pul? pc=rts)
+
+
+;   Set up I/O Ports
+LOAD:
+7E85: CC 00 00       ldd      #PORTADP
+7E88: FD 40 02       std      CTRLA
+7E8B: CC FF 7F       ldd      #$FF7F
+7E8E: FD 40 00       std      PORTA
+7E91: CC 04 04       ldd      #$0404
+7E94: FD 40 02       std      CTRLA
+7E97: CC FF 04       ldd      #$FF04
+7E9A: FD 40 00       std      PORTA
+RELOAD:
+7E9D: 8D D0          bsr      RECVBYTE
+
+;   Wait for $53 = S
+7E9F: C1 53          cmpb     #53
+7EA1: 26 FA          bne      RELOAD
+7EA3: 8D CA          bsr      RECVBYTE
+
+;   Code S1 begins a record
+7EA5: C1 31          cmpb     #31
+7EA7: 27 08          beq      LOAD2
+
+;   Code SJ means EOF
+7EA9: C1 4A          cmpb     #4A
+7EAB: 26 F0          bne      RELOAD
+
+;   Show F in display forever
+MESSAGEF:
+7EAD: 86 69          lda      #69
+7EAF: 20 32          bra      ERRSTOP
+
+
+;   Get count, initialise checksum
+LOAD2:
+7EB1: 8D BC          bsr      RECVBYTE
+7EB3: D7 EC          stb      tmp2 
+7EB5: 96 EC          lda      tmp2 
+
+;   Get two-byte address, accumulating checksum in A
+7EB7: 8D B6          bsr      RECVBYTE
+7EB9: D7 F6          stb      tmpX
+7EBB: 34 04          pshs     b
+7EBD: AB E0          adda     ,s+
+7EBF: 0A EC          dec      tmp2 
+7EC1: 8D AC          bsr      RECVBYTE
+7EC3: D7 F7          stb      $00F7
+7EC5: 34 04          pshs     b
+7EC7: AB E0          adda     ,s+
+7EC9: 9E F6          ldx      tmpX
+LDLOOP:
+7ECB: 0A EC          dec      tmp2 
+7ECD: 27 0A          beq      LDDONE
+7ECF: 8D 9E          bsr      RECVBYTE
+7ED1: E7 80          stb      ,x+
+7ED3: 34 04          pshs     b
+7ED5: AB E0          adda     ,s+
+7ED7: 20 F2          bra      LDLOOP
+
+
+;   Verify checksum
+LDDONE:
+7ED9: 8D 94          bsr      RECVBYTE
+7EDB: 34 04          pshs     b
+7EDD: AB E0          adda     ,s+
+7EDF: 27 BC          beq      RELOAD
+7EE1: 86 78          lda      #78
+
+;   Fall-thru
+ERRSTOP:
+7EE3: 17 FE F6       lbsr     CLEARDISP
+7EE6: 97 FA          sta      dbuf+0 
+DEAD:
+7EE8: 17 FD 90       lbsr     DISPRESH
+7EEB: 20 FB          bra      DEAD
+
+
+;   Save to tape Prompt S and get start address
+SAVE:
+7EED: 8E 00 3D       ldx      #$3D
+7EF0: 9F FE          stx      dbuf+4
+7EF2: 17 FD C0       lbsr     BADDR
+7EF5: 9F EE          stx      ptrdp
+
+;   Prompt F and get finish address
+7EF7: 86 69          lda      #69
+7EF9: 97 FF          sta      dbuf+5
+7EFB: 17 FD B7       lbsr     BADDR
+7EFE: 9F F0          stx      addrdp
+
+;   Set up output port
+7F00: 4F             clra     
+7F01: B7 40 03       sta      CTRLB 
+7F04: 4A             deca     
+7F05: B7 40 01       sta      PORTB 
+7F08: 86 04          lda      #04
+7F0A: B7 40 03       sta      CTRLB 
+7F0D: 4F             clra     
+7F0E: B7 40 01       sta      PORTB 
+
+;   Send two bytes of all ones
+SAVE1:
+7F11: 86 FF          lda      #FF
+7F13: 8D 71          bsr      SEND
+7F15: 8D 6F          bsr      SEND
+
+;   Send block start
+SAVE4:
+7F17: 8D 63          bsr      SENDSTART
+7F19: 86 FF          lda      #FF
+7F1B: D6 EF          ldb      ptrdp+1
+7F1D: 34 04          pshs     b
+7F1F: A0 E0          suba     ,s+
+
+;   Send length code and init checksum
+SAVE2:
+7F21: 84 0F          anda     #0F
+7F23: 8B 03          adda     #03
+7F25: 8D 5F          bsr      SEND
+7F27: 97 ED          sta      chksumdp 
+
+;   Send (half of) address and add to checksum
+7F29: 8E 13 EE       ldx      #ptr
+7F2C: 8D 56          bsr      SENDBYTE
+7F2E: 9B ED          adda     chksumdp 
+7F30: 97 ED          sta      chksumdp 
+
+;   Send other half of address and add to checksum
+7F32: 30 01          leax     PORTBDP ,x
+7F34: 8D 4E          bsr      SENDBYTE
+7F36: 9B ED          adda     chksumdp 
+7F38: 97 ED          sta      chksumdp 
+7F3A: 9E EE          ldx      ptrdp
+
+;   Send a data byte and add to checksum
+SAVE3:
+7F3C: 8D 46          bsr      SENDBYTE
+7F3E: 9B ED          adda     chksumdp 
+7F40: 97 ED          sta      chksumdp 
+7F42: 9C F0          cmpx     addrdp
+7F44: 27 0A          beq      ENDBLOCK
+7F46: 30 01          leax     PORTBDP ,x
+7F48: 9F EE          stx      ptrdp
+7F4A: 96 EF          lda      ptrdp+1
+7F4C: 85 0F          bita     #0F
+7F4E: 26 EC          bne      SAVE3
+
+;   Send checksum
+ENDBLOCK:
+7F50: 96 ED          lda      chksumdp 
+7F52: 40             nega     
+7F53: 8D 31          bsr      SEND
+
+;   Test if all finished
+7F55: 9C F0          cmpx     addrdp
+7F57: 27 18          beq      SENDEOF
+
+;   Test if another full block to send
+7F59: 96 EE          lda      ptrdp
+7F5B: 91 F0          cmpa     addrdp
+7F5D: 2B B8          bmi      SAVE4
+7F5F: D6 EF          ldb      ptrdp+1
+7F61: 96 F1          lda      addrdp+1
+7F63: 84 F0          anda     #F0
+7F65: 34 04          pshs     b
+7F67: A1 E0          cmpa     ,s+
+7F69: 26 AC          bne      SAVE4
+
+;   Last block may be short
+7F6B: 8D 0F          bsr      SENDSTART
+7F6D: 96 F1          lda      addrdp+1
+7F6F: 20 B0          bra      SAVE2
+
+
+;   Send eof code 534a = 'SJ'
+SENDEOF:
+7F71: 86 53          lda      #53
+7F73: 8D 11          bsr      SEND
+7F75: 86 4A          lda      #4A
+7F77: 8D 0D          bsr      SEND
+7F79: 16 FF 31       lbra     MESSAGEF
+
+
+;   Send magic code 'S1'
+SENDSTART:
+7F7C: 86 53          lda      #53
+7F7E: 8D 06          bsr      SEND
+7F80: 86 31          lda      #31
+7F82: 20 02          bra      SEND
+
+
+;   Transmit byte from (X)
+SENDBYTE:
+7F84: A6 84          lda      ,x
+
+;   Transmit byte from A
+SEND:
+7F86: 34 06          pshs     b,a
+
+;   Total of 10 bits to send, including start and stop
+7F88: C6 0A          ldb      #0A
+7F8A: D7 EB          stb      countdp
+
+;   Set up start bit
+7F8C: 1C FE          andcc    #FE
+
+;   Next bit in C flag - set B to delay count
+NEXTBIT:
+7F8E: C6 90          ldb      #90
+7F90: 24 02          bcc      SAVE8
+7F92: C6 24          ldb      #24
+SAVE8:
+7F94: 34 04          pshs     b
+
+;   Set bit in output port
+7F96: C6 40          ldb      #40
+7F98: F7 40 01       stb      PORTB 
+7F9B: E6 E4          ldb      ,s
+DELAY1:
+7F9D: 5A             decb     
+7F9E: 26 FD          bne      DELAY1
+
+;   Clear bit in output port
+7FA0: F7 40 01       stb      PORTB 
+
+;   Same delay loop again
+7FA3: 35 04          puls     b
+DELAY2:
+7FA5: 5A             decb     
+7FA6: 26 FD          bne      DELAY2
+
+;   Rotate a 1 bit into A, so stop bit will be a 1
+7FA8: 1A 01          orcc     #01
+7FAA: 46             rora     
+7FAB: 0A EB          dec      countdp
+7FAD: 26 DF          bne      NEXTBIT
+7FAF: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+7FB1: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+7FC1: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+7FD0: BE 13 E7       ldx      SWI2VEC
+7FD3: 6E 84          jmp      ,x
+
+7FD5: BE 13 E5       ldx      SWI3VEC
+7FD8: 6E 84          jmp      ,x
+
+7FDA: BE 13 E9       ldx      FIRQVEC
+7FDD: 6E 84          jmp      ,x
+
+7FDF: BE 13 F4       ldx      IRQVEC
+7FE2: 6E 84          jmp      ,x
+
+7FE4: BE 13 F2       ldx      NMIVEC
+7FE7: 6E 84          jmp      ,x
+
+7FE9: 00 00 00 00 00 00 00 00 00 
+
+
+;   Interrupt vectors
+SWI3INTR:
+7FF2: 7F D5 
+
+SWI2INTR:
+7FF4: 7F D0 
+
+FIRQINTR:
+7FF6: 7F DA 
+
+INTRQ:
+7FF8: 7F DF 
+
+SWINTR:
+7FFA: 7D F4 
+
+NMINTR:
+7FFC: 7F E4 
+
+RESETBOOT:
+7FFE: 7D 89 
+

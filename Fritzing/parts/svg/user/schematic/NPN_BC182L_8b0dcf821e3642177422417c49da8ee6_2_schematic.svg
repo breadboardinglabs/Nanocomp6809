@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" height="0.409722in" viewBox="0 0 5.32694 10.4069" y="0in"  baseProfile="tiny" x="0in" width="0.209722in" version="1.2">
+    <desc>
+        <referenceFile>sparkfun-discretesemi_npn_schematic.svg</referenceFile>
+    </desc>
+    <g  id="schematic" gorn="0.0">
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="2.66347" y2="3.67947"  x1="5.20347" stroke-width="0.1524" x2="3.17147"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="6.72747" y2="7.74347"  x1="4.44147" stroke-width="0.1524" x2="5.20347"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.74347" y2="7.74347"  x1="5.20347" stroke-width="0.1524" x2="3.93347"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.74347" y2="6.72747"  x1="3.93347" stroke-width="0.1524" x2="4.44147"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.24347" y2="6.62747"  x1="4.20347" stroke-width="0.1524" x2="2.97147"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.61647" y2="7.61647"  x1="4.18747" stroke-width="0.254" x2="4.94947"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.61647" y2="6.98147"  x1="4.94947" stroke-width="0.254" x2="4.44147"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="6.98147" y2="7.48947"  x1="4.44147" stroke-width="0.254" x2="4.18747"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.48947" y2="7.48947"  x1="4.18747" stroke-width="0.254" x2="4.56847"/>
+        <line class="other" stroke="#000000" stroke-linecap="round" y1="7.48947" y2="7.23547"  x1="4.56847" stroke-width="0.254" x2="4.44147"/>
+        <rect class="other" stroke="none" height="5.08" stroke-linecap="round" y="2.66347"  x="2.40947" width="0.762" stroke-width="0" fill="#000000"/>
+        <line class="pin" stroke="#787878" stroke-linecap="round" y1="5.20347" y2="5.20347"  connectorname="B" x1="0.123472" stroke-width="0.246944" id="connector0pin" x2="2.66347" gorn="0.0.11"/>
+        <rect class="terminal" stroke="none" height="0.0001" y="5.20347"  x="0.123472" width="0.0001" stroke-width="0" fill="none" id="connector0terminal" gorn="0.0.12"/>
+        <text class="text" stroke="none" y="4.83306"  x="1.39347" font-size="0.881944" font-family="'Droid Sans'" stroke-width="0" fill="#8c8c8c" text-anchor="middle">1</text>
+        <line class="pin" stroke="#787878" stroke-linecap="round" y1="10.2835" y2="7.74347"  connectorname="E" x1="5.20347" stroke-width="0.246944" id="connector1pin" x2="5.20347" gorn="0.0.14"/>
+        <rect class="terminal" stroke="none" height="0.0001" y="10.2835"  x="5.20347" width="0.0001" stroke-width="0" fill="none" id="connector1terminal" gorn="0.0.15"/>
+        <g transform="translate(4.83306,9.01347)" >
+            <g >
+                <g transform="rotate(270)" >
+                    <g >
+                        <text class="text" stroke="none" y="0"  x="0" font-size="0.881944" font-family="'Droid Sans'" stroke-width="0" fill="#8c8c8c" text-anchor="middle">2</text>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <line class="pin" stroke="#787878" stroke-linecap="round" y1="0.123472" y2="2.66347"  connectorname="C" x1="5.20347" stroke-width="0.246944" id="connector2pin" x2="5.20347" gorn="0.0.17"/>
+        <rect class="terminal" stroke="none" height="0.0001" y="0.123472"  x="5.20347" width="0.0001" stroke-width="0" fill="none" id="connector2terminal" gorn="0.0.18"/>
+        <g transform="translate(4.83306,1.39347)" >
+            <g >
+                <g transform="rotate(270)" >
+                    <g >
+                        <text class="text" stroke="none" y="0"  x="0" font-size="0.881944" font-family="'Droid Sans'" stroke-width="0" fill="#8c8c8c" text-anchor="middle">3</text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

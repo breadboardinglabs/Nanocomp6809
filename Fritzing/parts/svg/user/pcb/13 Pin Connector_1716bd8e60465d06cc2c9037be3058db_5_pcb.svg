@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" x="0in"  y="0in" height="0.200787in" version="1.2" baseProfile="tiny" width="0.815087in" viewBox="0 0 20.7032 5.1">
+    <desc>
+        <referenceFile>sparkfun-connectors_1x10-2mm-smd_pcb.svg</referenceFile>
+    </desc>
+    <g  gorn="0.0" id="copper1">
+        <rect x="0.9266" stroke="none" stroke-linecap="round"  y="3" height="2.1" fill="#F7BD13" connectorname="1" stroke-width="0" gorn="0.0.0" width="0.85" id="connector0pad"/>
+        <rect x="2.9266" stroke="none" stroke-linecap="round"  y="0" height="2.1" fill="#F7BD13" connectorname="2" stroke-width="0" gorn="0.0.1" width="0.85" id="connector1pad"/>
+        <rect x="4.9266" stroke="none" stroke-linecap="round"  y="3" height="2.1" fill="#F7BD13" connectorname="3" stroke-width="0" gorn="0.0.2" width="0.85" id="connector2pad"/>
+        <rect x="6.9266" stroke="none" stroke-linecap="round"  y="0" height="2.1" fill="#F7BD13" connectorname="4" stroke-width="0" gorn="0.0.3" width="0.85" id="connector3pad"/>
+        <rect x="8.9266" stroke="none" stroke-linecap="round"  y="3" height="2.1" fill="#F7BD13" connectorname="5" stroke-width="0" gorn="0.0.4" width="0.85" id="connector4pad"/>
+        <rect x="10.9266" stroke="none" stroke-linecap="round"  y="0" height="2.1" fill="#F7BD13" connectorname="6" stroke-width="0" gorn="0.0.5" width="0.85" id="connector5pad"/>
+        <rect x="12.9266" stroke="none" stroke-linecap="round"  y="3" height="2.1" fill="#F7BD13" connectorname="7" stroke-width="0" gorn="0.0.6" width="0.85" id="connector6pad"/>
+        <rect x="14.9266" stroke="none" stroke-linecap="round"  y="0" height="2.1" fill="#F7BD13" connectorname="8" stroke-width="0" gorn="0.0.7" width="0.85" id="connector7pad"/>
+        <rect x="16.9266" stroke="none" stroke-linecap="round"  y="3" height="2.1" fill="#F7BD13" connectorname="9" stroke-width="0" gorn="0.0.8" width="0.85" id="connector8pad"/>
+        <rect x="18.9266" stroke="none" stroke-linecap="round"  y="0" height="2.1" fill="#F7BD13" connectorname="10" stroke-width="0" gorn="0.0.9" width="0.85" id="connector9pad"/>
+        <g  gorn="0.0.10" id="copper0"/>
+    </g>
+    <g  gorn="0.1" id="silkscreen">
+        <line x2="0.6516" stroke="#f0f0f0" stroke-linecap="round"  y1="1.3" stroke-width="0.2032" y2="1.3" x1="0.1016" class="other"/>
+        <line x2="0.1016" stroke="#f0f0f0" stroke-linecap="round"  y1="1.3" stroke-width="0.2032" y2="3.8" x1="0.1016" class="other"/>
+        <line x2="0.6516" stroke="#f0f0f0" stroke-linecap="round"  y1="3.8" stroke-width="0.2032" y2="3.8" x1="0.1016" class="other"/>
+        <line x2="20.6016" stroke="#f0f0f0" stroke-linecap="round"  y1="3.8" stroke-width="0.2032" y2="3.8" x1="19.9516" class="other"/>
+        <line x2="20.6016" stroke="#f0f0f0" stroke-linecap="round"  y1="3.8" stroke-width="0.2032" y2="1.3" x1="20.6016" class="other"/>
+        <line x2="19.9516" stroke="#f0f0f0" stroke-linecap="round"  y1="1.3" stroke-width="0.2032" y2="1.3" x1="20.6016" class="other"/>
+    </g>
+</svg>

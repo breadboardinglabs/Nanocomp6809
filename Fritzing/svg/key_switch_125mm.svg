@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+
+<svg
+   width="0.24518in"
+   version="1.2"
+   viewBox="0 0 17.653 46.8034"
+   height="0.650048in"
+   y="0in"
+   x="0in"
+   id="svg75"
+   sodipodi:docname="key_switch_125mm.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs79">
+    <linearGradient
+       x1="-192.873"
+       y1="-335.05099"
+       x2="-182.577"
+       gradientTransform="matrix(1,0,0,-1,273,-448.8574)"
+       y2="-335.05099"
+       gradientUnits="userSpaceOnUse"
+       id="SVGID_1_">
+      <stop
+         offset="0"
+         style="stop-color:#333333"
+         id="stop49" />
+      <stop
+         offset="1"
+         style="stop-color:#3C3C3C"
+         id="stop51" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="namedview77"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in"
+     showgrid="false"
+     inkscape:zoom="9.484049"
+     inkscape:cx="-2.0033638"
+     inkscape:cy="35.849667"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="breadboard" />
+  <g
+     id="breadboard">
+    <polygon
+       points="16.9819,15.4706 16.9819,23.7449 14.8219,23.7449 14.8219,15.4706 "
+       fill="#8c8c8c"
+       id="polygon27"
+       transform="translate(-3.000007)" />
+    <polygon
+       points="2.58048,0.00072 2.58048,8.27496 0.42192,8.27496 0.42192,0.00072 "
+       fill="#8c8c8c"
+       id="polygon29"
+       transform="translate(3.000007)" />
+    <polygon
+       points="16.9819,0 16.9819,8.27568 14.8219,8.27568 14.8219,0 "
+       fill="#8c8c8c"
+       id="polygon31"
+       transform="translate(-3.000007)" />
+    <polygon
+       points="2.58192,15.4706 2.58192,23.7463 0.42264,23.7463 0.42264,15.4706 "
+       fill="#8c8c8c"
+       id="polygon33"
+       transform="translate(3.000007)" />
+    <rect
+       width="17.653"
+       height="17.6544"
+       y="3.04704"
+       x="0.0086399997"
+       id="rect35" />
+    <path
+       d="m 17.6609,19.2614 c 0,0.79272 -0.64512,1.43928 -1.44,1.43928 l -14.77298,2e-5 c -0.79272,0 -1.43928,-0.64656 -1.43928,-1.43928 V 4.4856 c 0,-0.792 0.64656,-1.43856 1.43928,-1.43856 h 14.7751 c 0.79416,0 1.43784,0.64656 1.43784,1.43856 z"
+       fill="#999999"
+       id="path37" />
+    <circle
+       cy="5.6181598"
+       cx="2.5797601"
+       r="1.5292799"
+       id="circle39" />
+    <circle
+       cy="5.6448002"
+       cx="15.133"
+       r="1.5292799"
+       id="circle41" />
+    <circle
+       cy="18.198"
+       cx="15.1063"
+       r="1.5292799"
+       id="circle43" />
+    <circle
+       cy="18.169901"
+       cx="2.5531199"
+       r="1.5292799"
+       id="circle45" />
+    <circle
+       cy="11.8735"
+       cx="8.8344002"
+       r="5.1479998"
+       fill="#3f3f3f"
+       id="circle47" />
+    <circle
+       cy="11.8735"
+       cx="8.8344002"
+       r="5.1479998"
+       fill="url(#SVGID_1_)"
+       id="circle54"
+       style="fill:url(#SVGID_1_)" />
+    <circle
+       cy="12.4855"
+       opacity="0.6"
+       enable-background="new    "
+       cx="8.9244003"
+       r="4.5302401"
+       id="circle56" />
+    <circle
+       cy="11.9038"
+       cx="8.8408804"
+       r="4.41504"
+       fill="#735348"
+       id="circle58" />
+    <path
+       opacity="0.5"
+       d="M 2.38176,5.53824 C 2.412,5.46624 2.46744,5.4108 2.54592,5.39712 L 2.39472,4.43376 C 2.33712,4.44312 2.27592,4.4352 2.21904,4.45248 L 2.2176,4.44816 C 1.8612,4.55832 1.5948,4.824 1.45872,5.16312 Z"
+       enable-background="new    "
+       fill="#ffffff"
+       id="path60" />
+    <path
+       opacity="0.5"
+       d="M 14.9335,5.56416 C 14.96302,5.49072 15.01846,5.43528 15.09838,5.42232 L 14.94934,4.45896 C 14.8903,4.46976 14.82982,4.4604 14.77294,4.47768 L 14.77078,4.47264 C 14.41582,4.58208 14.1487,4.84776 14.01262,5.1876 Z"
+       enable-background="new    "
+       fill="#ffffff"
+       id="path62" />
+    <path
+       opacity="0.5"
+       d="m 14.909,18.1174 c 0.02952,-0.07344 0.08352,-0.1296 0.16344,-0.14184 L 14.9234,17.01292 c -0.05904,0.0108 -0.11952,0.0014 -0.17712,0.01872 l -0.0014,-0.0072 c -0.35568,0.10944 -0.6228,0.37512 -0.75816,0.71568 z"
+       enable-background="new    "
+       fill="#ffffff"
+       id="path64" />
+    <path
+       opacity="0.5"
+       d="M 2.35512,18.0907 C 2.38464,18.01726 2.44008,17.96398 2.52,17.9503 L 2.3688,16.98622 c -0.05904,0.01224 -0.11952,0.0014 -0.1764,0.01944 l -0.00144,-0.005 c -0.3564,0.108 -0.6228,0.37512 -0.76032,0.71424 z"
+       enable-background="new    "
+       fill="#ffffff"
+       id="path66" />
+    <path
+       opacity="0.6"
+       d="M 10.4206,7.78896 C 10.0786,7.65576 9.7186,7.56 9.33772,7.5168 8.3902,7.41096 7.483,7.6212 6.70756,8.05104 L 6.61104,8.3016 C 7.4772,7.83864 8.48592,7.62408 9.53568,7.74144 9.85824,7.77888 10.17216,7.85088 10.4724,7.94592 Z"
+       enable-background="new    "
+       fill="#ffffff"
+       id="path68" />
+  </g>
+</svg>

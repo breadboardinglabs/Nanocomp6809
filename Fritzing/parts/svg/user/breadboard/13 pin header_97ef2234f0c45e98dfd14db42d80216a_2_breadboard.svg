@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" height="0.10000002in" id="svg152"  viewBox="0 0 93.673184 7.1999979" y="0in" version="1.2" width="1.3010164in" gorn="0" x="0in">
+    <desc >
+        <referenceFile >13_pin_socket_bb.svg</referenceFile>
+    </desc>
+    <defs id="defs156" />
+    <rect height="7.1999998" id="rect27"  y="0" width="93.673157" stroke-width="1.14062" fill="#404040" gorn="0.2" x="0"/>
+    <rect height="2.7831199" id="connector7pin-0"  y="2.2740903" width="2.7831199" fill="none" gorn="0.3" x="74.241058"/>
+    <rect height="2.2565801" id="connector7terminal-5"  y="2.5362003" width="2.1582899" fill="none" gorn="0.4" x="74.550858"/>
+    <rect height="2.7831199" id="connector11pin"  y="2.2740903" width="2.7831199" gorn="0.5" x="74.241058"/>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="52.6085,2.20843 55.3915,2.20843 56.4165,1.18445 51.5845,1.18445 " id="polygon117-8"  fill="#2a2a29" gorn="0.6.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="55.3915,2.20843 55.3915,4.99156 56.4165,6.01654 56.4165,1.18445 " id="polygon119-8"  fill="#474747" gorn="0.7.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="55.3915,4.99156 52.6085,4.99156 51.5845,6.01654 56.4165,6.01654 " id="polygon121-6"  fill="#595959" gorn="0.8.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="52.6085,4.99156 52.6085,2.20843 51.5845,1.18445 51.5845,6.01654 " id="polygon123-7"  fill="#373737" gorn="0.9.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <rect height="2.7831199" id="connector8pin-3"  y="2.2740903" width="2.7831199" fill="none" gorn="0.10" x="81.441055"/>
+    <rect height="2.2565801" id="connector8terminal-0"  y="2.5362003" width="2.1582899" fill="none" gorn="0.11" x="81.750854"/>
+    <rect height="2.7831199" id="connector12pin"  y="2.2740903" width="2.7831199" gorn="0.12" x="81.441055"/>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="59.8085,2.20843 62.5915,2.20843 63.6165,1.18445 58.7845,1.18445 " id="polygon129-7"  fill="#2a2a29" gorn="0.13.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="62.5915,2.20843 62.5915,4.99156 63.6165,6.01654 63.6165,1.18445 " id="polygon131-0"  fill="#474747" gorn="0.14.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="62.5915,4.99156 59.8085,4.99156 58.7845,6.01654 63.6165,6.01654 " id="polygon133-5"  fill="#595959" gorn="0.15.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="59.8085,4.99156 59.8085,2.20843 58.7845,1.18445 58.7845,6.01654 " id="polygon135-8"  fill="#373737" gorn="0.16.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <rect height="2.7831199" id="connector9pin-7"  y="2.2740903" width="2.7831199" fill="none" gorn="0.17" x="88.641052"/>
+    <rect height="2.2565801" id="connector9terminal-5"  y="2.5362003" width="2.1582899" fill="none" gorn="0.18" x="88.950851"/>
+    <rect height="2.7831199" id="connector13pin"  y="2.2740903" width="2.7831199" gorn="0.19" x="88.641052"/>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="67.0085,2.20843 69.7915,2.20843 70.8165,1.18445 65.9845,1.18445 " id="polygon141-1"  fill="#2a2a29" gorn="0.20.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="69.7915,2.20843 69.7915,4.99156 70.8165,6.01654 70.8165,1.18445 " id="polygon143-7"  fill="#474747" gorn="0.21.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="69.7915,4.99156 67.0085,4.99156 65.9845,6.01654 70.8165,6.01654 " id="polygon145-0"  fill="#595959" gorn="0.22.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="translate(21.632555,0.06566016)">
+        <g >
+            <g >
+                <polygon points="67.0085,4.99156 67.0085,2.20843 65.9845,1.18445 65.9845,6.01654 " id="polygon147-4"  fill="#373737" gorn="0.23.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <rect height="2.7831199" id="connector0pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.24" x="2.2084301"/>
+    <rect height="2.2565801" id="connector0terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.25" x="2.5183401"/>
+    <rect height="2.7831199" id="rect31"  y="2.2084301" width="2.7831199" gorn="0.26" x="2.2084301"/>
+    <polygon points="4.99156,2.20843 6.01654,1.18445 1.18445,1.18445 2.20843,2.20843 " id="polygon33"  fill="#2a2a29" gorn="0.27"/>
+    <polygon points="4.99156,4.99156 6.01654,6.01654 6.01654,1.18445 4.99156,2.20843 " id="polygon35"  fill="#474747" gorn="0.28"/>
+    <polygon points="2.20843,4.99156 1.18445,6.01654 6.01654,6.01654 4.99156,4.99156 " id="polygon37"  fill="#595959" gorn="0.29"/>
+    <polygon points="2.20843,2.20843 1.18445,1.18445 1.18445,6.01654 2.20843,4.99156 " id="polygon39"  fill="#373737" gorn="0.30"/>
+    <rect height="2.7831199" id="connector1pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.31" x="9.4084597"/>
+    <rect height="2.2565801" id="connector1terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.32" x="9.7183399"/>
+    <rect height="2.7831199" id="rect43"  y="2.2084301" width="2.7831199" gorn="0.33" x="9.4084597"/>
+    <polygon points="12.1915,2.20843 13.2165,1.18445 8.38447,1.18445 9.40846,2.20843 " id="polygon45"  fill="#2a2a29" gorn="0.34"/>
+    <polygon points="12.1915,4.99156 13.2165,6.01654 13.2165,1.18445 12.1915,2.20843 " id="polygon47"  fill="#474747" gorn="0.35"/>
+    <polygon points="9.40846,4.99156 8.38447,6.01654 13.2165,6.01654 12.1915,4.99156 " id="polygon49"  fill="#595959" gorn="0.36"/>
+    <polygon points="9.40846,2.20843 8.38447,1.18445 8.38447,6.01654 9.40846,4.99156 " id="polygon51"  fill="#373737" gorn="0.37"/>
+    <rect height="2.7831199" id="connector2pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.38" x="16.6085"/>
+    <rect height="2.2565801" id="connector2terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.39" x="16.918301"/>
+    <rect height="2.7831199" id="rect55"  y="2.2084301" width="2.7831199" gorn="0.40" x="16.6085"/>
+    <polygon points="19.3915,2.20843 20.4165,1.18445 15.5845,1.18445 16.6085,2.20843 " id="polygon57"  fill="#2a2a29" gorn="0.41"/>
+    <polygon points="19.3915,4.99156 20.4165,6.01654 20.4165,1.18445 19.3915,2.20843 " id="polygon59"  fill="#474747" gorn="0.42"/>
+    <polygon points="16.6085,4.99156 15.5845,6.01654 20.4165,6.01654 19.3915,4.99156 " id="polygon61"  fill="#595959" gorn="0.43"/>
+    <polygon points="16.6085,2.20843 15.5845,1.18445 15.5845,6.01654 16.6085,4.99156 " id="polygon63"  fill="#373737" gorn="0.44"/>
+    <rect height="2.7831199" id="connector3pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.45" x="23.8085"/>
+    <rect height="2.2565801" id="connector3terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.46" x="24.118299"/>
+    <rect height="2.7831199" id="rect67"  y="2.2084301" width="2.7831199" gorn="0.47" x="23.8085"/>
+    <polygon points="26.5915,2.20843 27.6165,1.18445 22.7845,1.18445 23.8085,2.20843 " id="polygon69"  fill="#2a2a29" gorn="0.48"/>
+    <polygon points="26.5915,4.99156 27.6165,6.01654 27.6165,1.18445 26.5915,2.20843 " id="polygon71"  fill="#474747" gorn="0.49"/>
+    <polygon points="23.8085,4.99156 22.7845,6.01654 27.6165,6.01654 26.5915,4.99156 " id="polygon73"  fill="#595959" gorn="0.50"/>
+    <polygon points="23.8085,2.20843 22.7845,1.18445 22.7845,6.01654 23.8085,4.99156 " id="polygon75"  fill="#373737" gorn="0.51"/>
+    <rect height="2.7831199" id="connector4pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.52" x="31.008499"/>
+    <rect height="2.2565801" id="connector4terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.53" x="31.3183"/>
+    <rect height="2.7831199" id="rect79"  y="2.2084301" width="2.7831199" gorn="0.54" x="31.008499"/>
+    <polygon points="33.7915,2.20843 34.8165,1.18445 29.9845,1.18445 31.0085,2.20843 " id="polygon81"  fill="#2a2a29" gorn="0.55"/>
+    <polygon points="33.7915,4.99156 34.8165,6.01654 34.8165,1.18445 33.7915,2.20843 " id="polygon83"  fill="#474747" gorn="0.56"/>
+    <polygon points="31.0085,4.99156 29.9845,6.01654 34.8165,6.01654 33.7915,4.99156 " id="polygon85"  fill="#595959" gorn="0.57"/>
+    <polygon points="31.0085,2.20843 29.9845,1.18445 29.9845,6.01654 31.0085,4.99156 " id="polygon87"  fill="#373737" gorn="0.58"/>
+    <rect height="2.7831199" id="connector5pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.59" x="38.2085"/>
+    <rect height="2.2565801" id="connector5terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.60" x="38.518299"/>
+    <rect height="2.7831199" id="rect91"  y="2.2084301" width="2.7831199" gorn="0.61" x="38.2085"/>
+    <polygon points="40.9915,2.20843 42.0165,1.18445 37.1845,1.18445 38.2085,2.20843 " id="polygon93"  fill="#2a2a29" gorn="0.62"/>
+    <polygon points="40.9915,4.99156 42.0165,6.01654 42.0165,1.18445 40.9915,2.20843 " id="polygon95"  fill="#474747" gorn="0.63"/>
+    <polygon points="38.2085,4.99156 37.1845,6.01654 42.0165,6.01654 40.9915,4.99156 " id="polygon97"  fill="#595959" gorn="0.64"/>
+    <polygon points="38.2085,2.20843 37.1845,1.18445 37.1845,6.01654 38.2085,4.99156 " id="polygon99"  fill="#373737" gorn="0.65"/>
+    <rect height="2.7831199" id="connector6pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.66" x="45.408501"/>
+    <rect height="2.2565801" id="connector6terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.67" x="45.7183"/>
+    <rect height="2.7831199" id="rect103"  y="2.2084301" width="2.7831199" gorn="0.68" x="45.408501"/>
+    <polygon points="48.1915,2.20843 49.2165,1.18445 44.3845,1.18445 45.4085,2.20843 " id="polygon105"  fill="#2a2a29" gorn="0.69"/>
+    <polygon points="48.1915,4.99156 49.2165,6.01654 49.2165,1.18445 48.1915,2.20843 " id="polygon107"  fill="#474747" gorn="0.70"/>
+    <polygon points="45.4085,4.99156 44.3845,6.01654 49.2165,6.01654 48.1915,4.99156 " id="polygon109"  fill="#595959" gorn="0.71"/>
+    <polygon points="45.4085,2.20843 44.3845,1.18445 44.3845,6.01654 45.4085,4.99156 " id="polygon111"  fill="#373737" gorn="0.72"/>
+    <rect height="2.7831199" id="connector7pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.73" x="52.608501"/>
+    <rect height="2.2565801" id="connector7terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.74" x="52.918301"/>
+    <rect height="2.7831199" id="rect115"  y="2.2084301" width="2.7831199" gorn="0.75" x="52.608501"/>
+    <polygon points="55.3915,2.20843 56.4165,1.18445 51.5845,1.18445 52.6085,2.20843 " id="polygon117"  fill="#2a2a29" gorn="0.76"/>
+    <polygon points="55.3915,4.99156 56.4165,6.01654 56.4165,1.18445 55.3915,2.20843 " id="polygon119"  fill="#474747" gorn="0.77"/>
+    <polygon points="52.6085,4.99156 51.5845,6.01654 56.4165,6.01654 55.3915,4.99156 " id="polygon121"  fill="#595959" gorn="0.78"/>
+    <polygon points="52.6085,2.20843 51.5845,1.18445 51.5845,6.01654 52.6085,4.99156 " id="polygon123"  fill="#373737" gorn="0.79"/>
+    <rect height="2.7831199" id="connector8pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.80" x="59.808498"/>
+    <rect height="2.2565801" id="connector8terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.81" x="60.118301"/>
+    <rect height="2.7831199" id="rect127"  y="2.2084301" width="2.7831199" gorn="0.82" x="59.808498"/>
+    <polygon points="62.5915,2.20843 63.6165,1.18445 58.7845,1.18445 59.8085,2.20843 " id="polygon129"  fill="#2a2a29" gorn="0.83"/>
+    <polygon points="62.5915,4.99156 63.6165,6.01654 63.6165,1.18445 62.5915,2.20843 " id="polygon131"  fill="#474747" gorn="0.84"/>
+    <polygon points="59.8085,4.99156 58.7845,6.01654 63.6165,6.01654 62.5915,4.99156 " id="polygon133"  fill="#595959" gorn="0.85"/>
+    <polygon points="59.8085,2.20843 58.7845,1.18445 58.7845,6.01654 59.8085,4.99156 " id="polygon135"  fill="#373737" gorn="0.86"/>
+    <rect height="2.7831199" id="connector9pin"  y="2.2084301" width="2.7831199" fill="none" gorn="0.87" x="67.008499"/>
+    <rect height="2.2565801" id="connector9terminal"  y="2.47054" width="2.1582899" fill="none" gorn="0.88" x="67.318298"/>
+    <rect height="2.7831199" id="rect139"  y="2.2084301" width="2.7831199" gorn="0.89" x="67.008499"/>
+    <polygon points="69.7915,2.20843 70.8165,1.18445 65.9845,1.18445 67.0085,2.20843 " id="polygon141"  fill="#2a2a29" gorn="0.90"/>
+    <polygon points="69.7915,4.99156 70.8165,6.01654 70.8165,1.18445 69.7915,2.20843 " id="polygon143"  fill="#474747" gorn="0.91"/>
+    <polygon points="67.0085,4.99156 65.9845,6.01654 70.8165,6.01654 69.7915,4.99156 " id="polygon145"  fill="#595959" gorn="0.92"/>
+    <polygon points="67.0085,2.20843 65.9845,1.18445 65.9845,6.01654 67.0085,4.99156 " id="polygon147"  fill="#373737" gorn="0.93"/>
+</svg>

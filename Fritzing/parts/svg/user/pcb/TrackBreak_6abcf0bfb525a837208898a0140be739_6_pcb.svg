@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny"  version="1.2" width="0.14in" height="0.24in" viewBox="0 0 140 240">
+    <desc>
+        <referenceFile>nsjumper_2_100mil_pcb.svg</referenceFile>
+    </desc>
+    <desc >Fritzing footprint SVG</desc>
+    <g gorn="0.1"  id="silkscreen">
+        <line y2="220" y1="20" stroke="white"  x2="20" x1="20" stroke-width="10"/>
+        <line y2="220" y1="220" stroke="white"  x2="120" x1="20" stroke-width="10"/>
+        <line y2="20" y1="220" stroke="white"  x2="120" x1="120" stroke-width="10"/>
+        <line y2="20" y1="20" stroke="white"  x2="20" x1="120" stroke-width="10"/>
+        <line y2="20" y1="55" stroke="white"  x2="55" x1="20" stroke-width="5"/>
+        <!-- 120 -->
+    </g>
+    <g gorn="0.2"  id="copper1">
+        <g gorn="0.2.0"  id="copper0">
+            <circle cx="70" r="29" fill="none" stroke="rgb(255, 191, 0)" gorn="0.2.0.0"  cy="70" id="connector0pin" stroke-width="20"/>
+            <circle cx="70" r="29" fill="none" stroke="rgb(255, 191, 0)" gorn="0.2.0.1"  cy="170" id="connector1pin" stroke-width="20"/>
+        </g>
+    </g>
+</svg>

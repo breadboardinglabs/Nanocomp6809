@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" height="0.181in" viewBox="0 0 5.53721 4.5974" y="0in"  baseProfile="tiny" x="0in" width="0.218in" version="1.2">
+    <desc>
+        <referenceFile>sparkfun-discretesemi_to-92_pcb.svg</referenceFile>
+    </desc>
+    <g  id="copper1" gorn="0.0">
+        <circle stroke="#F7BD13" r="0.6731"  connectorname="1" cy="2.8448" stroke-width="0.5334" fill="none" id="connector0pad" cx="1.49865" gorn="0.0.0"/>
+        <circle stroke="#F7BD13" r="0.6731"  connectorname="2" cy="0.9398" stroke-width="0.5334" fill="none" id="connector1pad" cx="2.76865" gorn="0.0.1"/>
+        <circle stroke="#F7BD13" r="0.6731"  connectorname="3" cy="2.8448" stroke-width="0.5334" fill="none" id="connector2pad" cx="4.03865" gorn="0.0.2"/>
+        <g  id="copper0" gorn="0.0.3">
+            <circle stroke="#F7BD13" r="0.6731"  connectorname="1" cy="2.8448" stroke-width="0.5334" fill="none" id="connector0pad" cx="1.49865" gorn="0.0.3.0"/>
+            <circle stroke="#F7BD13" r="0.6731"  connectorname="2" cy="0.9398" stroke-width="0.5334" fill="none" id="connector1pad" cx="2.76865" gorn="0.0.3.1"/>
+            <circle stroke="#F7BD13" r="0.6731"  connectorname="3" cy="2.8448" stroke-width="0.5334" fill="none" id="connector2pad" cx="4.03865" gorn="0.0.3.2"/>
+        </g>
+    </g>
+    <g  id="silkscreen" gorn="0.1">
+        <path class="other" stroke="#f0f0f0"  fill="none" stroke-width="0.2032" d="M1.98235,0.2963 A2.66705,2.66705 0 0 0 0.674047,4.4958"/>
+        <path class="other" stroke="#f0f0f0"  fill="none" stroke-width="0.2032" d="M4.86315,4.4958 A2.66696,2.66696 0 0 0 3.55495,0.296403"/>
+        <line class="other" stroke="#f0f0f0" stroke-linecap="round" y1="4.4958" y2="4.4958"  x1="0.674147" stroke-width="0.2032" x2="4.86315"/>
+        <line class="other" stroke="#f0f0f0" stroke-linecap="round" y1="3.0988" y2="3.0988"  x1="0.113747" stroke-width="0.2032" x2="0.514947"/>
+        <line class="other" stroke="#f0f0f0" stroke-linecap="round" y1="3.0988" y2="3.0988"  x1="2.48235" stroke-width="0.2032" x2="3.05495"/>
+        <line class="other" stroke="#f0f0f0" stroke-linecap="round" y1="3.0988" y2="3.0988"  x1="5.02235" stroke-width="0.2032" x2="5.42355"/>
+    </g>
+</svg>

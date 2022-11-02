@@ -1,0 +1,1190 @@
+4000                  PORTA                         EQU $4000
+4001                  PORTB                         EQU $4001
+4002                  CTRLA                         EQU $4002
+4003                  CTRLB                         EQU $4003
+2710                  DEC10K                        EQU $2710
+03E8                  DEC1K                         EQU $03E8
+0025                  keyCN                         EQU $25
+0035                  keyG                          EQU $35
+0032                  keyI                          EQU $32
+0005                  keyL                          EQU $05
+0031                  keyM                          EQU $31
+0015                  keyP                          EQU $15
+0030                  keyR                          EQU $30
+7DEF                  REGDISPCHAR2                  EQU  $7DEF
+13ED                  chksum                        EQU  $13ED
+0000                  allzeros                      EQU  $0000
+13D0                                 ORG $13D0
+13D0                  usrsp                         RMB 1  ;
+13E5                                 ORG $13E5
+                      ;org needs to be 13E4 to have separate chksum                      
+                      ;chksum                        RMB 1  ;
+13E5                  SWI3VEC                       RMB 2  ;
+13E7                  SWI2VEC                       RMB 2  ;
+13E9                  FIRQVEC                       RMB 2  ;
+13EB                  count                         RMB 1  ;
+13EC                  tmp2                          RMB 1  ;
+13ED                  tmp3                          RMB 1  ;
+13EE                  ptr                           RMB 2  ;
+13F0                  addr                          RMB 2  ;
+13F2                  NMIVEC                        RMB 2  ;
+13F4                  IRQVEC                        RMB 2  ;
+13F6                  tmpX                          RMB 2  ;
+13F8                  stackstart                    RMB 2  ;
+13FA                  dbuf                          RMB 6  ;
+                      
+7800                                       ORG $7800
+7800  10CE1390        HEXTODEC             lds      #$1390
+7804  BD7DDC          HEXTODEC1            jsr      CLEARDISP
+7807  8613                                 lda      #$13
+7809  1F8B                                 tfr      a,dp
+780B  4F                                   clra     
+780C  5F                                   clrb     
+780D  9707                                 sta      <$07
+780F  DD08                                 std      <$08
+7811  DD0A                                 std      <$0A
+7813  DD0C                                 std      <$0C
+7815  DD0E                                 std      <$0E
+7817  BD7C20          HEXTODEC2            jsr      GETKEY
+                      
+                      ;   P pressed for Hex to Decimal
+781A  8115                                 cmpa     #$15
+781C  102700AB                             lbeq     HEXTODEC141
+                      
+                      ;   L pressed for Decimal to Hex
+7820  8105                                 cmpa     #$05
+7822  26F3                                 bne      HEXTODEC2
+7824  8E1309                               ldx      #$1309
+7827  BD7C20          HEXTODEC3            jsr      GETKEY
+                      
+                      ;   I pressed to display Hex
+782A  8132                                 cmpa     #$32
+782C  2714                                 beq      HEXTODEC4
+782E  3001                                 leax     $01,x
+7830  BD7CE7                               jsr      HEXCON
+7833  8109                                 cmpa     #$09
+7835  22CD                                 bhi      HEXTODEC1
+7837  A784                                 sta      ,x
+7839  BD7D03                               jsr      R7SEG
+783C  A78900F0                             sta      $00F0,x
+7840  20E5                                 bra      HEXTODEC3
+                      
+7842  A684            HEXTODEC4            lda      ,x
+7844  9709                                 sta      <$09
+7846  8D75                                 bsr      HEXTODEC13
+7848  C60A            HEXTODEC5            ldb      #$0A
+784A  8100                                 cmpa     #$00
+784C  2707                                 beq      HEXTODEC6
+784E  DB09                                 addb     <$09
+7850  D709                                 stb      <$09
+7852  4A                                   deca     
+7853  20F3                                 bra      HEXTODEC5
+                      
+7855  8D66            HEXTODEC6            bsr      HEXTODEC13
+7857  8100            HEXTODEC7            cmpa     #$00
+7859  270E                                 beq      HEXTODEC8
+785B  3402                                 pshs     a
+785D  CC0064                               ldd      #$64
+7860  D308                                 addd     <$08
+7862  DD08                                 std      <$08
+7864  3502                                 puls     a
+7866  4A                                   deca     
+7867  20EE                                 bra      HEXTODEC7
+                      
+7869  8D52            HEXTODEC8            bsr      HEXTODEC13
+786B  8100            HEXTODEC9            cmpa     #$00
+786D  270E                                 beq      HEXTODEC10
+786F  3402                                 pshs     a
+7871  CC03E8                               ldd      #DEC1K
+7874  D308                                 addd     <$08
+7876  DD08                                 std      <$08
+7878  3502                                 puls     a
+787A  4A                                   deca     
+787B  20EE                                 bra      HEXTODEC9
+                      
+787D  8D3E            HEXTODEC10           bsr      HEXTODEC13
+787F  8100            HEXTODEC11           cmpa     #$00
+7881  270E                                 beq      HEXTODEC12
+7883  3402                                 pshs     a
+7885  CC2710                               ldd      #DEC10K
+7888  D308                                 addd     <$08
+788A  DD08                                 std      <$08
+788C  3502                                 puls     a
+788E  4A                                   deca     
+788F  20EE                                 bra      HEXTODEC11
+                      
+7891  BD7DDC          HEXTODEC12           jsr      CLEARDISP
+7894  9607                                 lda      <$07
+7896  BD7D03                               jsr      R7SEG
+7899  97FA                                 sta      <dbuf+0 
+789B  9608                                 lda      <$08
+789D  BD7CFF                               jsr      L7SEG
+78A0  97FB                                 sta      <dbuf+1 
+78A2  9608                                 lda      <$08
+78A4  BD7D03                               jsr      R7SEG
+78A7  97FC                                 sta      <dbuf+2 
+78A9  9609                                 lda      <$09
+78AB  BD7CFF                               jsr      L7SEG
+78AE  97FD                                 sta      <dbuf+3 
+78B0  9609                                 lda      <$09
+78B2  BD7D03                               jsr      R7SEG
+78B5  97FE                                 sta      <dbuf+4
+78B7  BD7C20                               jsr      GETKEY
+78BA  16FF47                               lbra     HEXTODEC1
+                      
+78BD  301F            HEXTODEC13           leax     -$01,x
+78BF  8C1309                               cmpx     #$1309
+78C2  2703                                 beq      HEXTODEC14
+78C4  A684                                 lda      ,x
+78C6  39                                   rts      
+                      
+78C7  3262            HEXTODEC14           leas     $02,s
+78C9  20C6                                 bra      HEXTODEC12
+                      
+78CB  8667            HEXTODEC141          lda      #$67
+78CD  97FF                                 sta      <dbuf+5
+78CF  BD7CB5                               jsr      BADDR
+78D2  9F0A                                 stx      <$0A
+78D4  8E130A                               ldx      #$130A
+78D7  108E1307                             ldy      #$1307
+78DB  E684                                 ldb      ,x
+78DD  54                                   lsrb     
+78DE  54                                   lsrb     
+78DF  54                                   lsrb     
+78E0  54                                   lsrb     
+78E1  270B                                 beq      HEXTODEC16
+78E3  8640            HEXTODEC15           lda      #$40
+78E5  8D37                                 bsr      HEXTODEC23
+78E7  8696                                 lda      #$96
+78E9  8D37                                 bsr      HEXTODEC24
+78EB  5A                                   decb     
+78EC  26F5                                 bne      HEXTODEC15
+78EE  E684            HEXTODEC16           ldb      ,x
+78F0  C40F                                 andb     #$0F
+78F2  270B                                 beq      HEXTODEC18
+78F4  8602            HEXTODEC17           lda      #$02
+78F6  8D26                                 bsr      HEXTODEC23
+78F8  8656                                 lda      #$56
+78FA  8D26                                 bsr      HEXTODEC24
+78FC  5A                                   decb     
+78FD  26F5                                 bne      HEXTODEC17
+78FF  E601            HEXTODEC18           ldb      $01,x
+7901  54                                   lsrb     
+7902  54                                   lsrb     
+7903  54                                   lsrb     
+7904  54                                   lsrb     
+7905  2707                                 beq      HEXTODEC20
+7907  8616            HEXTODEC19           lda      #$16
+7909  8D17                                 bsr      HEXTODEC24
+790B  5A                                   decb     
+790C  26F9                                 bne      HEXTODEC19
+790E  E601            HEXTODEC20           ldb      $01,x
+7910  C40F                                 andb     #$0F
+7912  2707                                 beq      HEXTODEC22
+7914  8601            HEXTODEC21           lda      #$01
+7916  8D0A                                 bsr      HEXTODEC24
+7918  5A                                   decb     
+7919  26F9                                 bne      HEXTODEC21
+791B  16FF73          HEXTODEC22           lbra     HEXTODEC12
+                      
+791E  1CFE            HEXTODEC23           andcc    #$FE
+7920  2007                                 bra      HEXTODEC25
+                      
+7922  AB22            HEXTODEC24           adda     $02,y
+7924  19                                   daa      
+7925  A722                                 sta      $02,y
+7927  8600                                 lda      #$00
+7929  A921            HEXTODEC25           adca     $01,y
+792B  19                                   daa      
+792C  A721                                 sta      $01,y
+792E  8600                                 lda      #$00
+7930  A9A4                                 adca     ,y
+7932  19                                   daa      
+7933  A7A4                                 sta      ,y
+7935  39                                   rts      
+                      
+7936  00000000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+                      
+7940  10CE1390        DUCKSHOOT            lds      #$1390
+7944  8613                                 lda      #$13
+7946  1F8B                                 tfr      a,dp
+7948  BD7DDC                               jsr      CLEARDISP
+794B  861F                                 lda      #$1F
+794D  97FD                                 sta      <dbuf+3 
+794F  97FF                                 sta      <dbuf+5
+7951  8D3B                                 bsr      DUCKSHOOT6
+7953  BD7CE7          DUCKSHOOT0           jsr      HEXCON
+7956  8106                                 cmpa     #$06
+7958  2215                                 bhi      DUCKSHOOT2
+795A  8100                                 cmpa     #$00
+795C  2711                                 beq      DUCKSHOOT2
+795E  8E13F9                               ldx      #$13F9
+7961  3086                                 leax     a,x
+7963  A684                                 lda      ,x
+7965  2704                                 beq      DUCKSHOOT1
+7967  6F84                                 clr      ,x
+7969  2004                                 bra      DUCKSHOOT2
+                      
+796B  861F            DUCKSHOOT1           lda      #$1F
+796D  A784                                 sta      ,x
+796F  313F            DUCKSHOOT2           leay     -$01,y
+7971  2704                                 beq      DUCKSHOOT3
+7973  8D1D                                 bsr      DUCKSHOOT7
+7975  20F8                                 bra      DUCKSHOOT2
+                      
+7977  8D04            DUCKSHOOT3           bsr      DUCKSHOOT4
+7979  8D13                                 bsr      DUCKSHOOT6
+797B  20F2                                 bra      DUCKSHOOT2
+                      
+797D  8E13FF          DUCKSHOOT4           ldx      #$13FF
+7980  A684                                 lda      ,x
+7982  97F9                                 sta      <$00F9
+7984  C606                                 ldb      #$06
+7986  A682            DUCKSHOOT5           lda      ,-x
+7988  A701                                 sta      $01,x
+798A  5A                                   decb     
+798B  26F9                                 bne      DUCKSHOOT5
+798D  39                                   rts      
+                      
+798E  10BE1000        DUCKSHOOT6           ldy      $1000
+7992  8E13FA          DUCKSHOOT7           ldx      #dbuf 
+7995  C606                                 ldb      #$06
+7997  A680            DUCKSHOOT8           lda      ,x+
+7999  2606                                 bne      DUCKSHOOT9
+799B  5A                                   decb     
+799C  26F9                                 bne      DUCKSHOOT8
+799E  7E7D89                               jmp      RESET
+                      
+79A1  4F              DUCKSHOOT9           clra     
+79A2  B74002                               sta      CTRLA
+79A5  B74003                               sta      CTRLB 
+79A8  B74000                               sta      PORTA
+79AB  860F                                 lda      #$0F
+79AD  B74001                               sta      PORTB 
+79B0  8604                                 lda      #$04
+79B2  B74002                               sta      CTRLA
+79B5  B74003                               sta      CTRLB 
+79B8  C6FF                                 ldb      #$FF
+79BA  5C              DUCKSHOOT10          incb     
+79BB  C104                                 cmpb     #$04
+79BD  2610                                 bne      DUCKSHOOT11
+79BF  BD7C7B                               jsr      DISPRESH
+79C2  338C8E                               leau     -$72,pc ; ($7953)
+79C5  EFE4                                 stu      ,s
+79C7  313F                                 leay     -$01,y
+79C9  26C7                                 bne      DUCKSHOOT7
+79CB  8DB0                                 bsr      DUCKSHOOT4
+79CD  20BF                                 bra      DUCKSHOOT6
+                      
+79CF  F74001          DUCKSHOOT11          stb      PORTB 
+79D2  B64000                               lda      PORTA
+79D5  43                                   coma     
+79D6  27E2                                 beq      DUCKSHOOT10
+79D8  3404                                 pshs     b
+79DA  4F                                   clra     
+79DB  C601                                 ldb      #$01
+79DD  3402            DUCKSHOOT12          pshs     a
+79DF  B64000                               lda      PORTA
+79E2  43                                   coma     
+79E3  3404                                 pshs     b
+79E5  A1E0                                 cmpa     ,s+
+79E7  3502                                 puls     a
+79E9  2704                                 beq      DUCKSHOOT13
+79EB  4C                                   inca     
+79EC  58                                   aslb     
+79ED  20EE                                 bra      DUCKSHOOT12
+                      
+79EF  3504            DUCKSHOOT13          puls     b
+79F1  58                                   aslb     
+79F2  58                                   aslb     
+79F3  58                                   aslb     
+79F4  58                                   aslb     
+79F5  3404                                 pshs     b
+79F7  ABE0                                 adda     ,s+
+79F9  39                                   rts      
+                      
+79FA  000000000000                         FCB  $00, $00, $00, $00, $00, $00
+                      
+7A00  10CE1390        CALCOFFSET           lds      #$1390
+7A04  8613                                 lda      #$13
+7A06  1F8B                                 tfr      a,dp
+7A08  CC003D          CALCOFFSET1          ldd      #$3D
+7A0B  DDFE                                 std      <dbuf+4
+7A0D  BD7CB5                               jsr      BADDR
+7A10  BD7C20          CALCOFFSET2          jsr      GETKEY
+7A13  8132                                 cmpa     #$32
+7A15  26F9                                 bne      CALCOFFSET2
+7A17  9F68                                 stx      <$68
+7A19  8657                                 lda      #$57
+7A1B  97FF                                 sta      <dbuf+5
+7A1D  BD7CB5                               jsr      BADDR
+7A20  9FF0                                 stx      <addr
+7A22  BD7DDC                               jsr      CLEARDISP
+7A25  8675                                 lda      #$75
+7A27  97FF                                 sta      <dbuf+5
+7A29  BD7CE4          CALCOFFSET3          jsr      KEYHEX
+7A2C  8101                                 cmpa     #$01
+7A2E  23F9                                 bls      CALCOFFSET3
+7A30  0F6A                                 clr      <$6A
+7A32  976B                                 sta      <$6B
+7A34  DCF0                                 ldd      <addr
+7A36  936A                                 subd     <$6A
+7A38  9368                                 subd     <$68
+7A3A  DD68                                 std      <$68
+7A3C  BD7CFF                               jsr      L7SEG
+7A3F  97FC                                 sta      <dbuf+2 
+7A41  9668                                 lda      <$68
+7A43  BD7D03                               jsr      R7SEG
+7A46  97FD                                 sta      <dbuf+3 
+7A48  9669                                 lda      <$69
+7A4A  BD7CFF                               jsr      L7SEG
+7A4D  97FE                                 sta      <dbuf+4
+7A4F  9669                                 lda      <$69
+7A51  BD7D03                               jsr      R7SEG
+7A54  97FF                                 sta      <dbuf+5
+7A56  5F                                   clrb     
+7A57  D7FA                                 stb      <dbuf+0 
+7A59  D7FB                                 stb      <dbuf+1 
+7A5B  966B                                 lda      <$6B
+7A5D  8102                                 cmpa     #$02
+7A5F  260D                                 bne      CALCOFFSET4
+7A61  D7FD                                 stb      <dbuf+3 
+7A63  D7FC                                 stb      <dbuf+2 
+7A65  DC68                                 ldd      <$68
+7A67  59                                   rolb     
+7A68  49                                   rola     
+7A69  2703                                 beq      CALCOFFSET4
+7A6B  43                                   coma     
+7A6C  2609                                 bne      CALCOFFSET5
+7A6E  BD7C20          CALCOFFSET4          jsr      GETKEY
+7A71  8132                                 cmpa     #$32
+7A73  26F9                                 bne      CALCOFFSET4
+7A75  2091                                 bra      CALCOFFSET1
+                      
+7A77  CC0101          CALCOFFSET5          ldd      #$0101
+7A7A  DDFE                                 std      <dbuf+4
+7A7C  20F0                                 bra      CALCOFFSET4
+                      
+7A7E  0000                                 FCB  $00, $00
+                      
+7A80  10CE1390        MASTERMIND           lds      #$1390
+7A84  8613                                 lda      #$13
+7A86  1F8B                                 tfr      a,dp
+7A88  BD7DDC                               jsr      CLEARDISP
+7A8B  8606                                 lda      #$06
+7A8D  97FF                                 sta      <dbuf+5
+7A8F  5F                                   clrb     
+7A90  DD10                                 std      <$10
+7A92  DD12                                 std      <$12
+7A94  8D21            MASTERM1             bsr      MASTERM3
+7A96  273F                                 beq      MASTERM4
+7A98  8E1310                               ldx      #$1310
+7A9B  A684                                 lda      ,x
+7A9D  4C                                   inca     
+7A9E  A784                                 sta      ,x
+7AA0  8508                                 bita     #$08
+7AA2  27F0                                 beq      MASTERM1
+7AA4  4F              MASTERM2             clra     
+7AA5  A780                                 sta      ,x+
+7AA7  8C1314                               cmpx     #$1314
+7AAA  27E8                                 beq      MASTERM1
+7AAC  A684                                 lda      ,x
+7AAE  4C                                   inca     
+7AAF  A784                                 sta      ,x
+7AB1  8508                                 bita     #$08
+7AB3  27DF                                 beq      MASTERM1
+7AB5  20ED                                 bra      MASTERM2
+                      
+7AB7  BD7C7B          MASTERM3             jsr      DISPRESH
+7ABA  8E0000                               ldx      #allzeros
+7ABD  BF4002                               stx      CTRLA
+7AC0  8E000F                               ldx      #$0F
+7AC3  BF4000                               stx      PORTA
+7AC6  8E0404                               ldx      #$0404
+7AC9  BF4002                               stx      CTRLA
+7ACC  8603                                 lda      #$03
+7ACE  B74001                               sta      PORTB 
+7AD1  B64000                               lda      PORTA
+7AD4  8504                                 bita     #$04
+7AD6  39                                   rts      
+                      
+7AD7  0F0E            MASTERM4             clr      <$0E
+7AD9  BD7DDC          MASTERM5             jsr      CLEARDISP
+7ADC  8E1300                               ldx      #$1300
+7ADF  5F              MASTERM6             clrb     
+7AE0  B64000          MASTERM7             lda      PORTA
+7AE3  43                                   coma     
+7AE4  26F9                                 bne      MASTERM6
+7AE6  5A                                   decb     
+7AE7  26F7                                 bne      MASTERM7
+7AE9  BD7CE4          MASTERM8             jsr      KEYHEX
+7AEC  8107                                 cmpa     #$07
+7AEE  22F9                                 bhi      MASTERM8
+7AF0  A780                                 sta      ,x+
+7AF2  BD7D03                               jsr      R7SEG
+7AF5  A78900F9                             sta      $00F9,x
+7AF9  8C1304                               cmpx     #$1304
+7AFC  26EB                                 bne      MASTERM8
+7AFE  8601                                 lda      #$01
+7B00  9B0E                                 adda     <$0E
+7B02  19                                   daa      
+7B03  970E                                 sta      <$0E
+7B05  C6FE                                 ldb      #$FE
+7B07  4F                                   clra     
+7B08  970C                                 sta      <$0C
+7B0A  970D                                 sta      <$0D
+7B0C  8E1304                               ldx      #$1304
+7B0F  A60C            MASTERM9             lda      $0C,x
+7B11  A704                                 sta      $04,x
+7B13  A780                                 sta      ,x+
+7B15  8C1308                               cmpx     #$1308
+7B18  26F5                                 bne      MASTERM9
+7B1A  8E1300                               ldx      #$1300
+7B1D  A684            MASTERM10            lda      ,x
+7B1F  A104                                 cmpa     $04,x
+7B21  2725                                 beq      MASTERM14
+7B23  3001            MASTERM11            leax     $01,x
+7B25  8C1304                               cmpx     #$1304
+7B28  26F3                                 bne      MASTERM10
+7B2A  8E1300                               ldx      #$1300
+7B2D  A684            MASTERM12            lda      ,x
+7B2F  9104                                 cmpa     <$04
+7B31  271F                                 beq      MASTERM15
+7B33  9105                                 cmpa     <keyL
+7B35  2720                                 beq      MASTERM16
+7B37  9106                                 cmpa     <$06
+7B39  2721                                 beq      MASTERM17
+7B3B  9107                                 cmpa     <$07
+7B3D  2722                                 beq      MASTERM18
+7B3F  3001            MASTERM13            leax     $01,x
+7B41  8C1304                               cmpx     #$1304
+7B44  2725                                 beq      MASTERM20
+7B46  20E5                                 bra      MASTERM12
+                      
+7B48  0C0C            MASTERM14            inc      <$0C
+7B4A  E784                                 stb      ,x
+7B4C  5C                                   incb     
+7B4D  E704                                 stb      $04,x
+7B4F  5A                                   decb     
+7B50  20D1                                 bra      MASTERM11
+                      
+7B52  5C              MASTERM15            incb     
+7B53  D704                                 stb      <$04
+7B55  200D                                 bra      MASTERM19
+                      
+7B57  5C              MASTERM16            incb     
+7B58  D705                                 stb      <keyL
+7B5A  2008                                 bra      MASTERM19
+                      
+7B5C  5C              MASTERM17            incb     
+7B5D  D706                                 stb      <$06
+7B5F  2003                                 bra      MASTERM19
+                      
+7B61  5C              MASTERM18            incb     
+7B62  D707                                 stb      <$07
+7B64  5A              MASTERM19            decb     
+7B65  0C0D                                 inc      <$0D
+7B67  E784                                 stb      ,x
+7B69  20D4                                 bra      MASTERM13
+                      
+7B6B  960C            MASTERM20            lda      <$0C
+7B6D  BD7D03                               jsr      R7SEG
+7B70  97FE                                 sta      <dbuf+4
+7B72  960D                                 lda      <$0D
+7B74  BD7D03                               jsr      R7SEG
+7B77  97FF                                 sta      <dbuf+5
+7B79  17FF3B          MASTERM21            lbsr     MASTERM3
+7B7C  26FB                                 bne      MASTERM21
+7B7E  960C                                 lda      <$0C
+7B80  8104                                 cmpa     #$04
+7B82  1026FF53                             lbne     MASTERM5
+7B86  960E                                 lda      <$0E
+7B88  BD7CFF                               jsr      L7SEG
+7B8B  817E                                 cmpa     #$7E
+7B8D  2601                                 bne      MASTERM22
+7B8F  4F                                   clra     
+7B90  97FA            MASTERM22            sta      <dbuf+0 
+7B92  960E                                 lda      <$0E
+7B94  BD7D03                               jsr      R7SEG
+7B97  97FB                                 sta      <dbuf+1 
+7B99  CC7C7E                               ldd      #$7C7E
+7B9C  DDFC                                 std      <dbuf+2 
+7B9E  CC203D                               ldd      #$203D
+7BA1  DDFE                                 std      <dbuf+4
+7BA3  5F              MASTERM23            clrb     
+7BA4  B64000          MASTERM24            lda      PORTA
+7BA7  43                                   coma     
+7BA8  26F9                                 bne      MASTERM23
+7BAA  5A                                   decb     
+7BAB  26F7                                 bne      MASTERM24
+7BAD  16FEE4                               lbra     MASTERM1
+                      
+7BB0  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BB8  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BC0  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BC8  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BD0  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BD8  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BE0  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BE8  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BF0  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BF8  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+                      
+7C00  2224021214001004 KEYCODE              FCB  $22, $24, $02, $12, $14, $00, $10, $04
+7C08  0111031323332120                      FCB  $01, $11, $03, $13, $23, $33, $21, $20
+                      
+7C10  7E065B1F273D7D0E SVNSEG               FCB  $7E, $06, $5B, $1F, $27, $3D, $7D, $0E
+7C18  7F3F6F7578577969                      FCB  $7F, $3F, $6F, $75, $78, $57, $79, $69
+                      
+7C20  342C            GETKEY               pshs     y,dp,b
+7C22  8640                                 lda      #$40
+7C24  1F8B                                 tfr      a,dp
+                      
+                      ;   Set up I/O port
+7C26  8D53            GETKEY0              bsr      DISPRESH
+7C28  4F                                   clra     
+7C29  9702                                 sta      <CTRLA
+7C2B  9703                                 sta      <CTRLB 
+7C2D  9700                                 sta      <PORTA
+7C2F  860F                                 lda      #$0F
+7C31  9701                                 sta      <PORTB 
+7C33  8604                                 lda      #$04
+7C35  9702                                 sta      <CTRLA
+7C37  9703                                 sta      <CTRLB 
+7C39  86FF                                 lda      #$FF
+7C3B  5C              GETKEY2              incb     
+7C3C  C104                                 cmpb     #$04
+7C3E  27E6                                 beq      GETKEY0
+7C40  D701            GETKEY1              stb      <PORTB 
+7C42  9600                                 lda      <PORTA
+7C44  43                                   coma     
+7C45  27F4                                 beq      GETKEY2
+                      
+                      ;   Found a key - decode it
+7C47  F713EC                               stb      $13EC
+7C4A  B713ED                               sta      chksum 
+7C4D  4F                                   clra     
+7C4E  C601                                 ldb      #$01
+7C50  F113ED          GETKEY4              cmpb     chksum 
+7C53  2706                                 beq      GETKEY3
+7C55  4C                                   inca     
+7C56  58                                   aslb     
+7C57  27E2                                 beq      GETKEY2
+7C59  20F5                                 bra      GETKEY4
+                      
+7C5B  F613EC          GETKEY3              ldb      $13EC
+7C5E  58                                   aslb     
+7C5F  58                                   aslb     
+7C60  58                                   aslb     
+7C61  58                                   aslb     
+7C62  3404                                 pshs     b
+7C64  ABE0                                 adda     ,s+
+                      
+                      ;   Wait for the key to be released
+7C66  3402                                 pshs     a
+7C68  108E0008                             ldy      #$08
+7C6C  5F              GETKEY6              clrb     
+7C6D  9600            GETKEY5              lda      <PORTA
+7C6F  43                                   coma     
+7C70  26FA                                 bne      GETKEY6
+7C72  5A                                   decb     
+7C73  26F8                                 bne      GETKEY5
+7C75  313F                                 leay     -$01,y
+7C77  26F4                                 bne      GETKEY5
+7C79  35AE                                 puls     a,b,dp,y,pc ;(pul? pc=rts)
+                      
+7C7B  3416            DISPRESH             pshs     x,b,a
+                      
+                      ;   Set output ports for display
+7C7D  8E4000                               ldx      #PORTA
+7C80  4F                                   clra     
+7C81  A702                                 sta      $02,x
+7C83  A703                                 sta      $03,x
+7C85  867F                                 lda      #$7F
+7C87  A784                                 sta      ,x
+7C89  860F                                 lda      #$0F
+7C8B  A701                                 sta      $01,x
+7C8D  8604                                 lda      #$04
+7C8F  A702                                 sta      $02,x
+7C91  A703                                 sta      $03,x
+                      
+                      ;   Initialise loop over digits
+7C93  8E13FA                               ldx      #dbuf                   ;They are numbered 4..9 to correspond to outputs from the 7442 decoder.
+7C96  C603                                 ldb      #$03
+7C98  5C              DISP2                incb     
+7C99  C10A                                 cmpb     #$0A
+7C9B  2602                                 bne      DISP3
+                      
+                      ;   Finished
+7C9D  3596                                 puls     a,b,x,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Light up the next digit
+7C9F  F74001          DISP3                stb      PORTB 
+7CA2  A680                                 lda      ,x+
+7CA4  43                                   coma     
+7CA5  B74000                               sta      PORTA
+                      
+                      ;   Delay loop
+7CA8  86A0                                 lda      #$A0
+7CAA  4A              DISP1                deca     
+7CAB  26FD                                 bne      DISP1
+7CAD  20E9                                 bra      DISP2
+                      
+7CAF  1E89            BADDR1               exg      a,b
+7CB1  1F01                                 tfr      d,x
+7CB3  3586                                 puls     a,b,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Input 2 byte address into X; result also at [addr]
+7CB5  3406            BADDR                pshs     b,a
+7CB7  4F                                   clra     
+7CB8  5F                                   clrb     
+7CB9  FD13FA                               std      dbuf 
+7CBC  FD13FC                               std      $13FC
+7CBF  8E13FA                               ldx      #dbuf 
+7CC2  8D08                                 bsr      HEXIN
+7CC4  3402                                 pshs     a
+7CC6  8D04                                 bsr      HEXIN
+7CC8  3504                                 puls     b
+7CCA  20E3                                 bra      BADDR1
+                      
+                      
+                      ;   Input 2 hex digits into A and update display at X
+7CCC  8D16            HEXIN                bsr      KEYHEX
+7CCE  48                                   asla     
+7CCF  48                                   asla     
+7CD0  48                                   asla     
+7CD1  48                                   asla     
+7CD2  3402                                 pshs     a
+7CD4  8D29                                 bsr      L7SEG
+7CD6  A780                                 sta      ,x+
+7CD8  8D0A                                 bsr      KEYHEX
+7CDA  ABE0                                 adda     ,s+
+7CDC  3402                                 pshs     a
+7CDE  8D23                                 bsr      R7SEG
+7CE0  A780                                 sta      ,x+
+7CE2  3582                                 puls     a,pc ;(pul? pc=rts)
+                      
+7CE4  17FF39          KEYHEX               lbsr     GETKEY
+                      
+                      ;   Fall-thru
+7CE7  3414            HEXCON               pshs     x,b
+7CE9  8E7C00                               ldx      #KEYCODE
+7CEC  C6FF                                 ldb      #$FF
+7CEE  5C              HEXCON1              incb     
+7CEF  8C7C10                               cmpx     #SVNSEG
+7CF2  272D                                 beq      TORESUME2
+7CF4  A180                                 cmpa     ,x+
+7CF6  26F6                                 bne      HEXCON1
+7CF8  1F98                                 tfr      b,a
+7CFA  3594                                 puls     b,x,pc ;(pul? pc=rts)
+                      
+7CFC  12                                   nop      
+7CFD  12                                   nop      
+7CFE  12                                   nop      
+                      
+                      ;   Fall-thru
+7CFF  47              L7SEG                asra     
+7D00  47                                   asra     
+7D01  47                                   asra     
+7D02  47                                   asra     
+                      
+                      ;   Convert low-order 4 bits of A to 7seg
+7D03  3410            R7SEG                pshs     x
+7D05  8E7C10                               ldx      #SVNSEG
+7D08  840F                                 anda     #$0F
+7D0A  2705            R71                  beq      R72
+7D0C  3001                                 leax     $01,x
+7D0E  4A                                   deca     
+7D0F  20F9                                 bra      R71
+                      
+7D11  A684            R72                  lda      ,x
+7D13  3590                                 puls     x,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Convert 7seg to hex
+7D15  3414            SVNHEX               pshs     x,b
+7D17  8E7C10                               ldx      #SVNSEG
+7D1A  1F89                                 tfr      a,b
+7D1C  4F                                   clra     
+7D1D  E180            SVNHEX1              cmpb     ,x+
+7D1F  2705                                 beq      SVNHEX2
+7D21  2774            TORESUME2            beq      RESUME
+7D23  4C                                   inca     
+7D24  20F7                                 bra      SVNHEX1
+                      
+7D26  3594            SVNHEX2              puls     b,x,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Prompt for address with 'M' and display memory contents
+7D28  4F              MEMDISP              clra     
+7D29  97FE                                 sta      <dbuf+4
+7D2B  866E                                 lda      #$6E
+7D2D  97FF                                 sta      <dbuf+5
+7D2F  8D84                                 bsr      BADDR
+7D31  A684            MEM0                 lda      ,x
+7D33  3402                                 pshs     a
+7D35  8DC8                                 bsr      L7SEG
+7D37  97FE                                 sta      <dbuf+4
+7D39  3502                                 puls     a
+7D3B  8DC6                                 bsr      R7SEG
+7D3D  97FF                                 sta      <dbuf+5
+                      
+                      ;   Check for I key
+7D3F  17FEDE          MEM1                 lbsr     GETKEY
+7D42  8132                                 cmpa     #$32
+7D44  270C                                 beq      MEM2
+7D46  8D9F                                 bsr      HEXCON
+7D48  D6FF                                 ldb      <dbuf+5
+7D4A  D7FE                                 stb      <dbuf+4
+7D4C  8DB5                                 bsr      R7SEG
+7D4E  97FF                                 sta      <dbuf+5
+7D50  20ED                                 bra      MEM1
+                      
+                      
+                      ;   Store and increment
+7D52  96FE            MEM2                 lda      <dbuf+4
+7D54  8DBF                                 bsr      SVNHEX
+7D56  48                                   asla     
+7D57  48                                   asla     
+7D58  48                                   asla     
+7D59  48                                   asla     
+7D5A  3402                                 pshs     a
+7D5C  96FF                                 lda      <dbuf+5
+7D5E  8DB5                                 bsr      SVNHEX
+7D60  ABE0                                 adda     ,s+
+7D62  1F89                                 tfr      a,b
+7D64  A784                                 sta      ,x
+7D66  A680                                 lda      ,x+
+7D68  3404                                 pshs     b
+7D6A  A1E0                                 cmpa     ,s+
+7D6C  2629                                 bne      RESUME
+7D6E  1F10                                 tfr      x,d
+7D70  8D8D                                 bsr      L7SEG
+7D72  97FA                                 sta      <dbuf+0 
+7D74  1F10                                 tfr      x,d
+7D76  8D8B                                 bsr      R7SEG
+7D78  97FB                                 sta      <dbuf+1 
+7D7A  1F98                                 tfr      b,a
+7D7C  8D81                                 bsr      L7SEG
+7D7E  97FC                                 sta      <dbuf+2 
+7D80  1F98                                 tfr      b,a
+7D82  17FF7E                               lbsr     R7SEG
+7D85  97FD                                 sta      <dbuf+3 
+7D87  20A8                                 bra      MEM0
+                      
+                      
+                      ;   Reset Handler
+7D89  10CE13D0        RESET                lds      #usrsp
+7D8D  10FF13F8        NMISR                sts      stackstart
+                      
+                      ;   Set up NMI to point here
+7D91  8E7D8D                               ldx      #NMISR
+7D94  BF13F2                               stx      NMIVEC
+7D97  10CE13D0        RESUME               lds      #usrsp
+7D9B  8613                                 lda      #$13
+7D9D  1F8B                                 tfr      a,dp
+7D9F  8D3B                                 bsr      CLEARDISP
+                      
+                      ;   Show '-' at left
+7DA1  8601                                 lda      #$01
+7DA3  97FA                                 sta      <dbuf+0 
+7DA5  17FE78                               lbsr     GETKEY
+                      
+                      ;   If key is 'M'
+7DA8  8131                                 cmpa     #$31
+7DAA  1027FF7A                             lbeq     MEMDISP
+                      
+                      ;   If key is 'R'
+7DAE  8130                                 cmpa     #$30
+7DB0  274D                                 beq      REGDISP
+                      
+                      ;   If key is 'CN'
+7DB2  8125                                 cmpa     #$25
+7DB4  2722                                 beq      CONT
+                      
+                      ;   If key is 'CL'
+7DB6  8105                                 cmpa     #$05
+7DB8  102700C9                             lbeq     LOAD
+                      
+                      ;   If key is 'P'
+7DBC  8115                                 cmpa     #$15
+7DBE  1027012B                             lbeq     SAVE
+                      
+                      ;   If key is 'G'
+7DC2  8135            reset3               cmpa     #$35
+7DC4  26D1                                 bne      RESUME
+                      
+                      ;   Prompt and accept start address
+7DC6  867C            go                   lda      #$7C
+7DC8  97FF                                 sta      <dbuf+5
+7DCA  17FEE8                               lbsr     BADDR
+7DCD  109EF8                               ldy      <stackstart
+7DD0  AF2A                                 stx      $0A,y
+7DD2  8680                                 lda      #$80
+7DD4  AAA4                                 ora      ,y
+7DD6  A7A4                                 sta      ,y
+7DD8  10DEF8          CONT                 lds      <stackstart
+7DDB  3B                                   rti      
+                      
+                      
+                      ;   Clear display
+7DDC  3416            CLEARDISP            pshs     x,b,a
+7DDE  4F                                   clra     
+7DDF  C606                                 ldb      #$06
+7DE1  8E13FA                               ldx      #dbuf 
+7DE4  A780            CLEARDISP1           sta      ,x+
+7DE6  5A                                   decb     
+7DE7  26FB                                 bne      CLEARDISP1
+7DE9  3596                                 puls     a,b,x,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Characters for Reg Display  C b A b d H Y U P S 
+7DEB  786F75576737766B3D REGDISPCHAR          FCB  $78, $6F, $75, $57, $67, $37, $76, $6B, $3D
+                      
+7DF4  8613            REGCHAREND           lda      #$13
+7DF6  1F8B                                 tfr      a,dp
+7DF8  10DFF8                               sts      <stackstart
+7DFB  10CE13D0                             lds      #usrsp
+7DFF  8DDB            REGDISP              bsr      CLEARDISP
+7E01  9EF8                                 ldx      <stackstart
+                      
+                      ;   Read characters from REGDISPCHAR
+7E03  318CE5                               leay     -$1B,pc ; ($7DEB)
+7E06  A6A0            REGDISP1             lda      ,y+
+7E08  97FF                                 sta      <dbuf+5
+7E0A  108C7DF4                             cmpy     #REGCHAREND 
+7E0E  2603                                 bne      SHOWLEFT
+7E10  8E13F8                               ldx      #stackstart
+7E13  108C7DEF        SHOWLEFT             cmpy     #REGDISPCHAR2
+7E17  230E                                 bls      SHOWBYTE
+7E19  A684                                 lda      ,x
+7E1B  17FEE1                               lbsr     L7SEG
+7E1E  97FA                                 sta      <dbuf+0 
+7E20  A680                                 lda      ,x+
+7E22  17FEDE                               lbsr     R7SEG
+7E25  97FB                                 sta      <dbuf+1 
+7E27  A684            SHOWBYTE             lda      ,x
+7E29  17FED3                               lbsr     L7SEG
+7E2C  97FC                                 sta      <dbuf+2 
+7E2E  A680                                 lda      ,x+
+7E30  17FED0                               lbsr     R7SEG
+7E33  97FD                                 sta      <dbuf+3 
+7E35  17FDE8                               lbsr     GETKEY
+7E38  8132                                 cmpa     #$32
+7E3A  1026FF59                             lbne     RESUME
+7E3E  108C7DF4                             cmpy     #REGCHAREND 
+7E42  26C2                                 bne      REGDISP1
+7E44  16FF50                               lbra     RESUME
+                      
+7E47  3406            RECVBIT              pshs     b,a
+7E49  C606            RETRY                ldb      #$06
+                      
+                      ;   Listen for a high signal on PORTB[7]
+7E4B  B64001          RECV1                lda      PORTB 
+7E4E  48                                   asla     
+7E4F  24FA                                 bcc      RECV1
+                      
+                      ;   Wait a moment
+7E51  5A              RECV2                decb     
+7E52  26FD                                 bne      RECV2
+                      
+                      ;   Check the signal is still high
+7E54  B64001                               lda      PORTB 
+7E57  48                                   asla     
+7E58  24EF                                 bcc      RETRY
+                      
+                      ;   Time until the signal is low
+7E5A  C624                                 ldb      #$24
+7E5C  5A              RECV3                decb     
+7E5D  B64001                               lda      PORTB 
+7E60  48                                   asla     
+7E61  25F9                                 bcs      RECV3
+                      
+                      ;   Show a bit pattern in the display
+7E63  86EF                                 lda      #$EF
+7E65  5D                                   tstb     
+7E66  2B01                                 bmi      RECV4
+7E68  47                                   asra     
+7E69  B74000          RECV4                sta      PORTA
+                      
+                      ;   Set CC with the result - positive for a 1
+7E6C  5D                                   tstb     
+7E6D  3586                                 puls     a,b,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Receive a byte and return in B
+7E6F  3402            RECVBYTE             pshs     a
+                      
+                      ;   Wait for start bit
+7E71  8DD4            RBYTE1               bsr      RECVBIT
+7E73  2AFC                                 bpl      RBYTE1
+                      
+                      ;   Prepare to gather 8 bits
+7E75  8608                                 lda      #$08
+                      
+                      ;   Loop once per bit, LSB first
+7E77  8DCE            RBYTE3               bsr      RECVBIT
+7E79  1CFE                                 andcc    #$FE
+7E7B  2B02                                 bmi      RBYTE2
+7E7D  1A01                                 orcc     #$01
+7E7F  56              RBYTE2               rorb     
+7E80  4A                                   deca     
+7E81  26F4                                 bne      RBYTE3
+7E83  3582                                 puls     a,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Set up I/O Ports
+7E85  CC0000          LOAD                 ldd      #allzeros
+7E88  FD4002                               std      CTRLA
+7E8B  CCFF7F                               ldd      #$FF7F
+7E8E  FD4000                               std      PORTA
+7E91  CC0404                               ldd      #$0404
+7E94  FD4002                               std      CTRLA
+7E97  CCFF04                               ldd      #$FF04
+7E9A  FD4000                               std      PORTA
+7E9D  8DD0            RELOAD               bsr      RECVBYTE
+                      
+                      ;   Wait for $53 = S
+7E9F  C153                                 cmpb     #$53
+7EA1  26FA                                 bne      RELOAD
+7EA3  8DCA                                 bsr      RECVBYTE
+                      
+                      ;   Code S1 begins a record
+7EA5  C131                                 cmpb     #$31
+7EA7  2708                                 beq      LOAD2
+                      
+                      ;   Code SJ means EOF
+7EA9  C14A                                 cmpb     #$4A
+7EAB  26F0                                 bne      RELOAD
+                      
+                      ;   Show F in display forever
+7EAD  8669            MESSAGEF             lda      #$69
+7EAF  2032                                 bra      ERRSTOP
+                      
+                      
+                      ;   Get count, initialise checksum
+7EB1  8DBC            LOAD2                bsr      RECVBYTE
+7EB3  D7EC                                 stb      <tmp2 
+7EB5  96EC                                 lda      <tmp2 
+                      
+                      ;   Get two-byte address, accumulating checksum in A
+7EB7  8DB6                                 bsr      RECVBYTE
+7EB9  D7F6                                 stb      <tmpX
+7EBB  3404                                 pshs     b
+7EBD  ABE0                                 adda     ,s+
+7EBF  0AEC                                 dec      <tmp2 
+7EC1  8DAC                                 bsr      RECVBYTE
+7EC3  D7F7                                 stb      <$00F7
+7EC5  3404                                 pshs     b
+7EC7  ABE0                                 adda     ,s+
+7EC9  9EF6                                 ldx      <tmpX
+7ECB  0AEC            LDLOOP               dec      <tmp2 
+7ECD  270A                                 beq      LDDONE
+7ECF  8D9E                                 bsr      RECVBYTE
+7ED1  E780                                 stb      ,x+
+7ED3  3404                                 pshs     b
+7ED5  ABE0                                 adda     ,s+
+7ED7  20F2                                 bra      LDLOOP
+                      
+                      
+                      ;   Verify checksum
+7ED9  8D94            LDDONE               bsr      RECVBYTE
+7EDB  3404                                 pshs     b
+7EDD  ABE0                                 adda     ,s+
+7EDF  27BC                                 beq      RELOAD
+7EE1  8678                                 lda      #$78
+                      
+                      ;   Fall-thru
+7EE3  17FEF6          ERRSTOP              lbsr     CLEARDISP
+7EE6  97FA                                 sta      <dbuf+0 
+7EE8  17FD90          DEAD                 lbsr     DISPRESH
+7EEB  20FB                                 bra      DEAD
+                      
+                      
+                      ;   Save to tape Prompt S and get start address
+7EED  8E003D          SAVE                 ldx      #$3D
+7EF0  9FFE                                 stx      <dbuf+4
+7EF2  17FDC0                               lbsr     BADDR
+7EF5  9FEE                                 stx      <ptr
+                      
+                      ;   Prompt F and get finish address
+7EF7  8669                                 lda      #$69
+7EF9  97FF                                 sta      <dbuf+5
+7EFB  17FDB7                               lbsr     BADDR
+7EFE  9FF0                                 stx      <addr
+                      
+                      ;   Set up output port
+7F00  4F                                   clra     
+7F01  B74003                               sta      CTRLB 
+7F04  4A                                   deca     
+7F05  B74001                               sta      PORTB 
+7F08  8604                                 lda      #$04
+7F0A  B74003                               sta      CTRLB 
+7F0D  4F                                   clra     
+7F0E  B74001                               sta      PORTB 
+                      
+                      ;   Send two bytes of all ones
+7F11  86FF            SAVE1                lda      #$FF
+7F13  8D71                                 bsr      SEND
+7F15  8D6F                                 bsr      SEND
+                      
+                      ;   Send block start
+7F17  8D63            SAVE4                bsr      SENDSTART
+7F19  86FF                                 lda      #$FF
+7F1B  D6EF                                 ldb      <ptr+1
+7F1D  3404                                 pshs     b
+7F1F  A0E0                                 suba     ,s+
+                      
+                      ;   Send length code and init checksum
+7F21  840F            SAVE2                anda     #$0F
+7F23  8B03                                 adda     #$03
+7F25  8D5F                                 bsr      SEND
+7F27  97ED                                 sta      <chksum 
+                      
+                      ;   Send (half of) address and add to checksum
+7F29  8E13EE                               ldx      #ptr
+7F2C  8D56                                 bsr      SENDBYTE
+7F2E  9BED                                 adda     <chksum 
+7F30  97ED                                 sta      <chksum 
+                      
+                      ;   Send other half of address and add to checksum
+7F32  3001                                 leax     $01,x
+7F34  8D4E                                 bsr      SENDBYTE
+7F36  9BED                                 adda     <chksum 
+7F38  97ED                                 sta      <chksum 
+7F3A  9EEE                                 ldx      <ptr
+                      
+                      ;   Send a data byte and add to checksum
+7F3C  8D46            SAVE3                bsr      SENDBYTE
+7F3E  9BED                                 adda     <chksum 
+7F40  97ED                                 sta      <chksum 
+7F42  9CF0                                 cmpx     <addr
+7F44  270A                                 beq      ENDBLOCK
+7F46  3001                                 leax     $01,x
+7F48  9FEE                                 stx      <ptr
+7F4A  96EF                                 lda      <ptr+1
+7F4C  850F                                 bita     #$0F
+7F4E  26EC                                 bne      SAVE3
+                      
+                      ;   Send checksum
+7F50  96ED            ENDBLOCK             lda      <chksum 
+7F52  40                                   nega     
+7F53  8D31                                 bsr      SEND
+                      
+                      ;   Test if all finished
+7F55  9CF0                                 cmpx     <addr
+7F57  2718                                 beq      SENDEOF
+                      
+                      ;   Test if another full block to send
+7F59  96EE                                 lda      <ptr
+7F5B  91F0                                 cmpa     <addr
+7F5D  2BB8                                 bmi      SAVE4
+7F5F  D6EF                                 ldb      <ptr+1
+7F61  96F1                                 lda      <addr+1
+7F63  84F0                                 anda     #$F0
+7F65  3404                                 pshs     b
+7F67  A1E0                                 cmpa     ,s+
+7F69  26AC                                 bne      SAVE4
+                      
+                      ;   Last block may be short
+7F6B  8D0F                                 bsr      SENDSTART
+7F6D  96F1                                 lda      <addr+1
+7F6F  20B0                                 bra      SAVE2
+                      
+                      
+                      ;   Send eof code 534a = 'SJ'
+7F71  8653            SENDEOF              lda      #$53
+7F73  8D11                                 bsr      SEND
+7F75  864A                                 lda      #$4A
+7F77  8D0D                                 bsr      SEND
+7F79  16FF31                               lbra     MESSAGEF
+                      
+                      
+                      ;   Send magic code 'S1'
+7F7C  8653            SENDSTART            lda      #$53
+7F7E  8D06                                 bsr      SEND
+7F80  8631                                 lda      #$31
+7F82  2002                                 bra      SEND
+                      
+                      
+                      ;   Transmit byte from (X)
+7F84  A684            SENDBYTE             lda      ,x
+                      
+                      ;   Transmit byte from A
+7F86  3406            SEND                 pshs     b,a
+                      
+                      ;   Total of 10 bits to send, including start and stop
+7F88  C60A                                 ldb      #$0A
+7F8A  D7EB                                 stb      <count
+                      
+                      ;   Set up start bit
+7F8C  1CFE                                 andcc    #$FE
+                      
+                      ;   Next bit in C flag - set B to delay count
+7F8E  C690            NEXTBIT              ldb      #$90
+7F90  2402                                 bcc      SAVE8
+7F92  C624                                 ldb      #$24
+7F94  3404            SAVE8                pshs     b
+                      
+                      ;   Set bit in output port
+7F96  C640                                 ldb      #$40
+7F98  F74001                               stb      PORTB 
+7F9B  E6E4                                 ldb      ,s
+7F9D  5A              DELAY1               decb     
+7F9E  26FD                                 bne      DELAY1
+                      
+                      ;   Clear bit in output port
+7FA0  F74001                               stb      PORTB 
+                      
+                      ;   Same delay loop again
+7FA3  3504                                 puls     b
+7FA5  5A              DELAY2               decb     
+7FA6  26FD                                 bne      DELAY2
+                      
+                      ;   Rotate a 1 bit into A, so stop bit will be a 1
+7FA8  1A01                                 orcc     #$01
+7FAA  46                                   rora     
+7FAB  0AEB                                 dec      <count
+7FAD  26DF                                 bne      NEXTBIT
+7FAF  3586                                 puls     a,b,pc ;(pul? pc=rts)
+                      
+7FB1  00000000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+7FBB  00000000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+7FC5  00000000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+7FCF  00                                   FCB  $00
+                      
+7FD0  BE13E7                               ldx      SWI2VEC
+7FD3  6E84                                 jmp      ,x
+                      
+7FD5  BE13E5                               ldx      SWI3VEC
+7FD8  6E84                                 jmp      ,x
+                      
+7FDA  BE13E9                               ldx      FIRQVEC
+7FDD  6E84                                 jmp      ,x
+                      
+7FDF  BE13F4                               ldx      IRQVEC
+7FE2  6E84                                 jmp      ,x
+                      
+7FE4  BE13F2                               ldx      NMIVEC
+7FE7  6E84                                 jmp      ,x
+                      
+7FE9  000000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00, $00
+                      
+                      
+                      ;   Interrupt vectors
+7FF2  7FD5            SWI3INTR             FCB  $7F, $D5
+                      
+7FF4  7FD0            SWI2INTR             FCB  $7F, $D0
+                      
+7FF6  7FDA            FIRQINTR             FCB  $7F, $DA
+                      
+7FF8  7FDF            INTRQ                FCB  $7F, $DF
+                      
+7FFA  7DF4            SWINTR               FCB  $7D, $F4
+                      
+7FFC  7FE4            NMINTR               FCB  $7F, $E4
+                      
+7FFE  7D89            RESETBOOT            FCB  $7D, $89
+                      

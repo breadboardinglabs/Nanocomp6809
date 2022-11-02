@@ -1,0 +1,62 @@
+                      ; C:\Users\Dave\OneDrive\Documents\_6809\asm6809-2.12-w64\asm6809.exe -B -l serialout.txt serialout.asm -o serialout.bin
+                      ; C:\Users\Dave\OneDrive\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l serialout.txt serialout.asm -o serialout.srec
+                      
+                      ; Configure MC6850 ACIA for sending data at 9600 Baud 8 Bits, N parity 1 Stop Bit
+                      
+0000                  SERIALCTRL          EQU  $00           ; Use DP $50   $5000
+0000                  SERIALSTATUS        EQU  $00           ; Use DP $50   $5000
+0001                  SERIALDATA          EQU  $01           ; Use DP $50   $5001
+                      
+0003                  CTRLRESET           EQU  %00000011       ; CR1, CR0 1,1 for Master Reset
+0001                  CTRLDIVIDE16        EQU  %00000001       ; CR1, CR0 0,1 for divide by 16
+0002                  CTRLDIVIDE64        EQU  %00000010       ; CR1, CR0 1,0 for divide by 64
+0014                  CTRLWORD8N1S        EQU  %00010100       ; CR4, CR3, CR2 1, 0, 1 for 8 Bits, 1 Stop No Parity
+0000                  CTRLRTSLOW          EQU  %00000000       ; CR6, CR5, 0,0 RTS low IRQ disabled, requests data
+0040                  CTRLRTSHIGH         EQU  %01000000       ; CR6, CR5, 1,0 RTS high IRQ disabled, blocks receiving data
+0080                  CTRLIRQENABLED      EQU  %10000000       ; CR7, 1 IRQ enabled
+                      
+0001                  STATUSRDRF          EQU  %00000001       ; Receive Data Register Full Bit 0
+0002                  STATUSTDRE          EQU  %00000010       ; Transmit Data Register Empty Bit 1
+0004                  STATUSDCD           EQU  %00000100       ; Data Carrier Detect Bit 2
+0008                  STATUSCTS           EQU  %00001000       ; Clear To Send Bit 3
+0010                  STATUSFE            EQU  %00010000       ; Framing Error Bit 4
+0020                  STATUSOVRN          EQU  %00100000       ; Receiver Overrun Bit 5
+0040                  STATUSPE            EQU  %01000000       ; Parity Error Bit 6
+0080                  STATUSIRQREQ        EQU  %10000000       ; Interupt Request /IRQ Bit 7
+                      
+0000                  EOS                 EQU  $00      end of string
+                      
+1000                                      ORG $1000
+1000  10CE1200        SerialStart         lds      #$1200      ;System Stack init
+1004  8650                                lda      #$50             
+1006  1F8B                                tfr      a,dp        ; Set Direct Page Register to Serial Port Base Address       
+1008  8603                                lda      #CTRLRESET  ; Master Reset bits
+100A  9700                                sta      <SERIALCTRL ; Serial Port Control Master Reset
+                                                              
+                                   
+100C  8616            InitSerial          lda      #CTRLDIVIDE64 | CTRLWORD8N1S | CTRLRTSLOW
+100E  9700                                sta      <SERIALCTRL ; Serial Port Divide by 64 (3.6864Mhz Xtal /6 /64 =9600 ), 8 Bits No Parity 1 Stop, /RTS Low - send data
+                      
+1010  8E102E                              ldx      #message    ; Point X to message to send NULL delimited
+1013  A680            send                lda      ,x+
+1015  2706                                beq      SerialEnd
+1017  BD1021                              jsr      send_char
+101A  7E1013                              jmp      send
+                      
+101D  3F              SerialEnd           swi                  ; Software Interupt
+101E  7E1000                              jmp     SerialStart  ; If Continue from SWI
+                      
+                      
+1021  3402            send_char           pshs    a
+1023  8602                                lda     #STATUSTDRE   ; Mask Transmit Data Register Empty
+1025  9500            send_char1          bita    <SERIALSTATUS ; Check TDRE, 1 means ready for more data, 0 loop back
+1027  27FC                                beq     send_char1    ; Keep checking until read for more data
+1029  3502                                puls    a             ; 
+                      
+102B  9701                                sta     <SERIALDATA
+102D  39                                  rts                   ; Return
+                      
+102E  48656C6C6F2C20776F726C6421 message             FCC     "Hello, world!"
+103B  00                                  FCB     EOS
+                      
+                      

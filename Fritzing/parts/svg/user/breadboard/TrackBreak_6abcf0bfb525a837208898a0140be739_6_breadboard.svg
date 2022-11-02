@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" gorn="0"  x="0in" version="1.2" width="0.1in" height="0.1in" y="0in" viewBox="0 0 7.2 7.1999963" id="svg123">
+    <desc >
+        <referenceFile >track_break.svg</referenceFile>
+    </desc>
+    <defs  id="defs127"/>
+    <g  transform="scale(0.45819499,1)">
+        <g >
+            <g gorn="0.2.0.0"  partID="855452000" id="g121">
+                <rect fill="none" gorn="0.2.0.0.0"  x="2.2084301" width="2.7831199" height="2.7831199" y="2.2084301" id="connector0pin"/>
+                <g fill="none" gorn="0.2.0.0.1"  x="2.51834" width="2.15829" height="2.25658" y="2.47054" id="connector0terminal"/>
+                <polygon fill="#2a2a29" points="4.99156,2.20843 6.01654,1.18445 1.18445,1.18445 2.20843,2.20843 " gorn="0.2.0.0.2"  style="fill:#ff0000;fill-opacity:1" id="polygon100"/>
+                <polygon fill="#474747" points="4.99156,4.99156 6.01654,6.01654 6.01654,1.18445 4.99156,2.20843 " gorn="0.2.0.0.3"  style="fill:#ff0000" id="polygon102"/>
+                <polygon fill="#595959" points="2.20843,4.99156 1.18445,6.01654 6.01654,6.01654 4.99156,4.99156 " gorn="0.2.0.0.4"  style="fill:#ff0000" id="polygon104"/>
+                <polygon fill="#373737" points="2.20843,2.20843 1.18445,1.18445 1.18445,6.01654 2.20843,4.99156 " gorn="0.2.0.0.5"  style="fill:#ff0000" id="polygon106"/>
+                <rect fill="none" gorn="0.2.0.0.6"  x="9.4084597" width="2.7831199" height="2.7831199" y="2.2084301" id="connector1pin"/>
+                <rect fill="none" gorn="0.2.0.0.7"  x="9.7183399" width="2.1582899" height="2.2565801" y="2.47054" id="connector1terminal"/>
+                <g  transform="scale(1.4773209,0.67690101)">
+                    <g >
+                        <g gorn="0.2.0.0.8.0.0" xmlns:xml="http://www.w3.org/XML/1998/namespace"  font-size="4.72742" xml:space="preserve" style="line-height:1.25;font-family:Droid Sans;" id="text1034" stroke-width="1.10799">
+                            <text fill="#ff0000" gorn="0.2.0.0.8.0.0.0"  x="0.43908736" y="7.5193729" id="tspan1032" stroke-width="1.10799">X</text>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

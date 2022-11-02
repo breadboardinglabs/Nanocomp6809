@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" width="0.409722in" y="0in" viewBox="0 0 10.4069 1.7272" x="0in" height="0.068in" version="1.2" >
+    <desc>
+        <referenceFile>sparkfun-electromechanical_switch-momentary-2_schematic.svg</referenceFile>
+    </desc>
+    <g id="schematic" gorn="0.0" >
+        <line class="other" stroke-width="0.254" x1="7.10847" stroke-linecap="round" y2="1.397" y1="1.397" stroke="#000000" x2="7.74347" />
+        <line class="other" stroke-width="0.254" x1="2.66347" stroke-linecap="round" y2="0.127" y1="1.397" stroke="#000000" x2="7.10847" />
+        <circle class="other" stroke-width="0.4064" cy="1.397" r="0.127" stroke="#000000" cx="2.66347" fill="none" />
+        <circle class="other" stroke-width="0.4064" cy="1.397" r="0.127" stroke="#000000" cx="7.74347" fill="none" />
+        <line class="pin" connectorname="1" stroke-width="0.246944" id="connector0pin" x1="0.123472" stroke-linecap="round" y2="1.397" y1="1.397" stroke="#787878" gorn="0.0.4" x2="2.66347" />
+        <rect class="terminal" stroke-width="0" width="0.0001" id="connector0terminal" y="1.397" x="0.123472" height="0.0001" stroke="none" gorn="0.0.5" fill="none" />
+        <text class="text" font-family="'Droid Sans'" stroke-width="0" font-size="0.881944" y="1.02658" x="1.39347" stroke="none" fill="#8c8c8c" text-anchor="middle" >1</text>
+        <line class="pin" connectorname="2" stroke-width="0.246944" id="connector2pin" x1="10.2835" stroke-linecap="round" y2="1.397" y1="1.397" stroke="#787878" gorn="0.0.7" x2="7.74347" />
+        <rect class="terminal" stroke-width="0" width="0.0001" id="connector2terminal" y="1.397" x="10.2835" height="0.0001" stroke="none" gorn="0.0.8" fill="none" />
+        <text class="text" font-family="'Droid Sans'" stroke-width="0" font-size="0.881944" y="1.02658" x="9.01347" stroke="none" fill="#8c8c8c" text-anchor="middle" >3</text>
+    </g>
+</svg>

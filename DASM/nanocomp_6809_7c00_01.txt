@@ -1,0 +1,561 @@
+RESET                         =  0x7D89
+NMISR                         =  0x7D8D
+SWI3INTR                      =  0x7FF2
+SWI2INTR                      =  0x7FF4
+FIRQINTR                      =  0x7FF6
+INTRQ                         =  0x7FF8
+SWINTR                        =  0x7FFA
+NMINTR                        =  0x7FFC
+RESETBOOT                     =  0x7FFE
+
+7C00: 22 24          bhi      $7C26
+7C02: 02             Illegal Opcode, changing to data
+7C03: 12             nop      
+7C04: 14             Illegal Opcode, changing to data
+7C05: 00 10          neg      $10
+7C07: 04 01          lsr      $01
+7C09: 11 03          Illegal Opcode, changing to data
+7C0B: 13             sync     
+7C0C: 23 33          bls      $7C41
+7C0E: 21 20          brn      $7C30
+7C10: 7E 06 5B       jmp      $065B
+
+7C13: 1F 27          tfr      y,inv
+7C15: 3D             mul      
+7C16: 7D 0E 7F       tst      $0E7F
+7C19: 3F             swi      
+7C1A: 6F 75          clr      -$0B,s
+7C1C: 78 57 79       asl      $5779
+7C1F: 69 34          rol      -$0C,y
+7C21: 2C 86          bge      $7BA9
+7C23: 40             nega     
+7C24: 1F 8B          tfr      a,dp
+7C26: 8D 53          bsr      $7C7B
+7C28: 4F             clra     
+7C29: 97 02          sta      $02
+7C2B: 97 03          sta      $03
+7C2D: 97 00          sta      $00
+7C2F: 86 0F          lda      #0F
+7C31: 97 01          sta      $01
+7C33: 86 04          lda      #04
+7C35: 97 02          sta      $02
+7C37: 97 03          sta      $03
+7C39: 86 FF          lda      #FF
+7C3B: 5C             incb     
+7C3C: C1 04          cmpb     #04
+7C3E: 27 E6          beq      $7C26
+7C40: D7 01          stb      $01
+7C42: 96 00          lda      $00
+7C44: 43             coma     
+7C45: 27 F4          beq      $7C3B
+7C47: F7 13 EC       stb      $13EC
+7C4A: B7 13 ED       sta      $13ED
+7C4D: 4F             clra     
+7C4E: C6 01          ldb      #01
+7C50: F1 13 ED       cmpb     $13ED
+7C53: 27 06          beq      $7C5B
+7C55: 4C             inca     
+7C56: 58             aslb     
+7C57: 27 E2          beq      $7C3B
+7C59: 20 F5          bra      $7C50
+
+7C5B: F6 13 EC       ldb      $13EC
+7C5E: 58             aslb     
+7C5F: 58             aslb     
+7C60: 58             aslb     
+7C61: 58             aslb     
+7C62: 34 04          pshs     b
+7C64: AB E0          adda     ,s+
+7C66: 34 02          pshs     a
+7C68: 10 8E 00 08    ldy      #$08
+7C6C: 5F             clrb     
+7C6D: 96 00          lda      $00
+7C6F: 43             coma     
+7C70: 26 FA          bne      $7C6C
+7C72: 5A             decb     
+7C73: 26 F8          bne      $7C6D
+7C75: 31 3F          leay     -$01,y
+7C77: 26 F4          bne      $7C6D
+7C79: 35 AE          puls     a,b,dp,y,pc ;(pul? pc=rts)
+
+7C7B: 34 16          pshs     x,b,a
+7C7D: 8E 40 00       ldx      #$4000
+7C80: 4F             clra     
+7C81: A7 02          sta      $02,x
+7C83: A7 03          sta      $03,x
+7C85: 86 7F          lda      #7F
+7C87: A7 84          sta      ,x
+7C89: 86 0F          lda      #0F
+7C8B: A7 01          sta      $01,x
+7C8D: 86 04          lda      #04
+7C8F: A7 02          sta      $02,x
+7C91: A7 03          sta      $03,x
+7C93: 8E 13 FA       ldx      #$13FA
+7C96: C6 03          ldb      #03
+7C98: 5C             incb     
+7C99: C1 0A          cmpb     #0A
+7C9B: 26 02          bne      $7C9F
+7C9D: 35 96          puls     a,b,x,pc ;(pul? pc=rts)
+
+7C9F: F7 40 01       stb      $4001
+7CA2: A6 80          lda      ,x+
+7CA4: 43             coma     
+7CA5: B7 40 00       sta      $4000
+7CA8: 86 A0          lda      #A0
+7CAA: 4A             deca     
+7CAB: 26 FD          bne      $7CAA
+7CAD: 20 E9          bra      $7C98
+
+7CAF: 1E 89          exg      a,b
+7CB1: 1F 01          tfr      d,x
+7CB3: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+7CB5: 34 06          pshs     b,a
+7CB7: 4F             clra     
+7CB8: 5F             clrb     
+7CB9: FD 13 FA       std      $13FA
+7CBC: FD 13 FC       std      $13FC
+7CBF: 8E 13 FA       ldx      #$13FA
+7CC2: 8D 08          bsr      $7CCC
+7CC4: 34 02          pshs     a
+7CC6: 8D 04          bsr      $7CCC
+7CC8: 35 04          puls     b
+7CCA: 20 E3          bra      $7CAF
+
+7CCC: 8D 16          bsr      $7CE4
+7CCE: 48             asla     
+7CCF: 48             asla     
+7CD0: 48             asla     
+7CD1: 48             asla     
+7CD2: 34 02          pshs     a
+7CD4: 8D 29          bsr      $7CFF
+7CD6: A7 80          sta      ,x+
+7CD8: 8D 0A          bsr      $7CE4
+7CDA: AB E0          adda     ,s+
+7CDC: 34 02          pshs     a
+7CDE: 8D 23          bsr      $7D03
+7CE0: A7 80          sta      ,x+
+7CE2: 35 82          puls     a,pc ;(pul? pc=rts)
+
+7CE4: 17 FF 39       lbsr     $7C20
+7CE7: 34 14          pshs     x,b
+7CE9: 8E 7C 00       ldx      #$7C00
+7CEC: C6 FF          ldb      #FF
+7CEE: 5C             incb     
+7CEF: 8C 7C 10       cmpx     #$7C10
+7CF2: 27 2D          beq      $7D21
+7CF4: A1 80          cmpa     ,x+
+7CF6: 26 F6          bne      $7CEE
+7CF8: 1F 98          tfr      b,a
+7CFA: 35 94          puls     b,x,pc ;(pul? pc=rts)
+
+7CFC: 12             nop      
+7CFD: 12             nop      
+7CFE: 12             nop      
+7CFF: 47             asra     
+7D00: 47             asra     
+7D01: 47             asra     
+7D02: 47             asra     
+7D03: 34 10          pshs     x
+7D05: 8E 7C 10       ldx      #$7C10
+7D08: 84 0F          anda     #0F
+7D0A: 27 05          beq      $7D11
+7D0C: 30 01          leax     $01,x
+7D0E: 4A             deca     
+7D0F: 20 F9          bra      $7D0A
+
+7D11: A6 84          lda      ,x
+7D13: 35 90          puls     x,pc ;(pul? pc=rts)
+
+7D15: 34 14          pshs     x,b
+7D17: 8E 7C 10       ldx      #$7C10
+7D1A: 1F 89          tfr      a,b
+7D1C: 4F             clra     
+7D1D: E1 80          cmpb     ,x+
+7D1F: 27 05          beq      $7D26
+7D21: 27 74          beq      $7D97
+7D23: 4C             inca     
+7D24: 20 F7          bra      $7D1D
+
+7D26: 35 94          puls     b,x,pc ;(pul? pc=rts)
+
+7D28: 4F             clra     
+7D29: 97 FE          sta      $00FE
+7D2B: 86 6E          lda      #6E
+7D2D: 97 FF          sta      $00FF
+7D2F: 8D 84          bsr      $7CB5
+7D31: A6 84          lda      ,x
+7D33: 34 02          pshs     a
+7D35: 8D C8          bsr      $7CFF
+7D37: 97 FE          sta      $00FE
+7D39: 35 02          puls     a
+7D3B: 8D C6          bsr      $7D03
+7D3D: 97 FF          sta      $00FF
+7D3F: 17 FE DE       lbsr     $7C20
+7D42: 81 32          cmpa     #32
+7D44: 27 0C          beq      $7D52
+7D46: 8D 9F          bsr      $7CE7
+7D48: D6 FF          ldb      $00FF
+7D4A: D7 FE          stb      $00FE
+7D4C: 8D B5          bsr      $7D03
+7D4E: 97 FF          sta      $00FF
+7D50: 20 ED          bra      $7D3F
+
+7D52: 96 FE          lda      $00FE
+7D54: 8D BF          bsr      $7D15
+7D56: 48             asla     
+7D57: 48             asla     
+7D58: 48             asla     
+7D59: 48             asla     
+7D5A: 34 02          pshs     a
+7D5C: 96 FF          lda      $00FF
+7D5E: 8D B5          bsr      $7D15
+7D60: AB E0          adda     ,s+
+7D62: 1F 89          tfr      a,b
+7D64: A7 84          sta      ,x
+7D66: A6 80          lda      ,x+
+7D68: 34 04          pshs     b
+7D6A: A1 E0          cmpa     ,s+
+7D6C: 26 29          bne      $7D97
+7D6E: 1F 10          tfr      x,d
+7D70: 8D 8D          bsr      $7CFF
+7D72: 97 FA          sta      $00FA
+7D74: 1F 10          tfr      x,d
+7D76: 8D 8B          bsr      $7D03
+7D78: 97 FB          sta      $00FB
+7D7A: 1F 98          tfr      b,a
+7D7C: 8D 81          bsr      $7CFF
+7D7E: 97 FC          sta      $00FC
+7D80: 1F 98          tfr      b,a
+7D82: 17 FF 7E       lbsr     $7D03
+7D85: 97 FD          sta      $00FD
+7D87: 20 A8          bra      $7D31
+
+
+;   Reset Handler
+RESET:
+7D89: 10 CE 13 D0    lds      #$13D0
+NMISR:
+7D8D: 10 FF 13 F8    sts      $13F8
+
+;   Set up NMI to point here
+7D91: 8E 7D 8D       ldx      #NMISR
+7D94: BF 13 F2       stx      $13F2
+7D97: 10 CE 13 D0    lds      #$13D0
+7D9B: 86 13          lda      #13
+7D9D: 1F 8B          tfr      a,dp
+7D9F: 8D 3B          bsr      $7DDC
+7DA1: 86 01          lda      #01
+7DA3: 97 FA          sta      $00FA
+7DA5: 17 FE 78       lbsr     $7C20
+7DA8: 81 31          cmpa     #31
+7DAA: 10 27 FF 7A    lbeq     $7D28
+7DAE: 81 30          cmpa     #30
+7DB0: 27 4D          beq      $7DFF
+7DB2: 81 25          cmpa     #25
+7DB4: 27 22          beq      $7DD8
+7DB6: 81 05          cmpa     #05
+7DB8: 10 27 00 C9    lbeq     $7E85
+7DBC: 81 15          cmpa     #15
+7DBE: 10 27 01 2B    lbeq     $7EED
+7DC2: 81 35          cmpa     #35
+7DC4: 26 D1          bne      $7D97
+7DC6: 86 7C          lda      #7C
+7DC8: 97 FF          sta      $00FF
+7DCA: 17 FE E8       lbsr     $7CB5
+7DCD: 10 9E F8       ldy      $00F8
+7DD0: AF 2A          stx      $0A,y
+7DD2: 86 80          lda      #80
+7DD4: AA A4          ora      ,y
+7DD6: A7 A4          sta      ,y
+7DD8: 10 DE F8       lds      $00F8
+7DDB: 3B             rti      
+
+7DDC: 34 16          pshs     x,b,a
+7DDE: 4F             clra     
+7DDF: C6 06          ldb      #06
+7DE1: 8E 13 FA       ldx      #$13FA
+7DE4: A7 80          sta      ,x+
+7DE6: 5A             decb     
+7DE7: 26 FB          bne      $7DE4
+7DE9: 35 96          puls     a,b,x,pc ;(pul? pc=rts)
+
+7DEB: 78 6F 75       asl      $6F75
+7DEE: 57             asrb     
+7DEF: 67 37          asr      -$09,y
+7DF1: 76 6B 3D       ror      $6B3D
+7DF4: 86 13          lda      #13
+7DF6: 1F 8B          tfr      a,dp
+7DF8: 10 DF F8       sts      $00F8
+7DFB: 10 CE 13 D0    lds      #$13D0
+7DFF: 8D DB          bsr      $7DDC
+7E01: 9E F8          ldx      $00F8
+7E03: 31 8C E5       leay     -$1B,pc ; ($7DEB)
+7E06: A6 A0          lda      ,y+
+7E08: 97 FF          sta      $00FF
+7E0A: 10 8C 7D F4    cmpy     #$7DF4
+7E0E: 26 03          bne      $7E13
+7E10: 8E 13 F8       ldx      #$13F8
+7E13: 10 8C 7D EF    cmpy     #$7DEF
+7E17: 23 0E          bls      $7E27
+7E19: A6 84          lda      ,x
+7E1B: 17 FE E1       lbsr     $7CFF
+7E1E: 97 FA          sta      $00FA
+7E20: A6 80          lda      ,x+
+7E22: 17 FE DE       lbsr     $7D03
+7E25: 97 FB          sta      $00FB
+7E27: A6 84          lda      ,x
+7E29: 17 FE D3       lbsr     $7CFF
+7E2C: 97 FC          sta      $00FC
+7E2E: A6 80          lda      ,x+
+7E30: 17 FE D0       lbsr     $7D03
+7E33: 97 FD          sta      $00FD
+7E35: 17 FD E8       lbsr     $7C20
+7E38: 81 32          cmpa     #32
+7E3A: 10 26 FF 59    lbne     $7D97
+7E3E: 10 8C 7D F4    cmpy     #$7DF4
+7E42: 26 C2          bne      $7E06
+7E44: 16 FF 50       lbra     $7D97
+
+7E47: 34 06          pshs     b,a
+7E49: C6 06          ldb      #06
+7E4B: B6 40 01       lda      $4001
+7E4E: 48             asla     
+7E4F: 24 FA          bcc      $7E4B
+7E51: 5A             decb     
+7E52: 26 FD          bne      $7E51
+7E54: B6 40 01       lda      $4001
+7E57: 48             asla     
+7E58: 24 EF          bcc      $7E49
+7E5A: C6 24          ldb      #24
+7E5C: 5A             decb     
+7E5D: B6 40 01       lda      $4001
+7E60: 48             asla     
+7E61: 25 F9          bcs      $7E5C
+7E63: 86 EF          lda      #EF
+7E65: 5D             tstb     
+7E66: 2B 01          bmi      $7E69
+7E68: 47             asra     
+7E69: B7 40 00       sta      $4000
+7E6C: 5D             tstb     
+7E6D: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+7E6F: 34 02          pshs     a
+7E71: 8D D4          bsr      $7E47
+7E73: 2A FC          bpl      $7E71
+7E75: 86 08          lda      #08
+7E77: 8D CE          bsr      $7E47
+7E79: 1C FE          andcc    #FE
+7E7B: 2B 02          bmi      $7E7F
+7E7D: 1A 01          orcc     #01
+7E7F: 56             rorb     
+7E80: 4A             deca     
+7E81: 26 F4          bne      $7E77
+7E83: 35 82          puls     a,pc ;(pul? pc=rts)
+
+7E85: CC 00 00       ldd      #$00
+7E88: FD 40 02       std      $4002
+7E8B: CC FF 7F       ldd      #$FF7F
+7E8E: FD 40 00       std      $4000
+7E91: CC 04 04       ldd      #$0404
+7E94: FD 40 02       std      $4002
+7E97: CC FF 04       ldd      #$FF04
+7E9A: FD 40 00       std      $4000
+7E9D: 8D D0          bsr      $7E6F
+7E9F: C1 53          cmpb     #53
+7EA1: 26 FA          bne      $7E9D
+7EA3: 8D CA          bsr      $7E6F
+7EA5: C1 31          cmpb     #31
+7EA7: 27 08          beq      $7EB1
+7EA9: C1 4A          cmpb     #4A
+7EAB: 26 F0          bne      $7E9D
+7EAD: 86 69          lda      #69
+7EAF: 20 32          bra      $7EE3
+
+7EB1: 8D BC          bsr      $7E6F
+7EB3: D7 EC          stb      $00EC
+7EB5: 96 EC          lda      $00EC
+7EB7: 8D B6          bsr      $7E6F
+7EB9: D7 F6          stb      $00F6
+7EBB: 34 04          pshs     b
+7EBD: AB E0          adda     ,s+
+7EBF: 0A EC          dec      $00EC
+7EC1: 8D AC          bsr      $7E6F
+7EC3: D7 F7          stb      $00F7
+7EC5: 34 04          pshs     b
+7EC7: AB E0          adda     ,s+
+7EC9: 9E F6          ldx      $00F6
+7ECB: 0A EC          dec      $00EC
+7ECD: 27 0A          beq      $7ED9
+7ECF: 8D 9E          bsr      $7E6F
+7ED1: E7 80          stb      ,x+
+7ED3: 34 04          pshs     b
+7ED5: AB E0          adda     ,s+
+7ED7: 20 F2          bra      $7ECB
+
+7ED9: 8D 94          bsr      $7E6F
+7EDB: 34 04          pshs     b
+7EDD: AB E0          adda     ,s+
+7EDF: 27 BC          beq      $7E9D
+7EE1: 86 78          lda      #78
+7EE3: 17 FE F6       lbsr     $7DDC
+7EE6: 97 FA          sta      $00FA
+7EE8: 17 FD 90       lbsr     $7C7B
+7EEB: 20 FB          bra      $7EE8
+
+7EED: 8E 00 3D       ldx      #$3D
+7EF0: 9F FE          stx      $00FE
+7EF2: 17 FD C0       lbsr     $7CB5
+7EF5: 9F EE          stx      $00EE
+7EF7: 86 69          lda      #69
+7EF9: 97 FF          sta      $00FF
+7EFB: 17 FD B7       lbsr     $7CB5
+7EFE: 9F F0          stx      $00F0
+7F00: 4F             clra     
+7F01: B7 40 03       sta      $4003
+7F04: 4A             deca     
+7F05: B7 40 01       sta      $4001
+7F08: 86 04          lda      #04
+7F0A: B7 40 03       sta      $4003
+7F0D: 4F             clra     
+7F0E: B7 40 01       sta      $4001
+7F11: 86 FF          lda      #FF
+7F13: 8D 71          bsr      $7F86
+7F15: 8D 6F          bsr      $7F86
+7F17: 8D 63          bsr      $7F7C
+7F19: 86 FF          lda      #FF
+7F1B: D6 EF          ldb      $00EF
+7F1D: 34 04          pshs     b
+7F1F: A0 E0          suba     ,s+
+7F21: 84 0F          anda     #0F
+7F23: 8B 03          adda     #03
+7F25: 8D 5F          bsr      $7F86
+7F27: 97 ED          sta      $00ED
+7F29: 8E 13 EE       ldx      #$13EE
+7F2C: 8D 56          bsr      $7F84
+7F2E: 9B ED          adda     $00ED
+7F30: 97 ED          sta      $00ED
+7F32: 30 01          leax     $01,x
+7F34: 8D 4E          bsr      $7F84
+7F36: 9B ED          adda     $00ED
+7F38: 97 ED          sta      $00ED
+7F3A: 9E EE          ldx      $00EE
+7F3C: 8D 46          bsr      $7F84
+7F3E: 9B ED          adda     $00ED
+7F40: 97 ED          sta      $00ED
+7F42: 9C F0          cmpx     $00F0
+7F44: 27 0A          beq      $7F50
+7F46: 30 01          leax     $01,x
+7F48: 9F EE          stx      $00EE
+7F4A: 96 EF          lda      $00EF
+7F4C: 85 0F          bita     #0F
+7F4E: 26 EC          bne      $7F3C
+7F50: 96 ED          lda      $00ED
+7F52: 40             nega     
+7F53: 8D 31          bsr      $7F86
+7F55: 9C F0          cmpx     $00F0
+7F57: 27 18          beq      $7F71
+7F59: 96 EE          lda      $00EE
+7F5B: 91 F0          cmpa     $00F0
+7F5D: 2B B8          bmi      $7F17
+7F5F: D6 EF          ldb      $00EF
+7F61: 96 F1          lda      $00F1
+7F63: 84 F0          anda     #F0
+7F65: 34 04          pshs     b
+7F67: A1 E0          cmpa     ,s+
+7F69: 26 AC          bne      $7F17
+7F6B: 8D 0F          bsr      $7F7C
+7F6D: 96 F1          lda      $00F1
+7F6F: 20 B0          bra      $7F21
+
+7F71: 86 53          lda      #53
+7F73: 8D 11          bsr      $7F86
+7F75: 86 4A          lda      #4A
+7F77: 8D 0D          bsr      $7F86
+7F79: 16 FF 31       lbra     $7EAD
+
+7F7C: 86 53          lda      #53
+7F7E: 8D 06          bsr      $7F86
+7F80: 86 31          lda      #31
+7F82: 20 02          bra      $7F86
+
+7F84: A6 84          lda      ,x
+7F86: 34 06          pshs     b,a
+7F88: C6 0A          ldb      #0A
+7F8A: D7 EB          stb      $00EB
+7F8C: 1C FE          andcc    #FE
+7F8E: C6 90          ldb      #90
+7F90: 24 02          bcc      $7F94
+7F92: C6 24          ldb      #24
+7F94: 34 04          pshs     b
+7F96: C6 40          ldb      #40
+7F98: F7 40 01       stb      $4001
+7F9B: E6 E4          ldb      ,s
+7F9D: 5A             decb     
+7F9E: 26 FD          bne      $7F9D
+7FA0: F7 40 01       stb      $4001
+7FA3: 35 04          puls     b
+7FA5: 5A             decb     
+7FA6: 26 FD          bne      $7FA5
+7FA8: 1A 01          orcc     #01
+7FAA: 46             rora     
+7FAB: 0A EB          dec      $00EB
+7FAD: 26 DF          bne      $7F8E
+7FAF: 35 86          puls     a,b,pc ;(pul? pc=rts)
+
+7FB1: 00 00          neg      $00
+7FB3: 00 00          neg      $00
+7FB5: 00 00          neg      $00
+7FB7: 00 00          neg      $00
+7FB9: 00 00          neg      $00
+7FBB: 00 00          neg      $00
+7FBD: 00 00          neg      $00
+7FBF: 00 00          neg      $00
+7FC1: 00 00          neg      $00
+7FC3: 00 00          neg      $00
+7FC5: 00 00          neg      $00
+7FC7: 00 00          neg      $00
+7FC9: 00 00          neg      $00
+7FCB: 00 00          neg      $00
+7FCD: 00 00          neg      $00
+7FCF: 00 BE          neg      $00BE
+7FD1: 13             sync     
+7FD2: E7 6E          stb      $0E,s
+7FD4: 84 BE          anda     #BE
+7FD6: 13             sync     
+7FD7: E5 6E          bitb     $0E,s
+7FD9: 84 BE          anda     #BE
+7FDB: 13             sync     
+7FDC: E9 6E          adcb     $0E,s
+7FDE: 84 BE          anda     #BE
+7FE0: 13             sync     
+7FE1: F4 6E 84       andb     $6E84
+7FE4: BE 13 F2       ldx      $13F2
+7FE7: 6E 84          jmp      ,x
+
+7FE9: 00 00          neg      $00
+7FEB: 00 00          neg      $00
+7FED: 00 00          neg      $00
+7FEF: 00 00          neg      $00
+7FF1: 00 7F          neg      $7F
+Error: missed a comment line at 7FF2, line=7FF4
+7FF3: D5 
+
+SWI2INTR:
+7FF4: 7F D0 
+
+FIRQINTR:
+7FF6: 7F DA 
+
+INTRQ:
+7FF8: 7F DF 
+
+SWINTR:
+7FFA: 7D F4 
+
+NMINTR:
+7FFC: 7F E4 
+
+RESETBOOT:
+7FFE: 7D 89 
+

@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE svg>
+<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 43363)  -->
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="basic" gorn="0" xmlns:xml="http://www.w3.org/XML/1998/namespace"  xml:space="preserve" x="0px" version="1.1" width="0.444444in" height="0.444444in" y="0px" id="svg" viewBox="0 0 32 32">
+    <desc>
+        <referenceFile>generic_female_header.svg</referenceFile>
+    </desc>
+    <g gorn="0.0"  id="icon">
+        <rect gorn="0.0.0"  x="12.718" width="6.57" height="6.572" y="12.714" id="connector7pin"/>
+        <rect fill="#404040"  x="7.496" width="17.008" height="17.008" y="7.496"/>
+        <rect  x="12.718" width="6.57" height="6.572" y="12.714"/>
+        <polygon fill="#2A2A29" points="10.295,10.293 12.713,12.714 19.288,12.714 21.707,10.293 " />
+        <polygon fill="#474747" points="21.707,10.293 19.288,12.721 19.288,19.291 21.707,21.707 " />
+        <polygon fill="#595959" points="21.707,21.707 19.286,19.291 12.713,19.291 10.295,21.707 " />
+        <polygon fill="#373737" points="10.291,21.707 12.713,19.286 12.713,12.714 10.291,10.293 " />
+    </g>
+</svg>

@@ -1,0 +1,878 @@
+# Hand disassembled from 6802 monitor by Mike Spivey https://spivey.oriel.ox.ac.uk/corner/Nanocomp_clock
+source assem.tcl
+
+    .equ PIA 0x4000
+    .equ PORTA 0x4000
+    .equ PORTB 0x4001
+    .equ CTRLA 0x4002
+    .equ CTRLB 0x4003
+
+# Page 0 addresses
+    .equ count 0x6b
+    .equ tmp2 0x6c
+    .equ tmp3 0x6d
+    .equ chksum 0x6d
+    .equ ptr 0x6e
+    .equ addr 0x70
+    .equ nmivec 0x72
+    .equ irqvec 0x74
+    .equ tmpX 0x76
+    .equ usrsp 0x78
+    .equ dbuf 0x7a
+
+# Scan codes
+    .equ keyCN 0x25
+    .equ keyG 0x35
+    .equ keyI 0x32
+    .equ keyL 0x05
+    .equ keyM 0x31
+    .equ keyP 0x15
+    .equ keyR 0x30
+
+    .equ . 0x7c00
+keycode:
+    .byte 0x22 0x24 0x02 0x12 0x14 0x00 0x10 0x04 
+    .byte 0x01 0x11 0x03 0x13 0x23 0x33 0x21 0x20
+
+svnseg:
+    .byte 0x7e 0x06 0x5b 0x1f 0x27 0x3d 0x7d 0x0e 
+    .byte 0x7f 0x3f 0x6f 0x75 0x78 0x57 0x79 0x69
+
+GETKEY:
+    push B
+
+# Set up I/O port
+0:
+    clr A
+    st A CTRLA
+    st A CTRLB
+    st A PORTA
+    ld A #0xf
+    st A PORTB
+    ld A #0x4
+    st A CTRLA
+    st A CTRLB
+    ld B #0xff
+
+2:
+    inc B
+    cmp B #4
+    bne 1f
+    bsr DISPRESH
+    bra 0b
+
+1:
+    st B PORTB
+    ld A PORTA
+    com A
+    beq 2b
+
+# Found a key: decode it
+    st B tmp2
+    st A tmp3
+    clr A
+    ld B #1
+
+4:
+    cmp B tmp3
+    beq 3f
+    inc A
+    asl B
+    beq 2b
+    bra 4b
+
+3:
+    ld B tmp2
+    asl B
+    asl B
+    asl B
+    asl B
+    add A B
+
+# Wait for the key to be released
+    push A
+    ld A #8
+    st A tmp3
+6:
+    clr B
+5:
+    ld A PORTA
+    com A
+    bne 6b
+    dec B
+    bne 5b
+    dec tmp3
+    bne 5b
+    pop A
+    pop B
+    rts
+
+# 7c7b
+DISPRESH:
+    push A
+    push B
+    st X tmpX
+
+# Set output ports for display
+    ld X #PIA
+    clr A
+    st A 2(X)
+    st A 3(X)
+    ld A #0x7f
+    st A 0(X)
+    ld A #0x0f
+    st A 1(X)
+    ld A #0x4
+    st A 2(X)
+    st A 3(X)
+
+# Initialise loop over digits
+# They are numbered 4..9 to correspond to outputs from the 7442 decoder.
+    ld X #dbuf-1
+    ld B #3
+
+2:
+    inc B
+    cmp B #10
+    bne 3f
+
+# Finished
+    ld X tmpX
+    pop B
+    pop A
+    rts
+
+# Light up the next digit
+3:
+    inc X
+    st B PORTB
+    ld A (X)
+    com A
+    st A PORTA
+
+# Delay loop
+    ld A #0x80
+1:
+    dec A
+    bne 1b
+
+# Loop for next digit
+    bra 2b
+
+BADDR:
+# Input 2 byte address into X; result also at [addr]
+    clr A
+    st A dbuf
+    st A dbuf+1
+    st A dbuf+2
+    st A dbuf+3
+    ld X #dbuf
+    bsr HEXIN
+    st A addr
+    bsr HEXIN
+    st A addr+1
+    ld X addr
+    rts
+
+# 7ccc
+HEXIN:
+# Input 2 hex digits into A and update display at X
+    bsr KEYHEX
+    asl A
+    asl A
+    asl A
+    asl A
+    push A
+    bsr L7SEG
+    st A (X)
+    inc X
+    bsr KEYHEX
+    pop B
+    add A B
+    push A
+    bsr R7SEG
+    st A (X)
+    inc X
+    pop A
+    rts
+
+# 7ce4
+KEYHEX:
+    jsr GETKEY
+# Fall-thru
+
+HEXCON:
+    push B
+    st X tmpX
+    ld X #keycode-1
+    ld B #0xff
+1:
+    inc B
+    inc X
+    cmp X #keycode+16
+    beq toresume2
+    cmp A (X)
+    bne 1b
+    mov A B
+    ld X tmpX
+    pop B
+    rts
+
+# 7cff
+L7SEG:
+    asr A
+    asr A
+    asr A
+    asr A
+# Fall-thru
+
+# 7d03
+R7SEG:
+# Convert low-order 4 bits of A to 7seg
+    st X tmpX
+    ld X #svnseg
+    and A #0xf
+1:
+    beq 2f
+    inc X
+    dec A
+    bra 1b
+2:
+    ld A (X)
+    ld X tmpX
+    rts
+
+# 7d15
+SVNHEX:
+# Convert 7seg to hex
+    push B
+    st X tmpX
+    ld X #svnseg
+    mov B A
+    clr A
+
+1:
+    cmp B (X)
+    beq 2f
+    inc X
+    cmp X #svnseg+16
+toresume2:
+    beq resume
+    inc A
+    bra 1b
+
+2:
+    ld X tmpX
+    pop B
+    rts
+
+# 7d2e
+memdisp:
+# Prompt for address with 'M' and display memory contents
+    clr A
+    st A dbuf+4
+    ld A #0x6e
+    st A dbuf+5
+    jsr BADDR
+
+0:
+    ld A (X)
+    push A
+    bsr L7SEG
+    st A dbuf+4
+    pop A
+    bsr R7SEG
+    st A dbuf+5
+
+1:
+# Check for I key
+    jsr GETKEY
+    cmp A #keyI
+    beq 2f
+    bsr HEXCON
+    ld B dbuf+5
+    st B dbuf+4
+    bsr R7SEG
+    st A dbuf+5
+    bra 1b
+
+2:
+# Store and increment
+    ld A dbuf+4
+    bsr SVNHEX
+    asl A
+    asl A
+    asl A
+    asl A
+    push A
+    ld A dbuf+5
+    bsr SVNHEX
+    pop B
+    add A B
+    mov B A
+    st A (X)
+    ld A (X)
+    cmp A B
+    bne resume
+    inc X
+    st X addr
+    ld A addr
+    bsr L7SEG
+    st A dbuf
+    ld A addr
+    bsr R7SEG
+    st A dbuf+1
+    ld A addr+1
+    jsr L7SEG
+    st A dbuf+2
+    ld A addr+1
+    jsr R7SEG
+    st A dbuf+3
+    bra 0b
+
+reset:
+# Reset handler
+    ld SP #0x60
+
+nmisr:
+    st SP usrsp
+
+# Set up NMI to point here
+    ld X #nmisr
+    st X nmivec
+
+# 7d97
+resume:
+    ld SP #0x60
+
+# Clear display
+    clr A
+    ld B #5
+    ld X #dbuf+1
+1:
+    st A (X)
+    inc X
+    dec B
+    bne 1b
+
+# Show '-' at left
+    inc A
+    st A dbuf
+
+    jsr GETKEY
+
+# If key is 'M'
+    cmp A #keyM
+    bne 2f
+    jmp memdisp
+2:
+# If key is 'R'
+    cmp A #keyR
+    beq regdisp
+# If key is 'G'
+    cmp A #keyG
+    beq go
+# If key is 'CN'
+    cmp A #keyCN
+    beq cont
+# If key is 'L'
+    cmp A #keyL
+    bne 3f
+    jmp load
+# If key is 'P'
+3:
+    cmp A #keyP
+    bne resume
+    jmp save
+
+# 7dcd
+go:
+# Prompt and accept start address
+    ld A #0x7c
+    st A dbuf+5
+    jsr BADDR
+    st X tmpX
+    ld X usrsp
+    ld A tmpX
+    st A 6(X)
+    ld A tmpX+1
+    st A 7(X)
+
+# 7de0
+cont:
+    ld SP usrsp
+    rti
+
+swintr:
+# SWI handler: display registers
+    st SP usrsp
+    ld SP #0x60
+
+# 7de8
+regdisp:
+# Display registers one at a time
+    ld X usrsp
+
+# Show CC
+    ld A #0x78
+    st A dbuf+4
+    st A dbuf+5
+    clr A
+    st A dbuf
+    st A dbuf+1
+    bsr showbyte
+    bsr regwait
+
+# Show B
+    clr dbuf+4
+    ld A #0x75
+    st A dbuf+5
+    bsr showbyte
+    bsr regwait
+
+# Show A
+    ld A #0x6f
+    st A dbuf+5
+    bsr showbyte
+    bsr regwait
+
+# Show X as IH
+    ld A #0x6
+    st A dbuf+4
+    ld A #0x67
+    st A dbuf+5
+    bsr showword
+    bsr regwait
+
+# Show PC
+    ld A #0x68
+    st A dbuf+4
+    ld A #0x78
+    st A dbuf+5
+    bsr showword
+    bsr regwait
+
+# Show SP
+    ld A #0x3d
+    st A dbuf+4
+    ld A #0x6b
+    st A dbuf+5
+    ld X #usrsp
+    dec X
+    bsr showword
+    bsr regwait
+    bra toresume
+
+# 7e36
+showleft:
+# Fetch a byte at ++X and display it in the left two digits
+    inc X
+    ld A (X)
+    jsr L7SEG
+    st A dbuf
+    ld A (X)
+    jsr R7SEG
+    st A dbuf+1
+    rts
+
+# 7e46
+showword:
+# Show a two-byte word
+    bsr showleft
+# Fall-thru
+
+# 7e48
+showbyte:
+# Fetch a byte at ++X and display it
+    inc X
+    ld A (X)
+    jsr L7SEG
+    st A dbuf+2
+    ld A (X)
+    jsr R7SEG
+    st A dbuf+3
+    rts
+
+# 7e58
+regwait:
+# Wait for I key or resume monitor
+    jsr GETKEY
+    cmp A #keyI
+    beq gotI
+toresume:
+    jmp resume
+gotI:
+    rts
+
+# ----------------------------------------------------------------
+
+recvbit:
+# Receive a bit and return in CC
+    push A
+    push B
+
+retry:
+    ld B #6
+
+# Listen for a high signal on PORTB[7]
+1:
+    ld A PORTB
+    asl A
+    bcc 1b
+
+# Wait a moment
+2:
+    dec B
+    bne 2b
+
+# Check the signal is still high
+    ld A PORTB
+    asl A
+    bcc retry
+
+# Time until the signal is low
+    ld B #40
+3:
+    dec B
+    ld A PORTB
+    asl A
+    bcs 3b
+
+# Show a bit pattern in the display
+    ld A #0xef
+    tst B
+    bmi 4f
+    asr A
+4:
+    st A PORTA
+
+# Set CC with the result: positive for a 1
+    tst B
+    pop B
+    pop A
+    rts
+
+# 7e8c
+recvbyte:
+# Receive a byte and return in B
+    push A
+
+# Wait for start bit
+1:
+    bsr recvbit
+# 7e8f
+    bpl 1b
+
+# Prepare to gather 8 bits
+    ld A #8
+
+# Loop once per bit, LSB first
+3:
+    bsr recvbit
+    clc
+    bmi 2f
+    sec
+2:
+    ror B
+    dec A
+    bne 3b
+
+    pop A
+    rts
+
+load:
+# Set up I/O ports
+    ld X #0
+    st X CTRLA
+    ld X #0xff7f
+    st X PORTA
+    ld X #0x0404
+    st X CTRLA
+    ld X #0xff04
+    st X PORTA
+
+reload:
+    bsr recvbyte
+# Wait for 0x53 = 'S'
+    cmp B #0x53
+    bne reload
+    bsr recvbyte
+# Code 'S1' begins a record
+    cmp B #0x31
+    beq 2f
+# Code 'SJ' means EOF
+    cmp B #0x4a
+    bne reload
+
+messageF:
+# Show F in display forever
+    ld A #0x69
+    bra errstop
+
+2:
+# Get count, initialise checksum
+    bsr recvbyte
+    st B tmp2
+    mov A B
+
+# Get two-byte address, accumulating checksum in A
+    bsr recvbyte
+    st B tmpX
+    add A B
+    dec tmp2
+    bsr recvbyte
+    st B tmpX+1
+    add A B
+    ld X tmpX
+
+ldloop:
+    dec tmp2
+    beq lddone
+    bsr recvbyte
+    st B (X)
+    add A B
+    inc X
+    bra ldloop
+
+lddone:
+# Verify checksum
+    bsr recvbyte
+    add A B
+    beq reload
+    ld A #0x78
+# Fall-thru
+
+errstop:
+# Show code from A and loop forever
+    ld X #0
+    st X dbuf
+    st X dbuf+2
+    st X dbuf+4
+    st A dbuf
+dead:
+    jsr DISPRESH
+    bra dead
+
+    nop
+    nop
+    nop
+    nop
+
+# ----------------------------------------------------------------
+
+save:
+# Prompt 'S' and get start address
+    ld X #0x3d
+    st X dbuf+4
+    jsr BADDR
+    st X ptr
+
+# Prompt 'F' and get finish address
+    ld A #0x69
+    st A dbuf+5
+    jsr BADDR
+
+# Set up output port
+    clr A
+    st A CTRLB
+    dec A
+    st A PORTB
+    ld A #0x04
+    st A CTRLB
+    clr A
+    st A PORTB
+    bra 1f
+
+    nop
+    nop
+    nop
+    nop
+
+# 7f2f
+savedone:
+    bra messageF
+
+# 7f31
+1:
+# Send two bytes of all ones
+    ld A #0xff
+    bsr send
+    bsr send
+
+# 7f37
+4:
+# Send block start
+    bsr sendstart
+
+# calculate block length
+    ld A #0xff
+    ld B ptr+1
+    sub A B
+
+# 7f3e
+2:
+# Send length code and init checksum
+    and A #0xf
+    add A #3
+    bsr send
+# 7f44
+    st A chksum
+
+# Send (half of) address and add to checksum
+    ld X #ptr
+    bsr sendbyte
+# 7f4b
+    add A chksum
+    st A chksum
+
+# Send other half of address and add to checksum
+    inc X
+    bsr sendbyte
+# 7f52
+    add A chksum
+    st A chksum
+    ld X ptr
+
+# Send a data byte and add to checksum
+3:
+    bsr sendbyte
+# 7f5a
+    add A chksum
+    st A chksum
+
+# Test if finished
+    cmp X addr
+#7f60
+    beq endblock
+
+# Increment and test if end of block
+    inc X
+    st X ptr
+    ld A ptr+1
+    bit A #0xf
+    bne 3b
+# 7f6b
+
+endblock:
+# Send checksum
+    ld A chksum
+    neg A
+    bsr send
+
+# Test if all finished
+    cmp X addr
+    beq sendeof
+
+# 7f74 
+# Test if another full block to send
+    ld A ptr
+    cmp A addr
+    bmi 4b
+# 7f7a
+    ld B ptr+1
+    ld A addr+1
+    and A #0xf0
+# 7f80
+    cmp A B
+    bne 4b
+# 7f83
+# Last block may be short
+    bsr sendstart
+# 7f85
+    ld A addr+1
+    bra 2b
+
+# 7f89
+sendeof:
+# Send eof code 534a = 'SJ'
+    ld A #0x53
+    bsr send
+    ld A #0x4a
+    bsr send
+    bra savedone
+
+# 7f93
+sendstart:
+# Send magic code 'S1'
+    ld A #0x53
+    bsr send
+    ld A #0x31
+    bra send
+
+# 7f9b
+sendbyte:
+# Transmit byte from (X)
+    ld A (X)
+
+# 7f9d
+send:
+# Transmit byte from A
+    push A
+    push B
+
+# Total of 10 bits to send, including start and stop
+    ld B #10
+    st B count
+
+# Set up start bit
+    clc
+
+nextbit:
+# Next bit in C flag: set B to delay count
+    ld B #0x78
+    bcc 8f
+    ld B #0x1e
+8:
+    push B
+
+# Set bit in output port
+    ld B #0x40
+    st B PORTB
+
+# Delay loop
+    pop B
+    dec SP
+1:
+    dec B
+    bne 1b
+
+# Clear bit in output port
+    st B PORTB
+
+# Same delay loop again
+    pop B
+2:
+    dec B
+    bne 2b
+
+# Rotate a 1 bit into A, so stop bit will be a 1
+    sec
+    ror A
+    dec count
+    bne nextbit
+
+    pop B
+    pop A
+    rts
+
+    .equ . 0x7fe8
+intrq:
+# IRQ handler
+    ld X irqvec
+    jmp (X)
+
+    .equ . 0x7fec
+nmintr:
+# NMI handler
+    ld X nmivec
+    jmp (X)
+
+    .equ . 0x7ff8
+# Interrupt vectors
+    .word intrq
+    .word swintr
+    .word nmintr
+    .word reset
+
+fixup
+output

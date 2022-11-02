@@ -1,0 +1,58 @@
+Start Ubuntu WSL
+cd /mnt/c/6809DASM
+make --file=MAKEFILE
+cd /mnt/c/Users/Dave/OneDrive/Documents/_Breadboarding/13_Disassembly/
+
+Test 1 Just ORG and Reset Vector
+/mnt/c/6809DASM/6809dasm -inanocomp6809_1981_7c00.bin -dnanocompdata_7c00_01.txt -l > nanocomp_6809_7c00_01.txt
+
+Test 2 Just ORG and Reset Vector, published Subroutines and KEYCODE and SVNSEG Data
+/mnt/c/6809DASM/6809dasm -inanocomp6809_1981_7c00.bin -dnanocompdata_7c00_02.txt -l > nanocomp_6809_7c00_02.txt
+
+Test 3 Just ORG and Reset Vector, published Subroutines and KEYCODE and SVNSEG Data, more labels and DATA
+/mnt/c/6809DASM/6809dasm -inanocomp6809_1981_7c00.bin -dnanocompdata_7c00_03.txt -l > nanocomp_6809_7c00_03.txt
+
+Test 4 Most comments and labels
+/mnt/c/6809DASM/6809dasm -inanocomp6809_1981_7c00.bin -dnanocompdata_7c00_04.txt -l > nanocomp_6809_7c00_04.txt
+
+Test 5 Most comments and labels, include examples starting at 7800 with  no -l
+/mnt/c/6809DASM/6809dasm -inanocomp6809_1981.bin -dnanocompdata_7800_05.txt > nanocomp_6809_7800_05.txt
+
+Test 6 Most comments and labels, include examples starting at 7800 with -c no -l
+/mnt/c/6809DASM/6809dasm -c -inanocomp6809_1981.bin -dnanocompdata_7800_05.txt > nanocomp_6809_7800_06.asm
+
+Assemble .asm to ,.bin
+cd C:\Users\Dave\OneDrive\Documents\_Breadboarding\13_Disassembly
+C:\Users\Dave\OneDrive\Documents\_6809\asm6809-2.12-w64\asm6809.exe -B -l nanocomp_6809_7800_06.lst nanocomp_6809_7800_06.asm -o nanocomp6809_2022.bin
+
+Edits to 06 version
+===================
+Remove labels from HEXTODEC to RESETBOOT
+Replace = 0x with EQU $ for first 13 rows
+Macro for Search for : then down 1 line space, replace all label : and move to next line
+Replace #PORTADP with #allzeros (2 occurances MASTERM3 7ABB and SEND 7E86 with $00)
+Review variables ending in dp  and remove dp (can't replace dp)
+
+** Copy the following below KeyR
+
+REGDISPCHAR2                  EQU  $7DEF
+chksum                        EQU  $13ED
+allzeros                      EQU  $0000
+               ORG $13D0
+usrsp                         RMB 1  ;
+               ORG $13E5
+;org needs to be 13E4 to have separate chksum			   
+;chksum                        RMB 1  ;
+SWI3VEC                       RMB 2  ;
+SWI2VEC                       RMB 2  ;
+FIRQVEC                       RMB 2  ;
+count                         RMB 1  ;
+tmp2                          RMB 1  ;
+tmp3                          RMB 1  ;
+ptr                           RMB 2  ;
+addr                          RMB 2  ;
+NMIVEC                        RMB 2  ;
+IRQVEC                        RMB 2  ;
+tmpX                          RMB 2  ;
+stackstart                    RMB 2  ;
+dbuf                          RMB 6  ;

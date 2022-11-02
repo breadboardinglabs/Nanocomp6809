@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE svg>
+<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 43363)  -->
+<svg xmlns="http://www.w3.org/2000/svg" height="0.3344583in" viewBox="0 0 16.527 24.081" y="0"  baseProfile="basic" x="0" width="0.22954in" id="Layer_1" version="1.1" gorn="0">
+    <desc>
+        <referenceFile>transistor_npn.svg</referenceFile>
+    </desc>
+    <g  id="breadboard" gorn="0.0">
+        <rect height="1" y="22.081"  x="0" width="2.16" fill="none" id="connector0pin" gorn="0.0.0"/>
+        <rect height="1" y="22.081"  x="7.181" width="2.16" fill="none" id="connector1pin" gorn="0.0.1"/>
+        <rect height="1" y="22.081"  x="14.367" width="2.16" fill="none" id="connector2pin" gorn="0.0.2"/>
+        <line stroke="#8C8C8C" stroke-linecap="round" y1="24.081" y2="31.259"  x1="1.08" fill="none" stroke-width="2.16" id="connector0leg" x2="1.08" gorn="0.0.3"/>
+        <line stroke="#8C8C8C" stroke-linecap="round" y1="24.081" y2="31.259"  x1="8.261" fill="none" stroke-width="2.16" id="connector1leg" x2="8.261" gorn="0.0.4"/>
+        <line stroke="#8C8C8C" stroke-linecap="round" y1="24.081" y2="31.259"  x1="15.447" fill="none" stroke-width="2.16" id="connector2leg" x2="15.447" gorn="0.0.5"/>
+        <rect height="9.351" y="14.731"  x="7.178" width="2.154" fill="#8C8C8C" id="rect9506" gorn="0.0.6"/>
+        <path  fill="#8C8C8C" d="M3.287,14.731v3.316c0,0.424-0.782,1.059-1.198,1.425c-1.025,0.891-2.088,1.819-2.088,2.992&#xd;&#xa;&#x9;&#x9;v1.619h2.154c0,0,0-1,0-1.21c0-0.517,0.904-1.389,1.35-1.769c0.997-0.87,1.945-1.69,1.945-2.749v-3.625H3.287L3.287,14.731z" id="path9510" gorn="0.0.7"/>
+        <path  fill="#8C8C8C" d="M13.221,14.731v3.316c0,0.424,0.781,1.059,1.199,1.425c1.027,0.891,2.089,1.819,2.089,2.992&#xd;&#xa;&#x9;&#x9;v1.619h-2.154c0,0,0-1,0-1.21c0-0.517-0.904-1.389-1.35-1.769c-0.998-0.87-1.945-1.69-1.945-2.749v-3.625H13.221L13.221,14.731z" id="path9514" gorn="0.0.8"/>
+        <rect height="10.07" y="4.659"  x="1.615" width="13.278" fill="#1A1A1A" id="rect9553" gorn="0.0.9"/>
+        <path  fill="#141414" d="M13.889,4.659v2.453v8.228v1.842c0.632-0.713,1.004-1.553,1.004-2.453l0,0V4.659H13.889z" id="path9555" gorn="0.0.10"/>
+        <path  fill="#242424" d="M2.621,4.659H1.616v10.07l0,0c0,0.899,0.373,1.74,1.005,2.453V15.34V7.112V4.659z" id="path9557" gorn="0.0.11"/>
+        <path  fill="#1F1F1F" d="M1.615,4.659L1.615,4.659c0,0.899,0.373,1.74,1.005,2.453h11.276&#xd;&#xa;&#x9;&#x9;c0.632-0.713,1.005-1.554,1.005-2.453l0,0H1.615z" id="path9559" gorn="0.0.12"/>
+        <path  fill="#141414" d="M8.255,0C4.587,0,1.615,2.086,1.615,4.661h13.278C14.893,2.086,11.923,0,8.255,0z" id="path9561" gorn="0.0.13"/>
+        <rect height="10.07" y="7.112"  x="2.621" width="11.276" id="rect9563" gorn="0.0.14"/>
+        <path  fill="#999999" d="M4.99,14.359v-5.4h2.16v1.079h1.08v1.08h1.081V8.958h2.159v5.4H9.312v-1.079H8.231v-1.08h-1.08v2.161H4.99z"/>
+    </g>
+</svg>

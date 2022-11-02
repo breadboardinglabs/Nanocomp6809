@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" gorn="0"  x="0in" version="1.2" width="0.2in" height="0.2in" y="0in" id="svg2" viewBox="0 0 14.4 14.4">
+    <desc>
+        <referenceFile>generic_female_pin_header_2_100mil_schem.svg</referenceFile>
+    </desc>
+    <g gorn="0.0"  id="schematic">
+        <line y2="3.6" y1="3.6" stroke-linecap="round" fill="none" stroke="#000000" gorn="0.0.0"  x2="7.346" x1="0.35" id="connector0pin" stroke-width="0.7" stroke-linejoin="round"/>
+        <rect fill="none" gorn="0.0.1"  x="-0.252" width="0.546" height="0.208" y="3.504" id="connector0terminal"/>
+        <polyline stroke-linecap="round" fill="none" stroke="#000000" points="14.1,5.557 9.928,3.6 14.1,1.643"  stroke-width="0.7" stroke-linejoin="round"/>
+        <line y2="3.6" y1="3.6" stroke-linecap="round" fill="none" stroke="#000000" gorn="0.0.3"  x2="4.804" x1="10.11" id="line" stroke-width="0.7" stroke-linejoin="round"/>
+        <text font-family="'Droid Sans'" stroke="none" fill="#8c8c8c" class="text"  font-size="2.5" text-anchor="middle" x="5.05" y="2.58" stroke-width="0">1</text>
+        <line y2="10.8" y1="10.8" stroke-linecap="round" fill="none" stroke="#000000" gorn="0.0.5"  x2="7.346" x1="0.35" id="connector1pin" stroke-width="0.7" stroke-linejoin="round"/>
+        <rect fill="none" gorn="0.0.6"  x="-0.252" width="0.546" height="0.208" y="10.704" id="connector1terminal"/>
+        <polyline stroke-linecap="round" fill="none" stroke="#000000" points="14.1,12.757 9.928,10.8 14.1,8.843"  stroke-width="0.7" stroke-linejoin="round"/>
+        <line y2="10.8" y1="10.8" stroke-linecap="round" fill="none" stroke="#000000" gorn="0.0.8"  x2="4.804" x1="10.11" id="line" stroke-width="0.7" stroke-linejoin="round"/>
+        <text font-family="'Droid Sans'" stroke="none" fill="#8c8c8c" class="text"  font-size="2.5" text-anchor="middle" x="5.05" y="9.78" stroke-width="0">2</text>
+    </g>
+</svg>

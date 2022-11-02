@@ -1,0 +1,12 @@
+CC=gcc
+CFLAGS=-O2
+
+6809dasm.exe : 6809dasm.o other.o makefile
+	$(CC) $(CFLAGS) 6809dasm.o -o 6809dasm
+
+6809dasm.o : 6809dasm.c defs.h opcode.h makefile
+	$(CC) $(CFLAGS) -c 6809dasm.c
+
+other.o : other.c defs.h other.h makefile
+	$(CC) $(CFLAGS) -c other.c
+
