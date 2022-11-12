@@ -1,0 +1,1495 @@
+                      ;C:\Users\Dave\OneDrive\Documents\_6809\asm6809-2.12-w64\asm6809.exe -B -l nanocomp_6809_v2.1_doc.txt nanocomp_6809_v2.1_doc.asm -o nanocomp_6809_v2.1_doc.bin
+                                            ; Condition Code Register
+                                            ; CC  7  6  5  4  3  2  1  0
+                                            ;     E  F  HC I  N  Z  O  C
+                                            ;
+                                            ; 0 C Carry/Borrow
+                                            ; 1 O Overflow
+                                            ; 2 Zero
+                                            ; 3 N Negative
+                                            ; 4 I IRQ Mask
+                                            ; 5 HC Half Carry
+                                            ; 6 F FIRQ Mask
+                                            ; 7 E Entire State on Stack
+                      ;
+                      ; Nanocomp 6809 Monitor V2.1 with MC6850 ACIA and Motorola SREC Load and Save, with fix to DISPRESH to prevent ghosting
+                      ; Fix moves all rountines below back by 5 Bytes. Reset Vector changes from 7D89 to 7D8E (+5)
+                      ;
+                      ;-           After power up, display - wait for command
+                      ;RST Reset   Is hard reset bringing /RST line low via switch debounce circuit
+                      ;AB  Abort   Is Non Maskable Interupt (NMI), vector at 13F2
+                      ;G  Go       Displays G to acknowledge command, enter 4 digit hex address and will run on 4th digit
+                      ;CN Continue After SWI or Abort (NMI) press CN to continue, values on the stack will be pulled including program counter
+                      ;M  Memory   Display M in far right display (upside down U),
+                      ;            4 digit Hex entered in left 4 digits, 
+                      ;            displays memory contents in right two digits
+                      ;            change by typing in new digits enter in from right shift to left
+                      ;            Press I to save and move to next 
+                      ;            No changes press I to advance or AB to abort
+                      ;            Invalid address or hex bytes will return to monitor - prompt
+                      ;S  Save     SAVE range to serial port in V2+ in S19/SREC format 7DCB 
+                      ;            Display S to prompt for Start address
+                      ;            Display F to prompt for for finish address
+                      ;            Displays F when finished
+                      ;L  Load     LOAD from serial port in V2+ 7DC4
+                      ;            When finished Display F Finished or E for Hex error or C for Checksum error
+                      ;AB Abort    Return to monitor start via NMI if not changed NMI vector
+                      ;R  Register Display register values via the pushed values on the stack (automatic after SWI)
+                      ;            Right digits show 
+                      ;               C Condition Code register
+                      ;               A ACC A
+                      ;               b ACC B
+                      ;               d direct page register
+                      ;               H X Register
+                      ;               Y Y Register
+                      ;               U User Stack Pointer
+                      ;               P Program Counter
+                      ;               S Hardware Stack Pointer
+                      ;               Press I between values
+                      ;               After SP displayed returns to Monitor, AB to Abort to monitor
+                      
+                      ; Example programs
+                      ; 7800 Hex to decimal converter
+                      ; G 7800 Type L then decimal No then I to display Hex, press I to start again
+                      ;        Press P for hex to decimal then I
+                      
+                      ; 7A00 Calculate offsets
+                      ; G 7A00 Displays S enter start address  then I
+                      ;        Displays d then enter destination then twos complement offset displayed
+                      ;        If outside range displays --, press I for next
+                      
+                      ; 7A80 Mastermind
+                      ;        I displayed after thinking of 4 digit number 4 digits 0-7
+                      ;        Press I enter guess 2 digits display Correct digits and correct numbers in wrong places (Bulls and Cows)
+                      ;        Press I for next number, after 4 bulls press I and displays number of tries
+                      
+                      ; 7940 Duckshoot
+                      ; G 7940 Store 0020 at memory 0000 and 0001 (1000 and 1001 for 6809)
+                      ;        Press number 1-6 for duck until none are left.
+                      
+                      ; Common Subroutines
+                      
+                      ; 7C7B DISPRESH Displays 6 digits from 13FA (left) to 13FF (right) 
+                      ; Bit Segments, note that A-G seqments in 1981 design are different from modern LED displays (E&F swapped)
+                      ;       b3 A
+                      ;     -------
+                      ; b5 E|     | b1 B
+                      ;     | b0 G|
+                      ;     -------
+                      ; b6 F|     | b2 C
+                      ;     |     |
+                      ;     -------
+                      ;       b4 D  
+                      ; 7 Segment display values (see segxx EQU definitions below)
+                      ;  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  -  G  M  P  S  U  X  Y
+                      ; 7E 06 5B 1F 27 3D 7D 0E 7F 3F 6F 75 78 57 79 69 01 7C 6E 6B 3D 76 67 37
+                      
+                      ; 7C20 GETKEY Scans for key and refreshes display until key pressed. Then waits to be released and returns key in A
+                      ; Key Codes in Hex (see keyxx EQU definitions below)
+                      
+                      ;  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  L SP CN G  M  R  I
+                      ; 22 24 02 12 14 00 10 04 01 11 03 13 23 33 21 20 05 15 25 35 31 30 32
+                      
+                      ; 7CE7 HEXCON converts key code in A into Hex equivelent for the key and returns in A. If non Hex command key entered returns to monitor
+                      ; 7CE4 KEYHEX Combines GETKEY and HEXCON
+                      
+                      ; 7CB5 BADDR Build 4 digit hex address from keyboard refreshing display and return address in X index register
+                      
+                      ; 7CFF L7SEG converts left hex digit of A into 7 segment code for display and returns in A
+                      
+                      ; 7D03 R7SEG converts right hex digit of A into 7 segment code for display and returns in A
+                      
+                      ; 7D15 SVNHEX Converts 7 segment hex code in A to hex value returned in A, default to monitor if code not hex
+                      
+                      ; 7CCC HEXIN Use KEYHEX to accept two hex key entries and combines two hex digits in one byte in A
+                      
+                      
+                      ; 6809 Memory Map
+                      
+                      ;EPROM Monitor 7FFF
+                      ;              7C00
+                      ;      User    7BFF
+                      ;              7000
+                      ;Serial Port
+                      ;  Control W   5000
+                      ;  Status  R   5000
+                      ;  Data    R/W 5001
+                      ;     Note the PIA RS0 and RS1 Pins are reversed and connected to RS0=A1 and RS1=A0
+                      ;     Register order does not match the 6821 datasheet
+                      ;PIA  Out/Dir A 4000
+                      ;         Out/Dir B 4001
+                      ;     Control A 4002
+                      ;     Control B 4003
+                      
+                      ;RAM           13FF
+                      ;              1000
+                      
+                      ;Monitor RAM
+                      ;   Display buffer right 13FF
+                      ;                  left  13FA
+                      ;   Working Storage      13E0
+                      ;   Monitor stack        13D0 (MONSTACK)
+                      ;                        13B0
+                      ;   User Stack           1390 (USERSTACK)
+                      
+                      ; Interupt vector        Address
+                      ; SWI3                   13E5/6
+                      ; SWI2                   13E7/8
+                      ; FIRQ                   13E9/AB
+                      ; NMI                    13F2/3
+                      ; IRQ                    13F4/5
+                      
+                      ; Reset Vector           FFFE 7D
+                      ;                        FFFF 89
+                      
+4000                  PORTA                         EQU $4000
+4001                  PORTB                         EQU $4001
+4002                  CTRLA                         EQU $4002
+4003                  CTRLB                         EQU $4003
+                      
+                      ;Keys Hex 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  L  S CN   G  M  R  I
+                      ;Current 22 24 02 12 14 00 10 04 01 11 03 13 23 33 21 20 05 15 25  35 31 30 32
+                      
+0025                  keyCN                         EQU $25
+0035                  keyG                          EQU $35
+0032                  keyI                          EQU $32
+0005                  keyL                          EQU $05
+0031                  keyM                          EQU $31
+0015                  keyP                          EQU $15 ; P Punch replaced with S Save
+0015                  keyS                          EQU $15
+0030                  keyR                          EQU $30
+0022                  key0                          EQU $22
+0024                  key1                          EQU $24
+0002                  key2                          EQU $02
+0012                  key3                          EQU $12
+0014                  key4                          EQU $14
+0000                  key5                          EQU $00
+0010                  key6                          EQU $10
+0004                  key7                          EQU $04
+0001                  key8                          EQU $01
+0011                  key9                          EQU $11
+0003                  keyA                          EQU $03
+0013                  keyB                          EQU $13
+0023                  keyC                          EQU $23
+0033                  keyD                          EQU $33
+0021                  keyE                          EQU $21
+0020                  keyF                          EQU $20
+                      
+007E                  seg0                          EQU $7E
+0006                  seg1                          EQU $06
+005B                  seg2                          EQU $5B
+001F                  seg3                          EQU $1F
+0027                  seg4                          EQU $27
+003D                  seg5                          EQU $3D
+007D                  seg6                          EQU $7D
+000E                  seg7                          EQU $0E
+007F                  seg8                          EQU $7F
+003F                  seg9                          EQU $3F
+006F                  segA                          EQU $6F
+0075                  segB                          EQU $75
+0078                  segC                          EQU $78
+0057                  segD                          EQU $57
+0079                  segE                          EQU $79
+0069                  segF                          EQU $69
+007C                  segG                          EQU $7C
+006E                  segM                          EQU $6E ; (upside down U)
+006B                  segP                          EQU $6B
+003D                  segS                          EQU $3D ; (Same as 5)
+0076                  segU                          EQU $76
+0067                  segX                          EQU $67
+0037                  segY                          EQU $37
+0001                  segDash                       EQU $01
+                      
+0000                  asciiNull                     EQU $00
+000A                  asciiLF                       EQU $0A
+000D                  asciiCR                       EQU $0D
+                      
+0030                  ascii0                        EQU $30
+0031                  ascii1                        EQU $31
+0033                  ascii3                        EQU $33
+0039                  ascii9                        EQU $39
+0041                  asciiA                        EQU $41
+0043                  asciiC                        EQU $43
+0046                  asciiF                        EQU $46
+0053                  asciiS                        EQU $53
+                      
+                      ; Used by HEXTODEC for conversion between decimal and Hex
+2710                  DEC10K                        EQU  $2710
+03E8                  DEC1K                         EQU  $03E8
+                      
+                      ; Starting values for Monitor/System and User Stack pointers
+13D0                  MONSTACK                      EQU  $13D0
+1390                  USERSTACK                     EQU  $1390
+                      
+                      ; Direct page values used to initialise Direct Page Register
+0013                  dpRam                         EQU  $13
+0040                  dpPIA                         EQU  $40
+                      
+                      ;REGDISPCHAR2                  EQU  $7DEF ; Label for where Register Display characters go from 8 bit to 16 bit
+                      ;chksum                        EQU  $13ED ; ?? Used for Send and Receive Checksum calculation
+0000                  allzeros                      EQU  $0000 ; Used to initialise some registers with $0000
+                      
+                      ; Serial Port Constants
+5000                  SERIALCTRL                    EQU  $5000           ; Use DP $50   $5000
+5000                  SERIALSTATUS                  EQU  $5000           ; Use DP $50   $5000
+5001                  SERIALDATA                    EQU  $5001           ; Use DP $50   $5001
+                      
+0003                  CTRLRESET                     EQU  %00000011       ; CR1, CR0 1,1 for Master Reset
+0001                  CTRLDIVIDE16                  EQU  %00000001       ; CR1, CR0 0,1 for divide by 16
+0002                  CTRLDIVIDE64                  EQU  %00000010       ; CR1, CR0 1,0 for divide by 64
+0014                  CTRLWORD8N1S                  EQU  %00010100       ; CR4, CR3, CR2 1, 0, 1 for 8 Bits, 1 Stop No Parity
+0000                  CTRLRTSLOW                    EQU  %00000000       ; CR6, CR5, 0,0 RTS low IRQ disabled, requests data
+0040                  CTRLRTSHIGH                   EQU  %01000000       ; CR6, CR5, 1,0 RTS high IRQ disabled, prevents receiving data
+0080                  CTRLIRQENABLED                EQU  %10000000       ; CR7, 1 IRQ enabled
+                      
+0001                  STATUSRDRF                    EQU  %00000001       ; Receive Data Register Full Bit 0
+0002                  STATUSTDRE                    EQU  %00000010       ; Transmit Data Register Empty Bit 1
+0004                  STATUSDCD                     EQU  %00000100       ; Data Carrier Detect Bit 2
+0008                  STATUSCTS                     EQU  %00001000       ; Clear To Send Bit 3
+0010                  STATUSFE                      EQU  %00010000       ; Framing Error Bit 4
+0020                  STATUSOVRN                    EQU  %00100000       ; Receiver Overrun Bit 5
+0040                  STATUSPE                      EQU  %01000000       ; Parity Error Bit 6
+0080                  STATUSIRQREQ                  EQU  %10000000       ; Interupt Request /IRQ Bit 7
+                      
+0000                  EOS                           EQU  $00             ; end of string
+                      
+                      
+                      ;chksum                        EQU  $13ED
+13D0                                 ORG $13D0
+13D0                  usrsp                         RMB 1  ;
+13E3                                       ORG $13E3
+                      ;org needs to be 13E4 to have separate chksum, when key input uses chksum messes up debug of save and load
+13E3                  bytecount                     RMB 1  ; new variable for srec byte count as using tmp2 got used by key input
+13E4                  chksum                        RMB 1  ;
+13E5                  SWI3VEC                       RMB 2  ;
+13E7                  SWI2VEC                       RMB 2  ;
+13E9                  FIRQVEC                       RMB 2  ;
+13EB                  count                         RMB 1  ;
+13EC                  tmp2                          RMB 1  ;
+13ED                  tmp3                          RMB 1  ;
+13EE                  ptr                           RMB 2  ;
+13F0                  addr                          RMB 2  ;
+13F2                  NMIVEC                        RMB 2  ;
+13F4                  IRQVEC                        RMB 2  ;
+13F6                  tmpX                          RMB 2  ; Used by Load to parse target address for X
+13F8                  STACKSTART                    RMB 2  ;
+                                                           ;    4      5      6      7      8      9  (Port B)
+                                                           ;  13FA   13FB   13FC   13FD   13FE   13FF
+13FA                  dbuf                          RMB 6  ; Display Buffer LSB is Left, MSB is Right
+                      
+7800                                       ORG $7800
+                      ; 7800 Hex to decimal converter
+                      ; G 7800 Type L then decimal No then I to display Hex, press I to start again
+                      ;        Press P for hex to decimal then I
+                      
+7800  10CE1390        HEXTODEC             lds      #USERSTACK           
+                      
+7804  BD7DE1          HEXTODEC1            jsr      CLEARDISP
+7807  8613                                 lda      #dpRam             
+7809  1F8B                                 tfr      a,dp
+780B  4F                                   clra     
+780C  5F                                   clrb     
+780D  9707                                 sta      <$07
+780F  DD08                                 std      <$08
+7811  DD0A                                 std      <$0A
+7813  DD0C                                 std      <$0C
+7815  DD0E                                 std      <$0E
+7817  BD7C20          HEXTODEC2            jsr      GETKEY
+                      
+                      ;   P pressed for Hex to Decimal
+781A  8115                                 cmpa     #keyP             
+781C  102700AB                             lbeq     HEXTODEC141
+                      
+                      ;   L pressed for Decimal to Hex
+7820  8105                                 cmpa     #keyL             
+7822  26F3                                 bne      HEXTODEC2
+7824  8E1309                               ldx      #$1309
+7827  BD7C20          HEXTODEC3            jsr      GETKEY
+                      
+                      ;   I pressed to display Hex
+782A  8132                                 cmpa     #keyI             
+782C  2714                                 beq      HEXTODEC4
+782E  3001                                 leax     $01,x
+7830  BD7CEC                               jsr      HEXCON
+7833  8109                                 cmpa     #$09
+7835  22CD                                 bhi      HEXTODEC1
+7837  A784                                 sta      ,x
+7839  BD7D08                               jsr      R7SEG
+783C  A78900F0                             sta      $F0,x 
+7840  20E5                                 bra      HEXTODEC3
+                      
+7842  A684            HEXTODEC4            lda      ,x
+7844  9709                                 sta      <$09
+7846  8D75                                 bsr      HEXTODEC13
+7848  C60A            HEXTODEC5            ldb      #$0A
+784A  8100                                 cmpa     #$00
+784C  2707                                 beq      HEXTODEC6
+784E  DB09                                 addb     <$09
+7850  D709                                 stb      <$09
+7852  4A                                   deca     
+7853  20F3                                 bra      HEXTODEC5
+                      
+7855  8D66            HEXTODEC6            bsr      HEXTODEC13
+7857  8100            HEXTODEC7            cmpa     #$00
+7859  270E                                 beq      HEXTODEC8
+785B  3402                                 pshs     a
+785D  CC0064                               ldd      #$64
+7860  D308                                 addd     <$08
+7862  DD08                                 std      <$08
+7864  3502                                 puls     a
+7866  4A                                   deca     
+7867  20EE                                 bra      HEXTODEC7
+                      
+7869  8D52            HEXTODEC8            bsr      HEXTODEC13
+786B  8100            HEXTODEC9            cmpa     #$00
+786D  270E                                 beq      HEXTODEC10
+786F  3402                                 pshs     a
+7871  CC03E8                               ldd      #DEC1K
+7874  D308                                 addd     <$08
+7876  DD08                                 std      <$08
+7878  3502                                 puls     a
+787A  4A                                   deca     
+787B  20EE                                 bra      HEXTODEC9
+                      
+787D  8D3E            HEXTODEC10           bsr      HEXTODEC13
+787F  8100            HEXTODEC11           cmpa     #$00
+7881  270E                                 beq      HEXTODEC12
+7883  3402                                 pshs     a
+7885  CC2710                               ldd      #DEC10K
+7888  D308                                 addd     <$08
+788A  DD08                                 std      <$08
+788C  3502                                 puls     a
+788E  4A                                   deca     
+788F  20EE                                 bra      HEXTODEC11
+                      
+7891  BD7DE1          HEXTODEC12           jsr      CLEARDISP
+7894  9607                                 lda      <$07
+7896  BD7D08                               jsr      R7SEG
+7899  97FA                                 sta      <dbuf+0 
+789B  9608                                 lda      <$08
+789D  BD7D04                               jsr      L7SEG
+78A0  97FB                                 sta      <dbuf+1 
+78A2  9608                                 lda      <$08
+78A4  BD7D08                               jsr      R7SEG
+78A7  97FC                                 sta      <dbuf+2 
+78A9  9609                                 lda      <$09
+78AB  BD7D04                               jsr      L7SEG
+78AE  97FD                                 sta      <dbuf+3 
+78B0  9609                                 lda      <$09
+78B2  BD7D08                               jsr      R7SEG
+78B5  97FE                                 sta      <dbuf+4
+78B7  BD7C20                               jsr      GETKEY
+78BA  16FF47                               lbra     HEXTODEC1
+                      
+78BD  301F            HEXTODEC13           leax     -$01,x
+78BF  8C1309                               cmpx     #$1309
+78C2  2703                                 beq      HEXTODEC14
+78C4  A684                                 lda      ,x
+78C6  39                                   rts      
+                      
+78C7  3262            HEXTODEC14           leas     $02,s
+78C9  20C6                                 bra      HEXTODEC12
+                      
+78CB  8667            HEXTODEC141          lda      #$67
+78CD  97FF                                 sta      <dbuf+5
+78CF  BD7CBA                               jsr      BADDR
+78D2  9F0A                                 stx      <$0A
+78D4  8E130A                               ldx      #$130A
+78D7  108E1307                             ldy      #$1307
+78DB  E684                                 ldb      ,x
+78DD  54                                   lsrb     
+78DE  54                                   lsrb     
+78DF  54                                   lsrb     
+78E0  54                                   lsrb     
+78E1  270B                                 beq      HEXTODEC16
+78E3  8640            HEXTODEC15           lda      #$40
+78E5  8D37                                 bsr      HEXTODEC23
+78E7  8696                                 lda      #$96
+78E9  8D37                                 bsr      HEXTODEC24
+78EB  5A                                   decb     
+78EC  26F5                                 bne      HEXTODEC15
+78EE  E684            HEXTODEC16           ldb      ,x
+78F0  C40F                                 andb     #$0F
+78F2  270B                                 beq      HEXTODEC18
+78F4  8602            HEXTODEC17           lda      #$02
+78F6  8D26                                 bsr      HEXTODEC23
+78F8  8656                                 lda      #$56
+78FA  8D26                                 bsr      HEXTODEC24
+78FC  5A                                   decb     
+78FD  26F5                                 bne      HEXTODEC17
+78FF  E601            HEXTODEC18           ldb      $01,x
+7901  54                                   lsrb     
+7902  54                                   lsrb     
+7903  54                                   lsrb     
+7904  54                                   lsrb     
+7905  2707                                 beq      HEXTODEC20
+7907  8616            HEXTODEC19           lda      #$16
+7909  8D17                                 bsr      HEXTODEC24
+790B  5A                                   decb     
+790C  26F9                                 bne      HEXTODEC19
+790E  E601            HEXTODEC20           ldb      $01,x
+7910  C40F                                 andb     #$0F
+7912  2707                                 beq      HEXTODEC22
+7914  8601            HEXTODEC21           lda      #$01
+7916  8D0A                                 bsr      HEXTODEC24
+7918  5A                                   decb     
+7919  26F9                                 bne      HEXTODEC21
+791B  16FF73          HEXTODEC22           lbra     HEXTODEC12
+                      
+791E  1CFE            HEXTODEC23           andcc    #$FE
+7920  2007                                 bra      HEXTODEC25
+                      
+7922  AB22            HEXTODEC24           adda     $02,y
+7924  19                                   daa      
+7925  A722                                 sta      $02,y
+7927  8600                                 lda      #$00
+7929  A921            HEXTODEC25           adca     $01,y
+792B  19                                   daa      
+792C  A721                                 sta      $01,y
+792E  8600                                 lda      #$00
+7930  A9A4                                 adca     ,y
+7932  19                                   daa      
+7933  A7A4                                 sta      ,y
+7935  39                                   rts      
+                      
+7936  0000000000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+                      ; 7940 Duckshoot
+                      ; G 7940 Store 0020 at memory 0000 and 0001 (1000 and 1001 for 6809)
+                      ;        Press number 1-6 for duck until none are left.
+                      
+7941  10CE1390        DUCKSHOOT            lds      #USERSTACK           
+7945  8613                                 lda      #dpRam             
+7947  1F8B                                 tfr      a,dp
+7949  BD7DE1                               jsr      CLEARDISP
+794C  861F                                 lda      #$1F
+794E  97FD                                 sta      <dbuf+3 
+7950  97FF                                 sta      <dbuf+5
+7952  8D3B                                 bsr      DUCKSHOOT6
+7954  BD7CEC          DUCKSHOOT0           jsr      HEXCON
+7957  8106                                 cmpa     #$06
+7959  2215                                 bhi      DUCKSHOOT2
+795B  8100                                 cmpa     #$00
+795D  2711                                 beq      DUCKSHOOT2
+795F  8E13F9                               ldx      #$13F9
+7962  3086                                 leax     a,x
+7964  A684                                 lda      ,x
+7966  2704                                 beq      DUCKSHOOT1
+7968  6F84                                 clr      ,x
+796A  2004                                 bra      DUCKSHOOT2
+                      
+796C  861F            DUCKSHOOT1           lda      #$1F
+796E  A784                                 sta      ,x
+7970  313F            DUCKSHOOT2           leay     -$01,y
+7972  2704                                 beq      DUCKSHOOT3
+7974  8D1D                                 bsr      DUCKSHOOT7
+7976  20F8                                 bra      DUCKSHOOT2
+                      
+7978  8D04            DUCKSHOOT3           bsr      DUCKSHOOT4
+797A  8D13                                 bsr      DUCKSHOOT6
+797C  20F2                                 bra      DUCKSHOOT2
+                      
+797E  8E13FF          DUCKSHOOT4           ldx      #$13FF
+7981  A684                                 lda      ,x
+7983  97F9                                 sta      <$00F9
+7985  C606                                 ldb      #$06
+7987  A682            DUCKSHOOT5           lda      ,-x
+7989  A701                                 sta      $01,x
+798B  5A                                   decb     
+798C  26F9                                 bne      DUCKSHOOT5
+798E  39                                   rts      
+                      
+798F  10BE1000        DUCKSHOOT6           ldy      $1000
+7993  8E13FA          DUCKSHOOT7           ldx      #dbuf 
+7996  C606                                 ldb      #$06
+7998  A680            DUCKSHOOT8           lda      ,x+
+799A  2606                                 bne      DUCKSHOOT9
+799C  5A                                   decb     
+799D  26F9                                 bne      DUCKSHOOT8
+799F  7E7D8E                               jmp      RESET
+                      
+79A2  4F              DUCKSHOOT9           clra     
+79A3  B74002                               sta      CTRLA
+79A6  B74003                               sta      CTRLB 
+79A9  B74000                               sta      PORTA
+79AC  860F                                 lda      #$0F
+79AE  B74001                               sta      PORTB 
+79B1  8604                                 lda      #$04
+79B3  B74002                               sta      CTRLA
+79B6  B74003                               sta      CTRLB 
+79B9  C6FF                                 ldb      #$FF
+79BB  5C              DUCKSHOOT10          incb     
+79BC  C104                                 cmpb     #$04
+79BE  2610                                 bne      DUCKSHOOT11
+79C0  BD7C7B                               jsr      DISPRESH
+79C3  338C8E                               leau     -$72,pc ; ($7953)
+79C6  EFE4                                 stu      ,s
+79C8  313F                                 leay     -$01,y
+79CA  26C7                                 bne      DUCKSHOOT7
+79CC  8DB0                                 bsr      DUCKSHOOT4
+79CE  20BF                                 bra      DUCKSHOOT6
+                      
+79D0  F74001          DUCKSHOOT11          stb      PORTB 
+79D3  B64000                               lda      PORTA
+79D6  43                                   coma     
+79D7  27E2                                 beq      DUCKSHOOT10
+79D9  3404                                 pshs     b
+79DB  4F                                   clra     
+79DC  C601                                 ldb      #$01
+79DE  3402            DUCKSHOOT12          pshs     a
+79E0  B64000                               lda      PORTA
+79E3  43                                   coma     
+79E4  3404                                 pshs     b
+79E6  A1E0                                 cmpa     ,s+
+79E8  3502                                 puls     a
+79EA  2704                                 beq      DUCKSHOOT13
+79EC  4C                                   inca     
+79ED  58                                   aslb     
+79EE  20EE                                 bra      DUCKSHOOT12
+                      
+79F0  3504            DUCKSHOOT13          puls     b
+79F2  58                                   aslb     
+79F3  58                                   aslb     
+79F4  58                                   aslb     
+79F5  58                                   aslb     
+79F6  3404                                 pshs     b
+79F8  ABE0                                 adda     ,s+
+79FA  39                                   rts      
+                      
+79FB  000000000000                         FCB  $00, $00, $00, $00, $00, $00
+                      
+                      ; 7A00 Calculate offset
+                      ; G 7A00 Displays S enter start address  then I
+                      ;        Displays d then enter destination
+                      ;        Displays b Enter 2 or 3 for number of bytes length of full instruction
+                      ;        Twos complement offset then displayed
+                      ;        If outside range displays --, press I for next
+                      
+7A01  10CE1390        CALCOFFSET           lds      #$1390
+7A05  8613                                 lda      #dpRam             
+7A07  1F8B                                 tfr      a,dp
+7A09  CC003D          CALCOFFSET1          ldd      #$3D
+7A0C  DDFE                                 std      <dbuf+4
+7A0E  BD7CBA                               jsr      BADDR
+7A11  BD7C20          CALCOFFSET2          jsr      GETKEY
+7A14  8132                                 cmpa     #keyI             
+7A16  26F9                                 bne      CALCOFFSET2
+7A18  9F68                                 stx      <$68
+7A1A  8657                                 lda      #$57
+7A1C  97FF                                 sta      <dbuf+5
+7A1E  BD7CBA                               jsr      BADDR
+7A21  9FF0                                 stx      <addr
+7A23  BD7DE1                               jsr      CLEARDISP
+7A26  8675                                 lda      #$75
+7A28  97FF                                 sta      <dbuf+5
+7A2A  BD7CE9          CALCOFFSET3          jsr      KEYHEX
+7A2D  8101                                 cmpa     #$01
+7A2F  23F9                                 bls      CALCOFFSET3
+7A31  0F6A                                 clr      <$6A
+7A33  976B                                 sta      <$6B
+7A35  DCF0                                 ldd      <addr
+7A37  936A                                 subd     <$6A
+7A39  9368                                 subd     <$68
+7A3B  DD68                                 std      <$68
+7A3D  BD7D04                               jsr      L7SEG
+7A40  97FC                                 sta      <dbuf+2 
+7A42  9668                                 lda      <$68
+7A44  BD7D08                               jsr      R7SEG
+7A47  97FD                                 sta      <dbuf+3 
+7A49  9669                                 lda      <$69
+7A4B  BD7D04                               jsr      L7SEG
+7A4E  97FE                                 sta      <dbuf+4
+7A50  9669                                 lda      <$69
+7A52  BD7D08                               jsr      R7SEG
+7A55  97FF                                 sta      <dbuf+5
+7A57  5F                                   clrb     
+7A58  D7FA                                 stb      <dbuf+0 
+7A5A  D7FB                                 stb      <dbuf+1 
+7A5C  966B                                 lda      <$6B
+7A5E  8102                                 cmpa     #$02
+7A60  260D                                 bne      CALCOFFSET4
+7A62  D7FD                                 stb      <dbuf+3 
+7A64  D7FC                                 stb      <dbuf+2 
+7A66  DC68                                 ldd      <$68
+7A68  59                                   rolb     
+7A69  49                                   rola     
+7A6A  2703                                 beq      CALCOFFSET4
+7A6C  43                                   coma     
+7A6D  2609                                 bne      CALCOFFSET5
+7A6F  BD7C20          CALCOFFSET4          jsr      GETKEY
+7A72  8132                                 cmpa     #keyI             
+7A74  26F9                                 bne      CALCOFFSET4
+7A76  2091                                 bra      CALCOFFSET1
+                      
+7A78  CC0101          CALCOFFSET5          ldd      #$0101
+7A7B  DDFE                                 std      <dbuf+4
+7A7D  20F0                                 bra      CALCOFFSET4
+                      
+7A7F  0000                                 FCB  $00, $00
+                      
+                      ; 7A80 Mastermind
+                      ;        I displayed after thinking of 4 digit number 4 digits 0-7
+                      ;        Press I enter guess 2 digits display Correct digits and correct numbers in wrong places (Bulls and Cows)
+                      ;        Press I for next number, after 4 bulls press I and displays number of tries
+                      
+7A81  10CE1390        MASTERMIND           lds      #USERSTACK           
+7A85  8613                                 lda      #dpRam             
+7A87  1F8B                                 tfr      a,dp
+7A89  BD7DE1                               jsr      CLEARDISP
+7A8C  8606                                 lda      #$06
+7A8E  97FF                                 sta      <dbuf+5
+7A90  5F                                   clrb     
+7A91  DD10                                 std      <$10
+7A93  DD12                                 std      <$12
+7A95  8D21            MASTERM1             bsr      MASTERM3
+7A97  273F                                 beq      MASTERM4
+7A99  8E1310                               ldx      #$1310
+7A9C  A684                                 lda      ,x
+7A9E  4C                                   inca     
+7A9F  A784                                 sta      ,x
+7AA1  8508                                 bita     #$08
+7AA3  27F0                                 beq      MASTERM1
+7AA5  4F              MASTERM2             clra     
+7AA6  A780                                 sta      ,x+
+7AA8  8C1314                               cmpx     #$1314
+7AAB  27E8                                 beq      MASTERM1
+7AAD  A684                                 lda      ,x
+7AAF  4C                                   inca     
+7AB0  A784                                 sta      ,x
+7AB2  8508                                 bita     #$08
+7AB4  27DF                                 beq      MASTERM1
+7AB6  20ED                                 bra      MASTERM2
+                      
+7AB8  BD7C7B          MASTERM3             jsr      DISPRESH
+7ABB  8E0000                               ldx      #allzeros
+7ABE  BF4002                               stx      CTRLA
+7AC1  8E000F                               ldx      #$0F
+7AC4  BF4000                               stx      PORTA
+7AC7  8E0404                               ldx      #$0404
+7ACA  BF4002                               stx      CTRLA
+7ACD  8603                                 lda      #$03
+7ACF  B74001                               sta      PORTB 
+7AD2  B64000                               lda      PORTA
+7AD5  8504                                 bita     #$04
+7AD7  39                                   rts      
+                      
+7AD8  0F0E            MASTERM4             clr      <$0E
+7ADA  BD7DE1          MASTERM5             jsr      CLEARDISP
+7ADD  8E1300                               ldx      #$1300
+7AE0  5F              MASTERM6             clrb     
+7AE1  B64000          MASTERM7             lda      PORTA
+7AE4  43                                   coma     
+7AE5  26F9                                 bne      MASTERM6
+7AE7  5A                                   decb     
+7AE8  26F7                                 bne      MASTERM7
+7AEA  BD7CE9          MASTERM8             jsr      KEYHEX
+7AED  8107                                 cmpa     #$07
+7AEF  22F9                                 bhi      MASTERM8
+7AF1  A780                                 sta      ,x+
+7AF3  BD7D08                               jsr      R7SEG
+7AF6  A78900F9                             sta      $F9,x 
+7AFA  8C1304                               cmpx     #$1304
+7AFD  26EB                                 bne      MASTERM8
+7AFF  8601                                 lda      #$01
+7B01  9B0E                                 adda     <$0E
+7B03  19                                   daa      
+7B04  970E                                 sta      <$0E
+7B06  C6FE                                 ldb      #$FE
+7B08  4F                                   clra     
+7B09  970C                                 sta      <$0C
+7B0B  970D                                 sta      <$0D
+7B0D  8E1304                               ldx      #$1304
+7B10  A60C            MASTERM9             lda      $0C,x
+7B12  A704                                 sta      $04,x
+7B14  A780                                 sta      ,x+
+7B16  8C1308                               cmpx     #$1308
+7B19  26F5                                 bne      MASTERM9
+7B1B  8E1300                               ldx      #$1300
+7B1E  A684            MASTERM10            lda      ,x
+7B20  A104                                 cmpa     $04,x
+7B22  2725                                 beq      MASTERM14
+7B24  3001            MASTERM11            leax     $01,x
+7B26  8C1304                               cmpx     #$1304
+7B29  26F3                                 bne      MASTERM10
+7B2B  8E1300                               ldx      #$1300
+7B2E  A684            MASTERM12            lda      ,x
+7B30  9104                                 cmpa     <$04
+7B32  271F                                 beq      MASTERM15
+7B34  9105                                 cmpa     <keyL
+7B36  2720                                 beq      MASTERM16
+7B38  9106                                 cmpa     <$06
+7B3A  2721                                 beq      MASTERM17
+7B3C  9107                                 cmpa     <$07
+7B3E  2722                                 beq      MASTERM18
+7B40  3001            MASTERM13            leax     $01,x
+7B42  8C1304                               cmpx     #$1304
+7B45  2725                                 beq      MASTERM20
+7B47  20E5                                 bra      MASTERM12
+                      
+7B49  0C0C            MASTERM14            inc      <$0C
+7B4B  E784                                 stb      ,x
+7B4D  5C                                   incb     
+7B4E  E704                                 stb      $04,x
+7B50  5A                                   decb     
+7B51  20D1                                 bra      MASTERM11
+                      
+7B53  5C              MASTERM15            incb     
+7B54  D704                                 stb      <$04
+7B56  200D                                 bra      MASTERM19
+                      
+7B58  5C              MASTERM16            incb     
+7B59  D705                                 stb      <keyL
+7B5B  2008                                 bra      MASTERM19
+                      
+7B5D  5C              MASTERM17            incb     
+7B5E  D706                                 stb      <$06
+7B60  2003                                 bra      MASTERM19
+                      
+7B62  5C              MASTERM18            incb     
+7B63  D707                                 stb      <$07
+7B65  5A              MASTERM19            decb     
+7B66  0C0D                                 inc      <$0D
+7B68  E784                                 stb      ,x
+7B6A  20D4                                 bra      MASTERM13
+                      
+7B6C  960C            MASTERM20            lda      <$0C
+7B6E  BD7D08                               jsr      R7SEG
+7B71  97FE                                 sta      <dbuf+4
+7B73  960D                                 lda      <$0D
+7B75  BD7D08                               jsr      R7SEG
+7B78  97FF                                 sta      <dbuf+5
+7B7A  17FF3B          MASTERM21            lbsr     MASTERM3
+7B7D  26FB                                 bne      MASTERM21
+7B7F  960C                                 lda      <$0C
+7B81  8104                                 cmpa     #$04
+7B83  1026FF53                             lbne     MASTERM5
+7B87  960E                                 lda      <$0E
+7B89  BD7D04                               jsr      L7SEG
+7B8C  817E                                 cmpa     #$7E
+7B8E  2601                                 bne      MASTERM22
+7B90  4F                                   clra     
+7B91  97FA            MASTERM22            sta      <dbuf+0 
+7B93  960E                                 lda      <$0E
+7B95  BD7D08                               jsr      R7SEG
+7B98  97FB                                 sta      <dbuf+1 
+7B9A  CC7C7E                               ldd      #$7C7E
+7B9D  DDFC                                 std      <dbuf+2 
+7B9F  CC203D                               ldd      #$203D
+7BA2  DDFE                                 std      <dbuf+4
+7BA4  5F              MASTERM23            clrb     
+7BA5  B64000          MASTERM24            lda      PORTA
+7BA8  43                                   coma     
+7BA9  26F9                                 bne      MASTERM23
+7BAB  5A                                   decb     
+7BAC  26F7                                 bne      MASTERM24
+7BAE  16FEE4                               lbra     MASTERM1
+                      
+7BB1  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BB9  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BC1  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BC9  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BD1  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BD9  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BE1  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BE9  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BF1  0000000000000000                      FCB  $00, $00, $00, $00, $00, $00, $00, $00
+7BF9  00000000000000                       FCB  $00, $00, $00, $00, $00, $00, $00
+                      
+                      
+                                    
+                      ; Monitor Start 7C00
+                      ; Keypad keycode lookup table to covert key to nibble values, used by KEYHEX and HEXCON
+7C00  2224021214001004 KEYCODE              FCB  key0, key1, key2, key3, key4, key5, key6, key7
+7C08  0111031323332120                      FCB  key8, key9, keyA, keyB, keyC, keyD, keyE, keyF 
+                      
+                      ; Seven Segment display lookup table, used to convert 7 Seg value to nibble and nibble to 7 Seg value
+                      ; Used by HEXCON, R7SEG and SVNHEX subroutines
+7C10  7E065B1F273D7D0E SVNSEG               FCB  seg0, seg1, seg2, seg3, seg4, seg5, seg6, seg7
+7C18  7F3F6F7578577969                      FCB  seg8, seg9, segA, segB, segC, segD, segE, segF
+                      
+                      ; 7C20 GETKEY Scans for key and refreshes display until key pressed.
+                      ; Then waits to be released and returns key in A
+                      ; Key Codes in Hex (see keyxx EQU definitions)
+                      
+                      ;  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  L SP CN G  M  R  I
+                      ; 22 24 02 12 14 00 10 04 01 11 03 13 23 33 21 20 05 15 25 35 31 30 32
+                      
+7C20  342C            GETKEY               pshs     y,dp,b
+7C22  8640                                 lda      #dpPIA            ; Set Direct Page register to PIA page ($40), PIA code uses Direct addressing 
+7C24  1F8B                                 tfr      a,dp
+                      
+                      ;   Set up I/O port for Port A 0-7 input and Port B 0-3 output
+7C26  8D53            GETKEY1              bsr      DISPRESH          ; Refresh 7 Segment display while waiting for key
+7C28  4F                                   clra     
+7C29  9702                                 sta      <CTRLA            ; Set Port A to data direction register b2=0 DDR
+7C2B  9703                                 sta      <CTRLB            ; Set Port B to data direction register
+7C2D  9700                                 sta      <PORTA            ; Set Port A to input bits 0-7
+7C2F  860F                                 lda      #$0F              ; set bits 0-3 for output
+7C31  9701                                 sta      <PORTB            ; Set Port B to output for bits 0-3
+7C33  8604                                 lda      #$04              ; Set control register b2=1 Output Register
+7C35  9702                                 sta      <CTRLA            ; Set Port A control register for Port Output, will be keypad switch input
+7C37  9703                                 sta      <CTRLB            ; Set Port B control register for Port Output, will be keypad row
+7C39  86FF                                 lda      #$FF              ; *** This should probably set ldb to $FF, bug in original Monitor Code
+                                                                      ; B register is used to strobe keypad output PB0, PB1 to drive 74LS145 decoder (7442 in original)
+7C3B  5C              GETKEY2              incb                       ; Read next keypad row (row will change to 0, key pressed changes from 1 to 0)
+7C3C  C104                                 cmpb     #$04              ; Done rows 0,1,2,3?
+7C3E  27E6                                 beq      GETKEY1           ; Scanned all 4 keypad lines, update display and start again
+7C40  D701                                 stb      <PORTB            ; Output current keypad row to Port B, selected row output will be set to 0 (default to 1)
+7C42  9600                                 lda      <PORTA            ; Read keypad keys from Port A (note Port A is pulled high, pressed key sets bit to 0)
+7C44  43                                   coma                       ; Complement keypad input so pressed key is indicated by 1
+7C45  27F4                                 beq      GETKEY2           ; If all zero, no key pressed, try next keypad row
+                      
+                      ;   Found a key: decode it
+7C47  F713EC                               stb      tmp2              ; Save the keypad row in B to tmp2 (better name ****)
+7C4A  B713ED                               sta      tmp3              ; Save input key to tmp3 (was chksum which maps to same address $13ed)
+7C4D  4F                                   clra                       ; A maintains the bit count of which bit is set
+7C4E  C601                                 ldb      #$01              ; Set b0 as test bit
+7C50  F113ED          GETKEY3              cmpb     tmp3              ; Is bit A set?, what happens if two keys pressed, just the lowest?
+7C53  2706                                 beq      GETKEY4           ; If bit is set calculate key code GETKEY4
+7C55  4C                                   inca                       ; Next bit count                       
+7C56  58                                   aslb                       ; Rotate bit to next positon, fill b0 with 0, when all 0 set Z (eq)
+7C57  27E2                                 beq      GETKEY2           ; When done 0-7 then process next keypad row
+7C59  20F5                                 bra      GETKEY3           ; Check next bit
+                      
+7C5B  F613EC          GETKEY4              ldb      tmp2              ; Get the keypad row
+7C5E  58                                   aslb                       ; Shift to the top nibble
+7C5F  58                                   aslb     
+7C60  58                                   aslb     
+7C61  58                                   aslb     
+7C62  3404                                 pshs     b                 ; Add B to A via stack
+7C64  ABE0                                 adda     ,s+               ; Add value of B on stack to A to calculate keycode
+                      
+                      ;   Wait for the key to be released
+7C66  3402                                 pshs     a                 ; Save keycode
+7C68  108E0008                             ldy      #$08              ; Keybounce delay will be 8 (Y) x 256 (B), 2048 loops
+7C6C  5F              GETKEY5              clrb                       ; Initialise B as inner loop counter
+7C6D  9600            GETKEY6              lda      <PORTA            ; Check port to see if key still pressed (bit=0 key pressed)
+7C6F  43                                   coma                       ; Complement A, non zero (NE) means a key still held down
+7C70  26FA                                 bne      GETKEY5           ; If key still pressed, zero count and check again 
+7C72  5A                                   decb                       ; Key released, decrement count
+7C73  26F8                                 bne      GETKEY6           ; If still not zero check port again (this will de-bounce keys)
+7C75  313F                                 leay     -$01,y            ; Counted down B to 0 from 255, decrement Y
+7C77  26F4                                 bne      GETKEY6           ; Check port again, until Y is zero
+7C79  35AE                                 puls     a,b,dp,y,pc       ; (pul? pc=rts) Keycode returned in A 
+                      
+                      ; 7C7B DISPRESH Displays 6 digits from 13FA (left) to 13FF (right) 
+                      ; Bit Segments, note that A-G seqments in 1981 design are different from modern LED displays (E&F swapped)
+                      ;       b3 A
+                      ;     -------
+                      ; b5 E|     | b1 B
+                      ;     | b0 G|
+                      ;     -------
+                      ; b6 F|     | b2 C
+                      ;     |     |
+                      ;     -------
+                      ;       b4 D  
+                      ; 7 Segment display values (see segxx EQU  definitions above)
+                      ;  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  -  G  M  P  S  U  X  Y
+                      ; 7E 06 5B 1F 27 3D 7D 0E 7F 3F 6F 75 78 57 79 69 01 7C 6E 6B 3D 76 67 37
+                      ; Note that due to how the LED is wired segments are on by default
+                      ; A 1 value on PIA port will pull segment low turning it off, so values are complemented COM before sending to PIA
+                      
+7C7B  3416            DISPRESH             pshs     x,b,a
+                      
+                      ;   Set output ports for display
+7C7D  8E4000                               ldx      #PORTA            ; This routine uses a different approach from GETKEY using index X and offsets
+7C80  4F                                   clra     
+7C81  A702                                 sta      $02,x             ; Set CTRLA Port A to data direction register b2=0 DDR
+7C83  A703                                 sta      $03,x             ; Set CTRLB Port B to data direction register
+7C85  867F                                 lda      #$7F              ; 
+7C87  A784                                 sta      ,x                ; Set Port A to output bits 0-6
+7C89  860F                                 lda      #$0F              ; Set bits 0-3 for output
+7C8B  A701                                 sta      $01,x             ; Set Port B to output for bits 0-3
+7C8D  8604                                 lda      #$04              ; Set control register b2=1 Output Register
+7C8F  A702                                 sta      $02,x             ; Set CTRLA Port A control register for Port Output, will be keypad switch input
+7C91  A703                                 sta      $03,x             ; Set CTRLB Port B control register for Port Output, will be keypad row
+                      
+                      ;   Initialise loop over digits
+7C93  8E13FA                               ldx      #dbuf             ; Segments are numbered 4..9 to correspond to outputs from the 74LS145/7442 decoder.
+7C96  C603                                 ldb      #$03
+7C98  5C              DISP1                incb                       ; Start at 04
+7C99  C10A                                 cmpb     #$0A              ; until done 09
+7C9B  2602                                 bne      DISP2             ; Display next digit
+                      
+                      ;   Finished
+7C9D  3596                                 puls     a,b,x,pc          ;(pul? pc=rts) Done all 6 segments 04-09
+                      
+                      
+                      ;   Light up the next digit                     ; Changes to reduce Ghosting of 7 Segment displays
+7C9F  867F            DISP2                lda      #$7F              ; This turns off all 7 Segments
+7CA1  B74000                               sta      PORTA             ; Turn off current segments before changing PORTB
+7CA4  A680                                 lda      ,x+               ; Get segment value from Display buffer first
+7CA6  43                                   coma                       ; Complement 7 Segment values as 1 turns off segment
+7CA7  F74001                               stb      PORTB             ; Select segment on Port B (04-09)            
+7CAA  B74000                               sta      PORTA             ; Save segment bits to Port A
+                      ;   Delay loop
+7CAD  86A0                                 lda      #$A0              ; Delay loop for 160 iterations
+7CAF  4A              DISP3                deca                       
+7CB0  26FD                                 bne      DISP3             ; Delay until A is zero
+7CB2  20E4                                 bra      DISP1             ; Process next segment
+                      
+                      ; Assume this code is before BADDR to keep the subroutine addresses consistent with 6802 code
+7CB4  1E89            BADDR1               exg      a,b               ; Swap A and B
+7CB6  1F01                                 tfr      d,x               ; Return address in X
+7CB8  3586                                 puls     a,b,pc ;(pul? pc=rts)
+                      
+                      ; 7CB5 BADDR Build 4 digit hex address from keyboard, refreshing display and return address in X index register
+7CBA  3406            BADDR                pshs     b,a               ; Preserve A and B
+7CBC  4F                                   clra                       ; Clears D (A+B)
+7CBD  5F                                   clrb                       ;
+7CBE  FD13FA                               std      dbuf              ; Clear left 4 digits in display buffer
+7CC1  FD13FC                               std      dbuf+2           
+7CC4  8E13FA                               ldx      #dbuf             ; X is left hand digit of display buffer
+7CC7  8D08                                 bsr      HEXIN             ; Get two Hexadecimal keys, and display at X, returns in A
+7CC9  3402                                 pshs     a                 ; Save most significant byte on stack
+7CCB  8D04                                 bsr      HEXIN             ; Get two Hexadecimal keys, and display at X, returns in A
+7CCD  3504                                 puls     b                 ; Now get most significant byte from stack
+7CCF  20E3                                 bra      BADDR1            ; B=MSB, A=LSB which is wrong way around for D
+                      
+                      ; 7CCC HEXIN Use KEYHEX to accept two hex key entries and combines two hex digits in one byte in A and updates display at X and X+1
+7CD1  8D16            HEXIN                bsr      KEYHEX            ; Get most significant byte (left hand segment)
+                      
+7CD3  48                                   asla                       ; Shift hex digit value to upper nibble
+7CD4  48                                   asla     
+7CD5  48                                   asla     
+7CD6  48                                   asla     
+7CD7  3402                                 pshs     a                 ; Save for return value
+7CD9  8D29                                 bsr      L7SEG             ; Convert MSB (Left hand segment) to segment value
+7CDB  A780                                 sta      ,x+               ; Display segment at X and increment to next segment
+7CDD  8D0A                                 bsr      KEYHEX            ; Get least significant byte
+7CDF  ABE0                                 adda     ,s+               ; Add to saved most significant byte and remove from stack
+7CE1  3402                                 pshs     a                 ; Save sum of MSB and LSB
+7CE3  8D23                                 bsr      R7SEG             ; Convert LSB (right hand segment) to segment
+7CE5  A780                                 sta      ,x+               ; Display segment at X and increment to next segment
+7CE7  3582                                 puls     a,pc              ;(pul? pc=rts) return saved Hex two digit value in A 
+                      
+                      ; 7CE4 KEYHEX Combines GETKEY and HEXCON
+                      ; Gets a single key digit 0-F, converts to 7 Segment, displays at X then returns hex value, return to monitor if invalid key
+7CE9  17FF34          KEYHEX               lbsr     GETKEY            ; Get a single key
+                      
+                      ;   Fall-thru
+                      ; 7CE7 HEXCON converts key code in A into Hex equivelent for the key and returns in A. 
+                      ; If non Hex command key entered returns to monitor
+7CEC  3414            HEXCON               pshs     x,b
+7CEE  8E7C00                               ldx      #KEYCODE          ; Lookup key in KEYCODE table
+7CF1  C6FF                                 ldb      #$FF
+7CF3  5C              HEXCON1              incb                       ; B will have hex value of KEYCODE
+7CF4  8C7C10                               cmpx     #SVNSEG           ; Check if X is at end of KEYCODE table
+7CF7  272D                                 beq      TORESUME2         ; If it is at end without finding key, the resume to monitor **** (may not need toresume2 perhaps to avoid lbeq)
+7CF9  A180                                 cmpa     ,x+               ; Compare KEYCODE at X with current key value
+7CFB  26F6                                 bne      HEXCON1           ; If no match then move to next KEYCODE value
+7CFD  1F98                                 tfr      b,a               ; Hex digit value returned in A
+7CFF  3594                                 puls     b,x,pc ;(pul? pc=rts)
+                      
+7D01  12                                   nop      
+7D02  12                                   nop      
+7D03  12                                   nop      
+                      
+                      ;   Fall-thru
+                      ; 7CFF L7SEG converts left hex digit of A into 7 segment code for display and returns in A
+7D04  47              L7SEG                asra                       ; Shift MSB right 4 bits so it is LSB
+7D05  47                                   asra     
+7D06  47                                   asra     
+7D07  47                                   asra     
+                      
+                      ; 7D03 R7SEG converts right hex digit of A into 7 segment code for display and returns in A
+                      ;   Convert low-order 4 bits of A to 7seg
+7D08  3410            R7SEG                pshs     x                 ; Save X, used as index to lookup 7 segment values
+7D0A  8E7C10                               ldx      #SVNSEG           ; X is 7 segment lookup table start
+7D0D  840F                                 anda     #$0F              ; mask MSB
+7D0F  2705            R71                  beq      R72               ; A=0 we have found value already
+7D11  3001                                 leax     $01,x             ; Increment X
+7D13  4A                                   deca                       ; Decrease A (note that leax A,X would avoid the need for the loop)
+7D14  20F9                                 bra      R71               ; Check next value
+                      
+7D16  A684            R72                  lda      ,x                ; Get 7 segment value for A
+7D18  3590                                 puls     x,pc              ;(pul? pc=rts) return A and restore X 
+                      
+                      ; 7D15 SVNHEX Converts 7 segment code in A to a hex value returned in A, default to monitor if code not hex
+7D1A  3414            SVNHEX               pshs     x,b
+7D1C  8E7C10                               ldx      #SVNSEG           ; Lookup value in A in SVNSEG table
+7D1F  1F89                                 tfr      a,b               ; Use B for lookup, return Hex value in A
+7D21  4F                                   clra                       ; Initialise A
+7D22  E180            SVNHEX1              cmpb     ,x+               ; Does 7 segment value match?
+7D24  2705                                 beq      SVNHEX2           ; If match return value in A
+7D26  2774            TORESUME2            beq      RESUME            ; Wont be zero when landing from previous instruction
+7D28  4C                                   inca                       ; Next segment value
+7D29  20F7                                 bra      SVNHEX1           ; Lookup next code value in SVNSEG 
+                      
+7D2B  3594            SVNHEX2              puls     b,x,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Prompt for address with 'M' and display memory contents
+7D2D  4F              MEMDISP              clra                       ;
+7D2E  97FE                                 sta      <dbuf+4           ; Clear Left Hand Data segment (digit 5)
+7D30  866E                                 lda      #segM             ; Display M in right hand data segment (digit 6)
+7D32  97FF                                 sta      <dbuf+5
+7D34  8D84                                 bsr      BADDR             ; Gets 4 digit address then displays in Digits 1-4, then returns address in X
+7D36  A684            MEM0                 lda      ,x                ; Get current memory value at X
+7D38  3402                                 pshs     a                 ; Save memory value
+7D3A  8DC8                                 bsr      L7SEG             ; Convert Most Significant Byte / Left Hand digit to segment
+7D3C  97FE                                 sta      <dbuf+4           ; Display MSB on left data segment
+7D3E  3502                                 puls     a                 ; Get saved memory value
+7D40  8DC6                                 bsr      R7SEG             ; Convert Least Significant Byte / Right hand digit to segment
+7D42  97FF                                 sta      <dbuf+5           ; Display LSB on right data segment
+                      
+                      ;   Check for I key
+7D44  17FED9          MEM1                 lbsr     GETKEY            ; Check for key press
+7D47  8132                                 cmpa     #keyI             ;  
+7D49  270C                                 beq      MEM2              ; If I pressed then save and then get next memory value
+7D4B  8D9F                                 bsr      HEXCON            ; Not I so convert key to hex value in A, returns to monitor if not 0-F
+7D4D  D6FF                                 ldb      <dbuf+5           ; Move LSB to MSB (move right to left data segment)
+7D4F  D7FE                                 stb      <dbuf+4
+7D51  8DB5                                 bsr      R7SEG             ; Convert A LSB / right hand digit into 7 segment value
+7D53  97FF                                 sta      <dbuf+5           ; Display LSB in right hand data segment
+7D55  20ED                                 bra      MEM1              ; Get next key (hex values will continue to rotate LSB to MSB until I pressed or Abort
+                      
+                      
+                      ;   Store and increment
+7D57  96FE            MEM2                 lda      <dbuf+4           ; Get MSB 7 Segment value
+7D59  8DBF                                 bsr      SVNHEX            ; Convert A from 7 segment to Hex MSB value
+7D5B  48                                   asla                       ; Shift left 4 bits to become MSB nibble     
+7D5C  48                                   asla     
+7D5D  48                                   asla     
+7D5E  48                                   asla     
+7D5F  3402                                 pshs     a                 ; Save MSB value
+7D61  96FF                                 lda      <dbuf+5           ; Get LSB 7 segment value
+7D63  8DB5                                 bsr      SVNHEX            ; Convert A from 7 segment to Hex LSB value
+7D65  ABE0                                 adda     ,s+               ; Add LSB to MSB nibble
+7D67  1F89                                 tfr      a,b               ; Save A in B
+7D69  A784                                 sta      ,x                ; Store new value in A at X
+7D6B  A680                                 lda      ,x+               ; Re-read memory value from X then increment X for next byte
+7D6D  3404                                 pshs     b                 ; Push new value onto stack
+7D6F  A1E0                                 cmpa     ,s+               ; Compare new value and current value at X
+7D71  2629                                 bne      RESUME            ; If not equal then tried to update invalid RAM (eg ROM etc), return to monitor
+7D73  1F10                                 tfr      x,d               ; X is now next address, copy to D (A=MSB, B=LSB)
+7D75  8D8D                                 bsr      L7SEG             ; Convert MSB left digit to 7 segment code
+7D77  97FA                                 sta      <dbuf+0           ; display MSB left digit
+7D79  1F10                                 tfr      x,d               ; Copy X to D again
+7D7B  8D8B                                 bsr      R7SEG             ; Convert MSB right digit to 7 segment code
+7D7D  97FB                                 sta      <dbuf+1           ; display MSB right digit
+7D7F  1F98                                 tfr      b,a               ; Copy LSB to A
+7D81  8D81                                 bsr      L7SEG             ; Convert LSB left digit to 7 segment code
+7D83  97FC                                 sta      <dbuf+2           ; display LSB left digit
+7D85  1F98                                 tfr      b,a               ; Copy B to A again
+7D87  17FF7E                               lbsr     R7SEG             ; Convert LSB right digit to 7 segment code
+7D8A  97FD                                 sta      <dbuf+3           ; display LSB right digit
+7D8C  20A8                                 bra      MEM0              ; Get memory value from new X address now on display
+                      
+                      
+                      ;   Reset Handler
+7D8E  10CE13D0        RESET               lds      #MONSTACK          ; Load System Stack Pointer with Monitor default  
+7D92  10FF13F8        NMISR               sts      STACKSTART         ; Save current stack pointer at STACKSTART $13F8 (after NMI or RESET)
+                      
+                      ;   Set up NMI to point here
+7D96  8E7D92                               ldx      #NMISR            ; Save NMI Service Routine address in NMI Vector  
+7D99  BF13F2                               stx      NMIVEC
+7D9C  10CE13D0        RESUME               lds      #MONSTACK         ; Resume monitor and reinitialise stack pointer   
+7DA0  8613                                 lda      #dpRam            ; Initialise direct page register 
+7DA2  1F8B                                 tfr      a,dp
+7DA4  8D3B                                 bsr      CLEARDISP         ; Clear 7 segment display
+                      
+                      ;   Show '-' at left
+7DA6  8601                                 lda      #segDash          ; Display - on left hand digit 1   
+7DA8  97FA                                 sta      <dbuf+0 
+7DAA  17FE73                               lbsr     GETKEY            ; Wait for a key
+                      
+                      ;   If key is 'M'
+7DAD  8131                                 cmpa     #keyM             ; If M Display Memory
+7DAF  1027FF7A                             lbeq     MEMDISP
+                      
+                      ;   If key is 'R'
+7DB3  8130                                 cmpa     #keyR             ; If R display Registers
+7DB5  274D                                 beq      REGDISP
+                      
+                      ;   If key is 'CN'
+7DB7  8125                                 cmpa     #keyCN            ; If Continue then pull CPU state from stack and continue 
+7DB9  2722                                 beq      CONT
+                      
+                      ;   If key is 'L'
+7DBB  8105                                 cmpa     #keyL             ; If L then Load from Serial Port in S-REC
+7DBD  1027008B                             lbeq     LOAD
+                      
+                      ;   If key is 'S' (was P for punch)
+7DC1  8115                                 cmpa     #keyS             ; If S then Save to Serial Port in S-REC
+7DC3  10270125                             lbeq     SAVE
+                      
+                      ;   If key is 'G'
+7DC7  8135            RESET3               cmpa     #keyG             ; If G then prompt for Address and execute starting at that address
+7DC9  26D1                                 bne      RESUME            ; Otherwise wait for another key
+                      
+                      ;   Prompt and accept start address
+7DCB  867C            GO                   lda      #segG             ; Display G on right hand data segment 6
+7DCD  97FF                                 sta      <dbuf+5
+7DCF  17FEE8                               lbsr     BADDR             ; Get 16 bit address in X and display on segments 1-4
+7DD2  109EF8                               ldy      <STACKSTART       ; Get previous saved stack pointer before NMI or SWI
+7DD5  AF2A                                 stx      $0A,y             ; Overwrite PC saved on stack
+7DD7  8680                                 lda      #$80              ; Set Entire bit in Condition Code register on stack
+7DD9  AAA4                                 ora      ,y                ; OR with existing CC value
+7DDB  A7A4                                 sta      ,y                ; Save back CC with Entire bit set
+7DDD  10DEF8          CONT                 lds      <STACKSTART       ; Load stack pointer from saved value
+7DE0  3B                                   rti                        ; Return from interupt, which will load program counter from X value returned from BADDR
+                      
+                      
+                      ;   Clear display
+7DE1  3416            CLEARDISP            pshs     x,b,a
+7DE3  4F                                   clra                       ; Blank segment value
+7DE4  C606                                 ldb      #$06              ; Iterate over 6 digits 
+7DE6  8E13FA                               ldx      #dbuf 
+7DE9  A780            CLEARDISP1           sta      ,x+               ; Clear display buffer
+7DEB  5A                                   decb                       ; Next segment (1-6)
+7DEC  26FB                                 bne      CLEARDISP1        ; Next segment
+7DEE  3596                                 puls     a,b,x,pc ;(pul? pc=rts)
+                      
+                      
+                      ;   Characters for Register Display  C A b d X Y U P S
+                      ;   The label REGDISPCHAR2 indicates where values change from 1 byte to 2 bytes at X
+7DF0  786F7557        REGDISPCHAR          FCB segC, segA, segB, segD
+7DF4  6737766B3D      REGDISPCHAR2         FCB segX, segY, segU, segP, segS
+                      
+7DF9  8613            REGDISPSWI           lda      #dpRam             ; Initialise direct page register
+7DFB  1F8B                                 tfr      a,dp
+7DFD  10DFF8                               sts      <STACKSTART        ; Save stackpointer from running code on SWI
+7E00  10CE13D0                             lds      #MONSTACK          ; Set stackpointer to monitor default  
+7E04  8DDB            REGDISP              bsr      CLEARDISP          ; Clear display
+7E06  9EF8                                 ldx      <STACKSTART        ; Get running stack pointer from saved value into X
+                      
+                      ;   Read characters from REGDISPCHAR
+7E08  318CE5                               leay     -$1B,pc            ; Loads Y with REGDISPCHAR register table start address ($7DEB) 
+7E0B  A6A0            REGDISP1             lda      ,y+                ; Get register prefix character
+7E0D  97FF                                 sta      <dbuf+5            ; Display at segment 6
+7E0F  108C7DF9                             cmpy     #REGDISPSWI        ; Are we on the last register S?       
+7E13  2603                                 bne      SHOWLEFT           ; Not on S, display bytes
+7E15  8E13F8                               ldx      #STACKSTART
+7E18  108C7DF4        SHOWLEFT             cmpy     #REGDISPCHAR2      ; Are we on single byte values still? X is first 2 byte
+7E1C  230E                                 bls      SHOWBYTE           ; Display single byte value
+7E1E  A684                                 lda      ,x                 ; Get most significant byte of two byte value
+7E20  17FEE1                               lbsr     L7SEG              ; Get left hand digit segment code
+7E23  97FA                                 sta      <dbuf+0            ; Display at segment 1
+7E25  A680                                 lda      ,x+                ; Get same byte for register and increment X
+7E27  17FEDE                               lbsr     R7SEG              ; Get right hand digit segment code
+7E2A  97FB                                 sta      <dbuf+1            ; Display at segment 2
+7E2C  A684            SHOWBYTE             lda      ,x                 ; Get byte value for register from stack
+7E2E  17FED3                               lbsr     L7SEG              ; Get left hand segment code
+7E31  97FC                                 sta      <dbuf+2            ; Display at segment 3
+7E33  A680                                 lda      ,x+                ; Get same byte value for register and increment X
+7E35  17FED0                               lbsr     R7SEG              ; Get right hand segment code
+7E38  97FD                                 sta      <dbuf+3            ; Display at segment 4
+7E3A  17FDE3                               lbsr     GETKEY             ; Get a key
+7E3D  8132                                 cmpa     #keyI              ; Has I been pressed
+7E3F  1026FF59                             lbne     RESUME             ; No then return to monitor 
+7E43  108C7DF9                             cmpy     #REGDISPSWI        ; Are we at end of register table?       
+7E47  26C2                                 bne      REGDISP1           ; No so display next register
+7E49  16FF50                               lbra     RESUME             ; Yes so return to monitor
+                      
+                      
+                      
+                      ;   Set up serial port
+7E4C  8603            LOAD                 lda      #CTRLRESET  ; Master Reset bits
+7E4E  B75000                               sta      SERIALCTRL  ; Serial Port Control Master Reset
+7E51  8616                                 lda      #CTRLDIVIDE64 | CTRLWORD8N1S | CTRLRTSLOW
+7E53  B75000                               sta      SERIALCTRL  ; Serial Port Divide by 64 (3.6864Mhz Xtal /6 /64 =9600 ), 8 Bits No Parity 1 Stop, /RTS Low - receive data, DCD wired low
+                      
+                      
+7E56  8D5A            RELOAD               bsr      RECVBYTE    ; Get a byte without Hex conversion, should be S1 or S9 combination
+                      
+                      ;   Wait for $53 = S
+7E58  8153                                 cmpa     #asciiS    
+7E5A  26FA                                 bne      RELOAD      ; Not S then get next byte
+7E5C  8D54                                 bsr      RECVBYTE    ; We have S so get next byte, should be S record type 1 or 9
+                      
+                      ;   Code S1 begins a record
+7E5E  8131                                 cmpa     #ascii1    
+7E60  2708                                 beq      LOAD2       ; Parse the bytecount and start address, the data and checksum
+                      
+                      ;   Code S9 means EOF
+7E62  8139                                 cmpa     #ascii9   
+7E64  26F0                                 bne      RELOAD      ; If not S1 or S9 keep reading otherwise display F for finished
+                      
+                      ;   Show F in display forever
+7E66  8669            MESSAGEF             lda      #segF
+7E68  203D                                 bra      ERRSTOP
+                      
+                      
+                      ;   Get byte count and initialise checksum
+7E6A  8D51            LOAD2                bsr      RECVHEXBYTE ; Read the Byte Count for Srec format (note NOT Hex character count)
+7E6C  F713E3                               stb      bytecount  
+7E6F  B613E3                               lda      bytecount  ; Initialise checksum in A with byte count for new record 
+7E72  7A13E3                               dec      bytecount
+                      
+                      ;   Get two-byte address where to load bytes, accumulating checksum in A
+7E75  8D46                                 bsr      RECVHEXBYTE  ; Get high address byte in B
+7E77  F713F6                               stb      tmpX  
+7E7A  3404                                 pshs     b
+7E7C  ABE0                                 adda     ,s+          ; add high address to checksum in A
+7E7E  7A13E3                               dec      bytecount   ; reduce byte count by 1
+                      
+7E81  8D3A                                 bsr      RECVHEXBYTE  ; Get low address byte in B
+7E83  F713F7                               stb      tmpX+1      ; Save low address byte in tmpX
+7E86  3404                                 pshs     b
+7E88  ABE0                                 adda     ,s+          ; add low address to checksum in A
+7E8A  BE13F6                               ldx      tmpX        ; Load address in X for use row data bytes storage  
+7E8D  7A13E3          LDLOOP               dec      bytecount   ; reduce byte count by 1
+                      
+7E90  270A                                 beq      LDDONE       ; No more bytes? just checksum left
+7E92  8D29                                 bsr      RECVHEXBYTE  ; Get next hex characters and convert to bytes in B
+7E94  E780                                 stb      ,x+          ; Save to memory at X
+7E96  3404                                 pshs     b
+7E98  ABE0                                 adda     ,s+          ; Add B to checksum held in A     
+7E9A  20F1                                 bra      LDLOOP       ; Next byte
+                      
+                      
+                      ;   Verify checksum
+7E9C  8D1F            LDDONE               bsr      RECVHEXBYTE  ; Get checksum from end of line in B
+7E9E  43                                   coma                  ; Since complement not twos complement (NEG) as S19 format checksum would not work
+                      
+7E9F  3404                                 pshs     b            ; Compare B to checksum (which is complement of sum)
+7EA1  A1E0                                 cmpa     ,s+          ; to sum of bytes
+7EA3  27B1                                 beq      RELOAD       ; If zero then checksum and complement of sum of bytes are equal, get next row in file
+7EA5  8678                                 lda      #segC         ; Checksum not equal so display C error and stop
+                      
+                      ;   Fall-thru
+7EA7  17FF37          ERRSTOP              lbsr     CLEARDISP    ; Clear display then show charcters in A (F Finished, E error in Hex, C Checksum error)
+7EAA  B713FA                               sta      dbuf+0  
+7EAD  17FDCB          DEAD                 lbsr     DISPRESH
+7EB0  20FB                                 bra      DEAD
+                      
+                      ;   Receive one byte from serial port in A
+7EB2  8601            RECVBYTE             lda     #STATUSRDRF   ; Mask Receive Data Register Full
+7EB4  B55000          RECVBYTE1            bita    SERIALSTATUS  ; Check RDRF, 1 means has data, 0 loop back
+7EB7  27FB                                 beq     RECVBYTE1     ; Keep checking until read for more data
+7EB9  B65001                               lda     SERIALDATA    ; Read data from serial port, should clear RDRF
+7EBC  39                                   rts
+                      
+                      ;   Receive two ASCII characters, convert to a byte and return in B, invalid Hex display E and stop 
+7EBD  3402            RECVHEXBYTE          pshs    a             ; Save A to stack as will have checksum
+7EBF  8DF1                                 bsr     RECVBYTE
+7EC1  8D10                                 bsr     HEXTOBIN      ; Convert ASCII Hex to Low Nibble
+7EC3  48                                   lsla                  ; Shift to high nibble
+7EC4  48                                   lsla
+7EC5  48                                   lsla
+7EC6  48                                   lsla
+7EC7  1F89                                 tfr     a,b           ; Save high nibble to B
+                      
+7EC9  8DE7                                 bsr     RECVBYTE
+7ECB  8D06                                 bsr     HEXTOBIN      ; Convert ASCII Hex to Low Nibble
+7ECD  3402                                 pshs    a             ; Add A to B via stack
+7ECF  EBE0                                 addb    ,s+               
+                                     
+7ED1  3582                                 puls    a,pc           ; B will have returned two chracter Hex Byte value
+                      
+                      ; Take ASCII character in A and convert to 4 bit Low nibble in A
+7ED3  8130            HEXTOBIN             cmpa     #'0          ; Compare with ASCII 0
+7ED5  2B11                                 bmi      HEXERR       ; Less than 0 then error
+7ED7  8139                                 cmpa     #'9          ; Compare with ASCII 9
+7ED9  2F0A                                 ble      HEXRTS       ; Less than or equal then numeric, return value
+7EDB  8141                                 cmpa     #'A          ; Compare with ASCII A
+7EDD  2B09                                 bmi      HEXERR       ; Less then A then error
+7EDF  8146                                 cmpa     #'F          ; Compare with ASCII F
+7EE1  2E05                                 bgt      HEXERR       ; Greater than F then error
+7EE3  8007                                 suba     #7           ; A=$41/65 becomes $3A/58 F=$46/70 becomes $3F/63
+7EE5  840F            HEXRTS               anda     #$0F         ; Mask high nibble to convert from ASCII to binary 4 low bits      
+7EE7  39                                   rts
+                                     
+7EE8  8679            HEXERR               lda      #segE         ; 7 Segment E
+7EEA  20BB                                 bra      ERRSTOP      ; Will display E - error as invalid Hex character
+                      
+                      
+                      ;   Save memory to serial port Prompt S and get start address
+7EEC  8E003D          SAVE                 ldx      #segS
+7EEF  9FFE                                 stx      <dbuf+4
+7EF1  17FDC6                               lbsr     BADDR
+7EF4  9FEE                                 stx      <ptr
+                      
+                      ;   Prompt F and get finish address
+7EF6  8669                                 lda      #segF
+7EF8  97FF                                 sta      <dbuf+5
+7EFA  17FDBD                               lbsr     BADDR
+7EFD  9FF0                                 stx      <addr
+                      
+                      ;   Set up serial output port - RESET should go in main reset code
+7EFF  8603                                 lda      #CTRLRESET  ; Master Reset bits
+7F01  B75000                               sta      SERIALCTRL ; Serial Port Control Master Reset
+7F04  8616                                 lda      #CTRLDIVIDE64 | CTRLWORD8N1S | CTRLRTSLOW
+7F06  B75000                               sta      SERIALCTRL ; Serial Port Divide by 64 (3.6864Mhz Xtal /6 /64 =9600 ), 8 Bits No Parity 1 Stop, /RTS Low - send data
+                      
+7F09                  SAVE1 
+                      ;   Send block start
+7F09  17006D          SAVE4                lbsr     SENDSTART
+7F0C  86FF                                 lda      #$FF          ; This is effectively -1
+7F0E  D6EF                                 ldb      <ptr+1
+7F10  3404                                 pshs     b
+7F12  A0E0                                 suba     ,s+           ; Subtract -1 from b gives +1 - not sure why do it this way 
+                      
+                      ;   Send length code and init checksum
+7F14  840F            SAVE2                anda     #$0F          ; Do maximum of 16 bytes (0-F), but need to allow for data byte 0 in length calculation
+7F16  8B04                                 adda     #$04          ; Length+2, Checksum+1 data0+1 total 4
+7F18  170067                               lbsr     SENDHEXA      ; Send the length in Hex
+7F1B  97E4                                 sta      <chksum       ; Start the checksum with the length value
+                      
+                      ;   Send (half of) address and add to checksum
+7F1D  8E13EE                               ldx      #ptr          ; Get most significant byte of start address
+7F20  17005D                               lbsr     SENDBYTEX     ; Send MSB as Hex
+7F23  9BE4                                 adda     <chksum       ; Add byte value to checksum
+7F25  97E4                                 sta      <chksum 
+                      
+                      ;   Send other half of address and add to checksum
+7F27  3001                                 leax     $01,x         ; Get the least significant byte of the start address
+7F29  170054                               lbsr     SENDBYTEX     ; Send LSB as Hex
+7F2C  9BE4                                 adda     <chksum       ; Add byte value to checksum 
+7F2E  97E4                                 sta      <chksum 
+7F30  9EEE                                 ldx      <ptr
+                      
+                      ;   Send a data byte and add to checksum
+7F32  8D4C            SAVE3                bsr      SENDBYTEX     ; Send the byte pointed to by X a Hex
+7F34  9BE4                                 adda     <chksum       ; Add data byte to checksum
+7F36  97E4                                 sta      <chksum 
+7F38  9CF0                                 cmpx     <addr
+7F3A  270A                                 beq      ENDBLOCK      ; Has X reached the Finish Address
+7F3C  3001                                 leax     $01,x         ; Increment X to the next byte
+7F3E  9FEE                                 stx      <ptr          ; Update ptr to current X value
+7F40  96EF                                 lda      <ptr+1        ; Get the LSB value
+7F42  850F                                 bita     #$0F          ; Only check the least significant nibble
+7F44  26EC                                 bne      SAVE3         ; Keep sending until 0 (we have done xF byte)
+                      
+                      ;   Send checksum
+7F46  96E4            ENDBLOCK             lda      <chksum       ; Done block of 16 bytes (other than 1st or last block)
+7F48  43                                   coma                   ; Complement checksum (reverse all bits)
+7F49  8D37                                 bsr      SENDHEXA      ; Send checksum as 2 Hex characters
+7F4B  860D                                 lda      #asciiCR      ; Send CR LF to end line
+7F4D  170053                               lbsr     SEND     
+7F50  860A                                 lda      #asciiLF    
+7F52  8D4F                                 bsr      SEND
+                      
+                      ;   Test if all finished
+7F54  9CF0                                 cmpx     <addr         ; Check X against Finish Address
+7F56  2718                                 beq      SENDEOF       ; Send S9 End of File if X=Finish Address
+                      
+                      ;   Test if another full block to send
+7F58  96EE                                 lda      <ptr          ; Compare current byte MSB with finish MSB
+7F5A  91F0                                 cmpa     <addr
+7F5C  2BAB                                 bmi      SAVE4
+7F5E  D6EF                                 ldb      <ptr+1
+7F60  96F1                                 lda      <addr+1
+7F62  84F0                                 anda     #$F0
+7F64  3404                                 pshs     b
+7F66  A1E0                                 cmpa     ,s+
+7F68  269F                                 bne      SAVE4
+                      
+                      ;   Last block may be short
+7F6A  8D0D                                 bsr      SENDSTART
+7F6C  96F1                                 lda      <addr+1
+7F6E  20A4                                 bra      SAVE2
+                      
+                      
+                      ;   Send S19 End of file 53 39 30 33 30 30 30 30 42 46 = 'S9030000FC'
+7F70  108E7FC1        SENDEOF              ldy      #SENDEOFMSG
+7F74  8D3F                                 bsr      SENDMSG
+7F76  16FEED                               lbra     MESSAGEF 
+                      
+                      
+                      ;   Send S19 file format start line 'S1'
+7F79  108E7FBE        SENDSTART            ldy      #SENDSTARTMSG
+7F7D  8D36                                 bsr      SENDMSG
+7F7F  39                                   rts
+                      
+                      
+                      ;   Transmit byte from (X) and convert from 8 bits to two ASCII HEX characters and send over serial port
+7F80  A684            SENDBYTEX            lda      ,x       
+                      
+                      ; Convert byte in A into Hex as two ASCII characters and send over serial port
+7F82                  SENDHEXA
+7F82  3402                                 pshs     a            ; Save byte value as need to return since used for checksum calc
+7F84  3402                                 pshs     a            ; Save again so we can mask top and lower nibbles
+7F86  84F0                                 anda     #%11110000   ; Mask High nibble
+7F88  44                                   lsra                  ; Shift to Low nibble
+7F89  44                                   lsra 
+7F8A  44                                   lsra
+7F8B  44                                   lsra
+                      
+7F8C  8B90                                 adda     #$90          ; LSB to ASCII Hex as per page 7-2 of Leventhal 0-9  $30-$39 A-F $41-$46
+7F8E  19                                   daa                    ; DAA on adding $90 sets carry which Makes 0-9 3x and A-F be 4x in adca
+7F8F  8940                                 adca     #$40          ; Add $40 makes 0-9 D0-D9  in Decimal 130-139, A-F A0-A5 +$40 + Carry in decimal 141-146 = $41-$46
+7F91  19                                   daa                    ; Strips 100 from result to give 30-39 and 41-46
+7F92  8D0F                                 bsr      SEND
+                      
+7F94  3502                                 puls     a 
+7F96  840F                                 anda     #%00001111    ; Mask Low nibble
+                      
+7F98  8B90                                 adda     #$90          ; LSB to ASCII Hex as per page 7-2 of Leventhal, same as above
+7F9A  19                                   daa
+7F9B  8940                                 adca     #$40
+7F9D  19                                   daa
+7F9E  8D03                                 bsr      SEND
+7FA0  3502                                 puls     a
+7FA2  39                                   rts
+                      
+                      ;   Transmit byte from A
+7FA3  3402            SEND                 pshs    a
+7FA5  12                                   nop                   ; Allow for SWI if needed 
+7FA6  8602                                 lda     #STATUSTDRE   ; Mask Transmit Data Register Empty
+7FA8  B55000          SEND1                bita    SERIALSTATUS  ; Check TDRE, 1 means ready for more data, 0 loop back
+7FAB  27FB                                 beq     SEND1         ; Keep checking until ready for more data
+7FAD  12                                   nop                   ; Allow for SWI if needed 
+7FAE  3502                                 puls    a             ; 
+                      
+7FB0  B75001                               sta     SERIALDATA
+7FB3  12                                   nop
+7FB4  39                                   rts                   ; Return
+                      
+                      
+                      ; Send NULL terminated list of BYTES pointed to by Y to serial port
+7FB5  A6A0            SENDMSG              lda      ,y+
+7FB7  2704                                 beq      SENDMSG2
+7FB9  8DE8                                 bsr      SEND
+                      ;                    nop                 ; Allow SWI to be entered and continue
+7FBB  20F8                                 bra      SENDMSG
+                      
+7FBD  39              SENDMSG2             rts
+                      
+                      ;   Send S19 Start of data S1                         
+7FBE  533100          SENDSTARTMSG         FCB      asciiS, ascii1, asciiNull    
+                      
+                      ;   Send S19 End of file 53 39 30 33 30 30 30 30 46 43 = 'S9030000FC'
+7FC1  533930333030303046430D0A00 SENDEOFMSG           FCB      asciiS, ascii9, ascii0, ascii3, ascii0, ascii0, ascii0, ascii0, asciiF, asciiC, asciiCR, asciiLF, asciiNull    
+                      
+                      
+7FCE  00000000000000                       FCB  $00, $00, $00, $00, $00, $00, $00
+                      ;                    FCB  $00, $00, $00, $00, $00, $00, $00
+                      ;                    FCB  $00, $00, $00, $00, $00               
+                      
+                      ; Interupt vector redirect code loads vector from memory to X then jumps to vector in X
+                      ; Only NMI Vector is initialised at Reset, others need to be set first
+7FD5  BE13E7          SWI2INTR             ldx      SWI2VEC           
+7FD8  6E84                                 jmp      ,x
+                      
+7FDA  BE13E5          SWI3INTR             ldx      SWI3VEC           
+7FDD  6E84                                 jmp      ,x
+                      
+7FDF  BE13E9          FIRQINTR             ldx      FIRQVEC           
+7FE2  6E84                                 jmp      ,x
+                      
+7FE4  BE13F4          INTRQ                ldx      IRQVEC            
+7FE7  6E84                                 jmp      ,x
+                      
+7FE9  BE13F2          NMINTR               ldx      NMIVEC            
+7FEC  6E84                                 jmp      ,x
+                      
+7FEE  00000000                             FCB  $00, $00, $00, $00 ; Remove 5 $00 to allow for DISPRESH fix
+                      
+                      
+                      ;   Interrupt vectors point to stubs above which allow vector to be overriden in RAM
+                      ;   Reset, NMI and SWI are defined by default, others need to be set first
+7FF2  7FDA                                 FDB  SWI3INTR     ; SWI3 $7F, $D5     ; <$7FF2>
+                      
+7FF4  7FD5                                 FDB  SWI2INTR     ; SWI2 $7F, $D0     ; <$7FF4>
+                      
+7FF6  7FDF                                 FDB  FIRQINTR     ; FIRQ $7F, $DA     ; <$7FF6>
+                      
+7FF8  7FE4                                 FDB  INTRQ        ; IRQ $7F, $DF      ; <$7FF8>
+                      
+7FFA  7DF9            SWINTR               FDB  REGDISPSWI   ; SWI $7D, $F4      ; <$7FFA>
+                      
+7FFC  7FE9                                 FDB  NMINTR       ; NMI $7F, $E4      ; <$7FFC>
+                      
+7FFE  7D8E            RESETBOOT            FDB  RESET        ; RESET $7D, $89    ; <$7FFE>
+                      

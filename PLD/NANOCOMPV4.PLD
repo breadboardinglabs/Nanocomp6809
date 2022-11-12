@@ -1,0 +1,96 @@
+Name            Nanocomp V4 Memory Map Decoder;
+Partno          NANOCOMPV4;
+Revision        01;
+Date            07/11/22;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/*********************************************************************************/
+/*     0000  V1/V2/V3         RAM V4  32K RAM              0000-7FFF   /Y1RAM    */
+/*     1000  RAM V1/V2/V3     RAM V4                                             */
+/*     2000  V1/V2/V3 NA      RAM V4                                             */
+/*     3000  V1/V2/V3 NA      RAM V4                                             */
+/*     4000  PIA V1/V2/V3     RAM V4                                             */
+/*     5000  ACIA V2/V3       RAM V4                                             */
+/*     6000  V1/V2/V3 NA      RAM V4                                             */
+/*     7000  ROM V1/V2/V3     RAM V4                                             */
+/*     8000  V1/V2/V3 NA      VRAM V4 16K VIDEO RAM PAGE   8000-BFFF   /Y0VRAM   */
+/*     9000  V1/V2/V3 NA      VRAM V4                                            */
+/*     A000  V1/V2/V3 NA      VRAM V4                                            */
+/*     B000  V1/V2/V3 NA      VRAM V4                                            */
+/*     C000  V1/V2/V3 NA      VIDEO Character RAM 4K       C000-CFFF   /Y2CRAM   */
+/*     D000  V1/V2/V3 NA      PIA 1                        D000-D00F   /Y4PIA1   */
+/*     D000  V1/V2/V3 NA      PIA 2                        D100-D1FF             */
+/*     D000  V1/V2/V3 NA      ACIA 1                       D200-D2FF   /Y5SERIAL1*/
+/*     D000  V1/V2/V3 NA      ACIA 2                       D300-D3FF             */
+/*     D000  V1/V2/V3 NA      CRTC 6845                    D400-D4FF   /Y3CRTC   */
+/*     D000  V1/V2/V3 NA      VIDEO CONTROL 1              D500-D5FF   /Y6VIDC1  */
+/*     D000  V1/V2/V3 NA      VIDEO CONTROL 2              D600-D6FF             */
+/*     D000  V1/V2/V3 NA      PAGE REGISTER                D700-D7FF             */
+/*                                    8(3) VIDEO 4(2) ROM 8(3) RAM               */
+/*                                    8k ROM               E000-FFFF             */
+/*     E000  V1/V2/V3 NA      ROM V4  4K Video Character Set E000-EFFF           */
+/*     F000  V1/V2/V3 NA      ROM V4  F000-F7FF Spare F800 Examples FC00 Monitor */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+E     |1     24| Vcc
+RW    |2     23| /Y0VRAM
+A15   |3     22| /Y1RAM
+A14   |4     21| /Y2CRAM
+A13   |5     20| /Y3CRTC
+A12   |6     19| /Y4PIA1
+A11   |7     18| /Y5SERIAL1
+A10   |8     17| /Y6VIDC1
+A9    |9     16| /Y7ROM
+A8    |10    15| NC
+NC    |11    14| NC
+Gnd   |12    13| NC 
+       --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6809
+ */
+
+Pin 1  =  E;
+Pin 2  =  RW;
+Pin 3  =  A15;
+Pin 4  =  A14;
+Pin 5  =  A13;
+Pin 6  =  A12;
+Pin 7  =  A11;
+Pin 8  =  A10;
+Pin 9  =  A9;
+Pin 10 =  A8;
+Pin 11 =  NC1;
+Pin 13 =  NC2;
+Pin 14 =  NC3;
+Pin 15 =  NC4;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+Pin 23 = !Y0VRAM;     /* Video RAM */
+Pin 22 = !Y1RAM;      /* RAM /CS */
+Pin 21 = !Y2CRAM;     /* Video Character RAM */
+Pin 20 = !Y3CRTC;     /* CRTC */
+Pin 19 = !Y4PIA1;     /* PIA MC6821 /CS */
+Pin 18 = !Y5SERIAL1;  /* MC6850 /CS */
+Pin 17 = !Y6VIDC1;    /* Video Control 1 */
+Pin 16 = !Y7ROM;      /* ROM /CS */
+
+/*
+ * Logic:  All outputs are active low signals in the target system.
+ */
+Y0VRAM =    ((A15 & !A14 & !A13 & !A12) # (A15 & !A14 & !A13 & A12) # (A15 & !A14 & A13 & !A12) # (A15 & !A14 & A13 & A12)) & E;
+Y1RAM =     !A15 & E;
+Y2CRAM =    A15 & A14 & !A13 & !A12 & E;
+Y3CRTC =    A15 & A14 & !A13 & A12 & !A11 &  A10 & !A9 & !A8 & E;
+Y4PIA1 =    A15 & A14 & !A13 & A12 & !A11 & !A10 & !A9 & !A8 & E;
+Y5SERIAL1 = A15 & A14 & !A13 & A12 & !A11 & !A10 &  A9 & !A8 & E;
+Y6VIDC1 =   A15 & A14 & !A13 & A12 & !A11 &  A10 & !A9 &  A8 & E;
+Y7ROM =     A15 & A14 & A13 & E & RW;

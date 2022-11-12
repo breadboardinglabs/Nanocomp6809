@@ -1,0 +1,96 @@
+Name            Nanocomp V3 Memory Map Decoder;
+Partno          NANOCOMPV3;
+Revision        01;
+Date            30/10/22;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/*********************************************************************************/
+/*     0000  V1/V2 NA         RAM V3  32K RAM     0000-7FFF                      */
+/*     1000  RAM V1/V2        RAM V3                                             */
+/*     2000  V1/V2 NA         RAM V3                                             */
+/*     3000  V1/V2 NA         RAM V3                                             */
+/*     4000  PIA V1/V2        RAM V3                                             */
+/*     5000  ACIA V2          RAM V3                                             */
+/*     6000  V1/V2 NA         RAM V3                                             */
+/*     7000  ROM V1/V2        RAM V3                                             */
+/*     8000  V1/V2 NA         VRAM V3 16K VIDEO RAM PAGE   8000-BFFF             */
+/*     9000  V1/V2 NA         VRAM V3                                            */
+/*     A000  V1/V2 NA         VRAM V3                                            */
+/*     B000  V1/V2 NA         VRAM V3                                            */
+/*     C000  V1/V2 NA         VIDEO Character RAM 4K       C000-CFFF             */
+/*     D000  V1/V2 NA         PIA 1                        D000-D00F             */
+/*     D000  V1/V2 NA         PIA 2                        D100-D1FF             */
+/*     D000  V1/V2 NA         ACIA 1                       D200-D2FF             */
+/*     D000  V1/V2 NA         ACIA 2                       D300-D3FF             */
+/*     D000  V1/V2 NA         CRTC 6845                    D400-D4FF             */
+/*     D000  V1/V2 NA         VIDEO CONTROL 1              D500-D5FF             */
+/*     D000  V1/V2 NA         VIDEO CONTROL 2              D600-D6FF             */
+/*     D000  V1/V2 NA         PAGE REGISTER                D700-D7FF             */
+/*                                    8(3) VIDEO 4(2) ROM 8(3) RAM               */
+/*                                    8k ROM               E000-FFFF             */
+/*     E000  V1/V2 NA         ROM V3  4K Video Character Set E000-EFFF           */
+/*     F000  V1/V2 NA         ROM V3  F000-F7FF Spare F800 Examples FC00 Monitor */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+E     |1     24| Vcc
+RW    |2     23| /Y0VRAM
+A15   |3     22| /Y1RAM
+A14   |4     21| /Y2CRAM
+A13   |5     20| /Y3
+A12   |6     19| /Y4PIA1
+A11   |7     18| /Y5SERIAL1
+A10   |8     17| /Y6
+A9    |9     16| /Y7ROM
+A8    |10    15| NC
+NC    |11    14| NC
+Gnd   |12    13| NC 
+       --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6809
+ */
+
+Pin 1  =  E;
+Pin 2  =  RW;
+Pin 3  =  A15;
+Pin 4  =  A14;
+Pin 5  =  A13;
+Pin 6  =  A12;
+Pin 7  =  A11;
+Pin 8  =  A10;
+Pin 9  =  A9;
+Pin 10 =  A8;
+Pin 11 =  NC;
+Pin 13 =  NC;
+Pin 14 =  NC;
+Pin 15 =  NC;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+Pin 23 = !Y0VRAM;     /* Video RAM */
+Pin 22 = !Y1RAM;      /* RAM /CS */
+Pin 21 = !Y2CRAM;     /* Video Character RAM */
+Pin 20 = !Y3CRTC;     /* CRTC */
+Pin 19 = !Y4PIA1;     /* PIA MC6821 /CS */
+Pin 18 = !Y5SERIAL1;  /* MC6850 /CS */
+Pin 17 = !Y6;         /* NA */
+Pin 16 = !Y7ROM;      /* ROM /CS */
+
+/*
+ * Logic:  All outputs are active low signals in the target system.
+ */
+Y0VRAM =    ((A15 & !A14 & !A13 & !A12) # (A15 & !A14 & !A13 & A12) # (A15 & !A14 & A13 & !A12) # (A15 & !A14 & A13 & A12)) & E;
+Y1RAM =     !A15 & E;
+Y2CRAM =    A15 & A14 & !A13 & !A12 & E;
+Y3CRTC =    A15 & A14 & !A13 & A12 & !A11 & !A10 & A9 & E;
+Y4PIA1 =    A15 & A14 & !A13 & A12 & !A11 & !A10 & !A9 & E;
+Y5SERIAL1 = A15 & A14 & !A13 & A12 & !A11 & !A10 & A9 & E;
+Y6 =        A14 & A13 & !A12 & E;
+Y7ROM =     A15 & A14 & A13 & E & RW;
