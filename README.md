@@ -4,3 +4,4 @@ Wireless World Magazine published two microcomputer projects in January 1981 wit
 Find copies of these projects in the Docs folder.
 This project includes the files used in the Breadboarding Labs YouTube channel https://www.youtube.com/channel/UCrsGiREb-aRAx55yhPcjaSQ which is reproducing the project on Solderless Breadboards (and the keypad on stripboard).
 A project has also been created in Hackaday.io https://hackaday.io/project/188095-nanocomp-6809-8-bit-retro-computer-on-breadboards
+Recent updates include as basic breadboard based VGA Controller capable of doing 30x80 Lines at 25.175Mhz.
