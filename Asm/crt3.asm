@@ -1,4 +1,4 @@
-; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt2.txt crt2.asm -o crt2.srec
+; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt3.txt crt3.asm -o crt3.srec
 ; V3 16/Jan/2021 Using 25.175 Mhz Osc not 25Mhz crystal, Better display of character set
 
 CRTCAR              EQU  $D400
@@ -63,16 +63,6 @@ LOWLINE1            bsr      PRINTDIGIT
                     cmpx      #VRAM + COLSPERROW * BYTESPERCHAR * ROWSPERPAGE; 2 Bytes per character 0/even is character 1/odd is colour
                     ble       LOWLINE1
 
-LOWSECLINE          ldx      #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - 2 * COLSPERROW * BYTESPERCHAR + 9 ; Start at 10th Column
-                    lda      #$1
-LOWSECLINE1         bsr      PRINTDIGIT ; This will increase X by 2
-                    leax     9,X
-                    adda     #$01
-                    daa
-                    cmpx     #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR
-                    ble      LOWSECLINE1
-
-
 LINENO              lda       #$02
                     ldx       #VRAM + COLSPERROW * BYTESPERCHAR
 LINENO1             bsr       PRINTNUM
@@ -99,9 +89,33 @@ CHARDUMP2           bsr       PRINTHEX
                     bne       CHARDUMP2
                     tsta
                     bne       CHARDUMP1
+CURSORMOVE
+                    
 
 CRTEND
                     swi
+
+                    ; Current Row and Current Col, cursor = row * COLSPERROW + Col
+CURSORRIGHT
+                    ; Move cursor 1 right, if end of line move to start of same line. End of page goto 0000
+                    COl = COl+1
+                    IF col >= COLSPERROW Col = 0
+CURSORLEFT
+                    ; Move cursor 1 left, if at start of page move to end of last line. COLSPERROW * ROWSPERPAGE -1
+                    COl = COl-1
+                    IF col < 0  Col = COLSPERROW -1
+
+CURSORUP
+                    ; Move cursor 1 line down, if at end of page move to end of last line. COLSPERROW * ROWSPERPAGE -1
+                    ROW = ROW -1
+                    IF ROW <0 row = ROWSPERPAGE -1
+CURSORDOWN
+                    ROW = ROW +1
+                    IF ROW >=ROWSPERPAGE row = 0
+
+UPDATECURSOR
+                    ; Take position in D (A Row B Col) convert to cursor address and save to CRTC Register 14 & 15
+                    
                     
 ; 12345678901234567890
 ; 02       1         2 ..... 02
@@ -152,18 +166,18 @@ PRINTHEX            pshs     a            ; Save byte value as need to return si
                     puls     a
                     rts
                     
-CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 99
+CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 98 was 99 (Changed to 98 with 25Mhz as 59Hz not 60Hz)
                     FCB      $50         ; R1 H Displayed 80
-                    FCB      $53         ; R2 H from 53 to 55 Sync Position 83
-                    FCB      $06         ; R3 H Sync Width 6
+                    FCB      $52         ; R2 H from 53 to 55 Sync Position 83
+                    FCB      $0c         ; R3 H Sync Width 6
                     FCB      $1F         ; R4 V Total 31
-                    FCB      $14         ; R5 V Total Adjust (was 13/$0D)
-                    FCB      $1E         ; R6 V Displayed 30
-                    FCB      $1F         ; R7 V Sync Position 31
+                    FCB      $0d         ; R5 V Total Adjust (was 13)
+                    FCB      $1E         ; R6 V Displayed 25 (was 30)
+                    FCB      $1F         ; R7 V Sync Position 29 (was 30)
                     FCB      $00         ; R8 Interlace mode - Non Interlaced
                     FCB      $0F         ; R9 Maximum Scan Line Address 
-                    FCB      $6D         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start was 6D Cursor off $20
-                    FCB      $6F         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish 6F
+                    FCB      $00         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start
+                    FCB      $00         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish
                     FCB      $00,$00     ; R12,R13 Start Address
                     FCB      $00,$00     ; R14,R15 Cursor Address
                     

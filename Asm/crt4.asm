@@ -1,4 +1,4 @@
-; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt2.txt crt2.asm -o crt2.srec
+; C:\Users\Dave\OneDrive\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt4.txt crt4.asm -o crt4.srec
 ; V3 16/Jan/2021 Using 25.175 Mhz Osc not 25Mhz crystal, Better display of character set
 
 CRTCAR              EQU  $D400
@@ -7,8 +7,8 @@ VRAM                EQU  $8000
 ASCII0              EQU  $30
 ASCIISPACE          EQU  $20
 COLSPERROW          EQU  $50
-ROWSPERPAGE         EQU  $1E
-ROWSPERPAGEBCD      EQU  $30
+ROWSPERPAGE         EQU  $19
+ROWSPERPAGEBCD      EQU  $25
 BYTESPERCHAR        EQU  $01
 CHARCOLOUR          EQU  %00001111 ; Black background, white foreground
 CRTLINE1            RMB  2 ; CRTC Address where 1st Line starts,  
@@ -38,7 +38,7 @@ CLEARSCREEN1        ;stb      ,X+
                     
 TOPLINE             ldx      #VRAM
                     lda      #$01
-TOPLINE1            lbsr      PRINTDIGIT
+TOPLINE1            bsr      PRINTDIGIT
                     adda      #$01
                     daa
                     cmpx      #VRAM + COLSPERROW * BYTESPERCHAR ;Only 1 byte per character currently 
@@ -48,7 +48,7 @@ TOPLINE1            lbsr      PRINTDIGIT
 SECLINE             ldx      #VRAM + COLSPERROW * BYTESPERCHAR + 9 ; Start at 10th Column
                     lda      #$1
 SECLINE1            bsr      PRINTDIGIT ; This will increase X by 2
-                    leax     9,X
+                    leax     18,X
                     adda     #$01
                     daa
                     cmpx     #VRAM + 2 * COLSPERROW * BYTESPERCHAR ; 2 Bytes per character 0/even is character 1/odd is colour
@@ -63,36 +63,25 @@ LOWLINE1            bsr      PRINTDIGIT
                     cmpx      #VRAM + COLSPERROW * BYTESPERCHAR * ROWSPERPAGE; 2 Bytes per character 0/even is character 1/odd is colour
                     ble       LOWLINE1
 
-LOWSECLINE          ldx      #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - 2 * COLSPERROW * BYTESPERCHAR + 9 ; Start at 10th Column
-                    lda      #$1
-LOWSECLINE1         bsr      PRINTDIGIT ; This will increase X by 2
-                    leax     9,X
-                    adda     #$01
-                    daa
-                    cmpx     #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR
-                    ble      LOWSECLINE1
-
-
 LINENO              lda       #$02
-                    ldx       #VRAM + COLSPERROW * BYTESPERCHAR
+                    ldx       #VRAM + 1 + COLSPERROW * BYTESPERCHAR
 LINENO1             bsr       PRINTNUM
-                    leax      76,X  ; Move to end of line
+                    leax      152,X  ; Move to end of line
                     bsr       PRINTNUM ; X should be start of next line after this
                     adda      #$01
                     daa
                     cmpa      #ROWSPERPAGEBCD
                     bne       LINENO1
-                    ;SWI
                     ; +7 (4 char), 16 x 4 char= 64=128 bytes + 25
                     ; Add 32 for end of line (16 char)
 CHARDUMP            clra      ; Display two digit character code, character, 1 spaces for 0-255, start at Col 4 (add 7)
-                    ldx       #VRAM - 16 + 7 + 2 * COLSPERROW * BYTESPERCHAR
+                    ldx       #VRAM - 32 + 7 + 2 * COLSPERROW * BYTESPERCHAR
 CHARDUMP1           clrb
-                    leax      16,X
+                    leax      32,X
 CHARDUMP2           bsr       PRINTHEX
                     ;leax      2,X
-                    sta       ,X+
-                    leax      1,X
+                    sta       ,X++
+                    leax      2,X
                     inca
                     incb
                     cmpb      #$10
@@ -100,6 +89,22 @@ CHARDUMP2           bsr       PRINTHEX
                     tsta
                     bne       CHARDUMP1
 
+                    ; +7 (4 char), 16 x 4 char= 64=128 bytes + 25
+                    ; Add 32 for end of line (16 char)
+COLDUMP             clra      ; Display two digit character code, character, 1 spaces for 0-255, start at Col 4 (add 7)
+                    ldx       #VRAM - 32 + 7 + 20 * COLSPERROW * BYTESPERCHAR
+                    ldb       #$DB
+                    leax      32,X
+COLDUMP1            bsr       PRINTHEX
+                    ;leax      2,X
+                    sta       -1,X
+                    stb       ,X++
+                    leax      2,X
+                    inca
+                    cmpa      #$10
+                    bne       COLDUMP1
+SCROLL              ldy       #VRAM + COLSPERROW * BYTESPERCHAR * ROWSPERPAGE
+                    ldx       #VRAM
 CRTEND
                     swi
                     
@@ -124,7 +129,7 @@ PRINTNUM            pshs     a           ; Save A twice
 PRINTDIGIT          pshs     a
                     anda     #%00001111  ; Strip any MSB
                     adda     #ASCII0     ; Add 48 decimal, 0=$30, 1=$31
-                    sta      ,X+
+                    sta      ,X++
                     puls     a,pc
 
 PRINTHEX            pshs     a            ; Save byte value as need to return since used for checksum calc
@@ -139,7 +144,7 @@ PRINTHEX            pshs     a            ; Save byte value as need to return si
                     daa                    ; 0-9  $30-$39 A-F $41-$46
                     adca     #$40
                     daa
-                    sta     ,X+
+                    sta     ,X++
                
                     puls     a 
                     anda     #%00001111    ; Mask Low nibble
@@ -148,22 +153,22 @@ PRINTHEX            pshs     a            ; Save byte value as need to return si
                     daa
                     adca     #$40
                     daa
-                    sta     ,X+
+                    sta     ,X++
                     puls     a
                     rts
                     
-CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 99
+CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 98 was 99 (Changed to 98 with 25Mhz as 59Hz not 60Hz)
                     FCB      $50         ; R1 H Displayed 80
-                    FCB      $53         ; R2 H from 53 to 55 Sync Position 83
+                    FCB      $55         ; R2 H from 53 to 55 Sync Position 83
                     FCB      $06         ; R3 H Sync Width 6
                     FCB      $1F         ; R4 V Total 31
-                    FCB      $14         ; R5 V Total Adjust (was 13/$0D)
-                    FCB      $1E         ; R6 V Displayed 30
-                    FCB      $1F         ; R7 V Sync Position 31
+                    FCB      $07         ; R5 V Total Adjust (was 13)
+                    FCB      $1E         ; R6 V Displayed 25 (was 30)
+                    FCB      $1E         ; R7 V Sync Position 29 (was 30)
                     FCB      $00         ; R8 Interlace mode - Non Interlaced
                     FCB      $0F         ; R9 Maximum Scan Line Address 
-                    FCB      $6D         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start was 6D Cursor off $20
-                    FCB      $6F         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish 6F
+                    FCB      $00         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start
+                    FCB      $00         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish
                     FCB      $00,$00     ; R12,R13 Start Address
                     FCB      $00,$00     ; R14,R15 Cursor Address
                     

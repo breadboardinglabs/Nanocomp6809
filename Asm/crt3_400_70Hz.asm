@@ -1,4 +1,4 @@
-; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt2.txt crt2.asm -o crt2.srec
+; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt3_400_70Hz.txt crt3_400_70Hz.asm -o crt3_400_70Hz.srec
 ; V3 16/Jan/2021 Using 25.175 Mhz Osc not 25Mhz crystal, Better display of character set
 
 CRTCAR              EQU  $D400
@@ -7,7 +7,7 @@ VRAM                EQU  $8000
 ASCII0              EQU  $30
 ASCIISPACE          EQU  $20
 COLSPERROW          EQU  $50
-ROWSPERPAGE         EQU  $1E
+ROWSPERPAGE         EQU  $19
 ROWSPERPAGEBCD      EQU  $30
 BYTESPERCHAR        EQU  $01
 CHARCOLOUR          EQU  %00001111 ; Black background, white foreground
@@ -62,16 +62,6 @@ LOWLINE1            bsr      PRINTDIGIT
                     daa
                     cmpx      #VRAM + COLSPERROW * BYTESPERCHAR * ROWSPERPAGE; 2 Bytes per character 0/even is character 1/odd is colour
                     ble       LOWLINE1
-
-LOWSECLINE          ldx      #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - 2 * COLSPERROW * BYTESPERCHAR + 9 ; Start at 10th Column
-                    lda      #$1
-LOWSECLINE1         bsr      PRINTDIGIT ; This will increase X by 2
-                    leax     9,X
-                    adda     #$01
-                    daa
-                    cmpx     #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR
-                    ble      LOWSECLINE1
-
 
 LINENO              lda       #$02
                     ldx       #VRAM + COLSPERROW * BYTESPERCHAR
@@ -151,19 +141,19 @@ PRINTHEX            pshs     a            ; Save byte value as need to return si
                     sta     ,X+
                     puls     a
                     rts
-                    
-CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 99
+                                         ; 640 x 400 25 lines x 80 Columns 70 Hz
+CRTCTAB             FCB      $63         ; R0 H 63 99 
                     FCB      $50         ; R1 H Displayed 80
-                    FCB      $53         ; R2 H from 53 to 55 Sync Position 83
-                    FCB      $06         ; R3 H Sync Width 6
-                    FCB      $1F         ; R4 V Total 31
-                    FCB      $14         ; R5 V Total Adjust (was 13/$0D)
-                    FCB      $1E         ; R6 V Displayed 30
-                    FCB      $1F         ; R7 V Sync Position 31
+                    FCB      $52         ; R2 H 53 Sync Position 83 (52 for LCD)
+                    FCB      $0c         ; R3 H Sync Width 12
+                    FCB      $1B         ; R4 V Total 27
+                    FCB      $01         ; R5 V Total Adjust (was 13) (01 for LCD)
+                    FCB      $19         ; R6 V Displayed 25 (was 30)
+                    FCB      $1A         ; R7 V Sync Position 29 (was 30)
                     FCB      $00         ; R8 Interlace mode - Non Interlaced
                     FCB      $0F         ; R9 Maximum Scan Line Address 
-                    FCB      $6D         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start was 6D Cursor off $20
-                    FCB      $6F         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish 6F
+                    FCB      $00         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start
+                    FCB      $00         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish
                     FCB      $00,$00     ; R12,R13 Start Address
                     FCB      $00,$00     ; R14,R15 Cursor Address
                     
