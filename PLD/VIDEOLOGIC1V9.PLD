@@ -1,0 +1,90 @@
+Name            VGA1 Video Logic 1 V9 Schematic;
+Partno          NANOCVGA1;
+Revision        09;
+Date            09/01/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/****************************************************************************/
+/* This PLD replaces multiple logic chips for the Video R/W, Output enable  */
+/* 09/01/2023 V9 Removed DE & DE1 and delayed Cursor by 2 Dot Clocks        */
+/*                                                                          */
+/****************************************************************************/
+
+/* Pin Map 
+         --------
+  DotClk|1     24| Vcc
+  A0    |2     23| DE3
+  NC0   |3     22| DE2
+  NC1   |4     21| DE1
+  NC2   |5     20| CHR/W
+  NC3   |6     19| /CHOE
+  VR/W  |7     18| /CH245CE
+  R/W   |8     17| /COOE
+  /Y0   |9     16| COR/W
+  Y0    |10    15| /CO245CE
+  DEin  |11    14| /DEout
+  Gnd   |12    13| NC 
+         --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6809, CRTC
+ */
+
+Pin 1  =  DotClk;
+Pin 2  =  A0;
+Pin 3  =  NC0;
+Pin 4  =  NC1;
+Pin 5  =  NC2;
+Pin 6  =  NC3;
+Pin 7  =  VRW;
+Pin 8  =  RW;
+Pin 9  =  NOTY0;
+Pin 10 =  Y0;
+Pin 11 =  DEin;
+Pin 13 =  NC4;
+/*
+ * Outputs:  define outputs
+ */
+Pin 23 = DE3;          /* Intermediate DE 3 clock delay */
+Pin 22 = DE2;          /* Intermediate DE 2 clock delay */
+Pin 21 = DE1;          /* Intermediate DE 1 clock delay */
+Pin 20 = CHRW;        /* Character RAM Read/Write control */
+Pin 19 = CHOE;        /* Character RAM Output Enable control */
+Pin 18 = CH245CE;     /* Character 245 Buffer Chip Enable */
+Pin 17 = COOE;        /* Colour RAM Output Enable control */
+Pin 16 = CORW;        /* Colour RAM Read/Write control */
+Pin 15 = CO245CE;     /* Colour 245 Buffer Chip Enable */
+Pin 14 = DEout;       /* DE Inverted and delayed by 4 dot clock delays */
+/*
+ * Logic symbols
+ * ! NOT  # OR   & AND  $ XOR   .d D Flip-flop Input
+ */
+
+CLK=DotClk;
+
+/* Map Cursor to input of Cur1 Flip Flop */
+DE1.d = DEin;
+/* Map DE1 output to input of DE2 Flip Flop then to DE3 and DEout to delay DE by 4 dot clocks */
+DE2.d = DE1;
+DE3.d = DE2;
+DEout.d=!DE3;
+
+/* Character RAM Read/Write control */
+CHRW = !(!VRW & A0);
+/* Colour RAM Read/Write control */
+CORW = !(!VRW & !A0);        
+
+/* Character 245 Buffer Chip Enable */
+CH245CE = !(Y0 & A0);
+/* Colour 245 Buffer Chip Enable */
+CO245CE = !(Y0 & !A0);     
+
+/* Character RAM Output Enable control */
+CHOE = !(CHRW # RW);
+/* Colour RAM Output Enable control */
+COOE =  !(CORW # RW);        

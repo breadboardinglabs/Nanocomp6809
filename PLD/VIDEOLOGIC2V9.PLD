@@ -1,0 +1,100 @@
+Name            VGA2 Video Logic 2 V9 Schematic;
+Partno          NANOCVGA;
+Revision        09;
+Date            09/01/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/****************************************************************************/
+/* This PLD replaces 3 inverters for HS, VS and DE, 1 XOR for Cursor/Dotout */
+/* 1 x 74LS163 Counter 1x3 NAND for clock clear,                            */
+/* 2 flip-flops for DE delay and                                            */
+/* 4 flip-flops for SRLatch delay                                           */
+/* High on InvVS and InvHS will invert the signal for -ve sync,             */
+/* low for +ve sync                                                         */
+/*                                                                          */
+/* 01/01/2023 Updated to change /CLR to CHLatch after 4 clock cycles        */
+/* 09/01/2023 V9 Removed DE & DE1 and delayed Cursor by 2 Dot Clocks        */
+/*                                                                          */
+/****************************************************************************/
+
+/* Pin Map 
+         --------
+  DotClk|1     24| Vcc
+SRDotOut|2     23| ForeBack
+  Cursor|3     22| Cur1
+  NC    |4     21| Cur2
+  NC    |5     20| CHLatch
+  NC    |6     19| Qa
+  NC    |7     18| Qb
+  InvHS |8     17| Qc
+  InvVS |9     16| SRLatch
+  HSin  |10    15| HSout
+  VSin  |11    14| VSout
+  Gnd   |12    13| NC 
+         --------
+*/
+
+/*
+ * Inputs:  
+ */
+
+Pin 1  =  DotClk;
+Pin 2  =  SRDotOut;
+Pin 3  =  Cursor;
+Pin 4  =  NC0;
+Pin 5  =  NC1;
+Pin 6  =  NC2;
+Pin 7  =  NC3;
+Pin 8  =  InvHS;
+Pin 9  =  InvVS;
+Pin 10 =  HSin;
+Pin 11 =  VSin;
+Pin 13 =  NC4;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+Pin 23 = ForeBack;     /* Video bit stream for foreground/background */
+Pin 22 = Cur1;         /* Cursor delayed by 1 dot clock */
+Pin 21 = Cur2;         /* Cursor delayed by 2 dot clocks */
+Pin 20 = CHLatch;      /* Character Latch after 2 dot clock cycles */
+Pin 19 = Qa;           /* Counter output /2 */
+Pin 18 = Qb;           /* Counter outut /4 */
+Pin 17 = Qc;           /* Counter output /8 */
+Pin 16 = SRLatch;      /* Original /CLR delayed by 4 dot clock cycles */
+Pin 15 = HSout;        /* Horizontal Sync, inverted if InvHS is true */
+Pin 14 = VSout;        /* Vertical Sync, inverted if InvVS is true */
+/*
+ * Logic symbols
+ * ! NOT  # OR   & AND  $ XOR   .d D Flip-flop Input
+ */
+
+CLK=DotClk;
+
+/* Cursor delayed by 2 Dot Clocks XOR with Shift Register DotOut */
+ForeBack = Cur2 $ SRDotOut;
+/* Map Cursor to input of Cur1 Flip Flop */
+Cur1.d = Cursor;
+/* Map Cur1 output to input of Cur2 Flip Flop to delay cursor by 2 dot clocks */
+Cur2.d = Cur1;
+
+/* These conditions are required to cascade D Flip-Flops */
+/* as a Counter !Q feeds back into D */
+Qc.d = ((!Qc & Qb & Qa) # (Qc & !(Qb & Qa))) ;
+Qb.d = (!Qb & Qa # Qb & !Qa);
+/* D Flip Flop Counter feeds !Q into D and uses CLK to cycle */
+Qa.d = !Qa;
+/* Triple AND, will invert on Pin 20 !CLR definition for NAND - not used V2*/                       
+CLR=(Qa & Qb & Qc);
+/* Character Latch now original SR Latch #3- 4 FF so don't need Colour pipeline */
+/* CHLatch=!(!Qa & Qb & !Qc); old 3 cycles */
+CHLatch=Qc # (!(Qa & Qb));
+/* This is the condition we worked out in the Excel Sheet now at #5 - 6 FF */
+SRLatch= !(Qa & !Qb & Qc);
+/* InvHS=0 then HSin output, InvHS=1 !HSin output */
+HSout=HSin&!InvHS # !HSin&InvHS;
+/* InvVS=0 then VSin output, InvVS=1 !VSin output */
+VSout=VSin&!InvVS # !VSin&InvVS;
