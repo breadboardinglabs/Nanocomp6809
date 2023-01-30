@@ -22,8 +22,7 @@ EOS                 EQU  $00      end of string
 
                     ORG  $1000
                     
-CRTStart            lds      #$7FD0      ;System Stack init
-                    clra
+CRTStart            clra
                     sta      CTRLB            ; Set Port B to data direction register
                     lda      #$0F              ; set bits 0-3 for output, 4-7 for input
                     sta      PORTB            ; Set Port B to output for bits 0-3
@@ -183,19 +182,5 @@ TESTDE              lda      #$80          ; Mask PB7 on Port B of PIA
                     beq      TESTDE       ; If 0 then only HS or end of VS, so continue to wait for DE=1 for more than 6ms
                     puls     a,pc
                     
-CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 99
-                    FCB      $50         ; R1 H Displayed 80
-                    FCB      $53         ; R2 H from 53 to 55 Sync Position 83
-                    FCB      $06         ; R3 H Sync Width 6
-                    FCB      $1F         ; R4 V Total 31
-                    FCB      $14         ; R5 V Total Adjust (was 13/$0D)
-                    FCB      $1E         ; R6 V Displayed 30
-                    FCB      $1F         ; R7 V Sync Position 31
-                    FCB      $00         ; R8 Interlace mode - Non Interlaced
-                    FCB      $0F         ; R9 Maximum Scan Line Address 
-                    FCB      $6D         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start was 6D Cursor off $20
-                    FCB      $6F         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish 6F
-                    FCB      $00,$00     ; R12,R13 Start Address
-                    FCB      $00,$00     ; R14,R15 Cursor Address
                     
                     

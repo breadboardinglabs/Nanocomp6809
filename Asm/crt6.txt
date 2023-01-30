@@ -20,185 +20,167 @@ D401                  CRTCDR              EQU  CRTCAR+1
                       
 0000                  EOS                 EQU  $00      end of string
                       
-0000                                      ORG  $0000
+1000                                      ORG  $1000
                                           
-0000  10CE7FD0        CRTStart            lds      #$7FD0      ;System Stack init
-0004  4F                                  clra
-0005  B7D003                              sta      CTRLB            ; Set Port B to data direction register
-0008  860F                                lda      #$0F              ; set bits 0-3 for output, 4-7 for input
-000A  B7D001                              sta      PORTB            ; Set Port B to output for bits 0-3
-000D  8604                                lda      #$04              ; Set control register b2=1 Output Register
-000F  B7D003                              sta      CTRLB            ; Set Port B control register for Port Output, will be keypad row
+1000  4F              CRTStart            clra
+1001  B7D003                              sta      CTRLB            ; Set Port B to data direction register
+1004  860F                                lda      #$0F              ; set bits 0-3 for output, 4-7 for input
+1006  B7D001                              sta      PORTB            ; Set Port B to output for bits 0-3
+1009  8604                                lda      #$04              ; Set control register b2=1 Output Register
+100B  B7D003                              sta      CTRLB            ; Set Port B control register for Port Output, will be keypad row
                       
-0012  8E8000          CLRSCREEN           ldx      #VRAM
-0015  8620                                lda      #ASCIISPACE
-0017  C6F2                                ldb      #CHARCOLOUR
-0019  1700DC          CLEARSCREEN1        lbsr     WAITFORVSDE
-001C  108E0050                            ldy      #80
-0020  E780            CLEARSCREEN2        stb      ,X+
-0022  A780                                sta      ,X+         ; Could Use D and X++
-0024  313F                                leay     -1,Y
-0026  26F8                                bne      CLEARSCREEN2
-0028  8C92C0                              cmpx     #VRAMTOP
-002B  2FEC                                ble      CLEARSCREEN1
+100E  8E8000          CLRSCREEN           ldx      #VRAM
+1011  8620                                lda      #ASCIISPACE
+1013  C6F2                                ldb      #CHARCOLOUR
+1015  1700DC          CLEARSCREEN1        lbsr     WAITFORVSDE
+1018  108E0050                            ldy      #80
+101C  E780            CLEARSCREEN2        stb      ,X+
+101E  A780                                sta      ,X+         ; Could Use D and X++
+1020  313F                                leay     -1,Y
+1022  26F8                                bne      CLEARSCREEN2
+1024  8C92C0                              cmpx     #VRAMTOP
+1027  2FEC                                ble      CLEARSCREEN1
                                           
-002D  8E8001          TOPLINE             ldx      #VRAM+1
-0030  8601                                lda      #$01
-0032  170094          TOPLINE1            lbsr      PRINTDIGIT
-0035  8B01                                adda      #$01
-0037  19                                  daa
-0038  8C80A0                              cmpx      #VRAM + COLSPERROW * BYTESPERCHAR 
-003B  2FF5                                ble       TOPLINE1
+1029  8E8001          TOPLINE             ldx      #VRAM+1
+102C  8601                                lda      #$01
+102E  170094          TOPLINE1            lbsr      PRINTDIGIT
+1031  8B01                                adda      #$01
+1033  19                                  daa
+1034  8C80A0                              cmpx      #VRAM + COLSPERROW * BYTESPERCHAR 
+1037  2FF5                                ble       TOPLINE1
                       ; Print 10's under 1st line
                       
-003D  8E80B3          SECLINE             ldx      #VRAM + 1 + COLSPERROW * BYTESPERCHAR + 9 * BYTESPERCHAR ; Start at 10th Column
-0040  8601                                lda      #$1
-0042  170084          SECLINE1            lbsr      PRINTDIGIT ; This will increase X by 2
-0045  308812                              leax     9*BYTESPERCHAR,X
-0048  8B01                                adda     #$01
-004A  19                                  daa
-004B  8C8140                              cmpx     #VRAM + 2 * COLSPERROW * BYTESPERCHAR ; 2 Bytes per character 0/even is character 1/odd is colour
-004E  2FF2                                ble      SECLINE1
+1039  8E80B3          SECLINE             ldx      #VRAM + 1 + COLSPERROW * BYTESPERCHAR + 9 * BYTESPERCHAR ; Start at 10th Column
+103C  8601                                lda      #$1
+103E  170084          SECLINE1            lbsr      PRINTDIGIT ; This will increase X by 2
+1041  308812                              leax     9*BYTESPERCHAR,X
+1044  8B01                                adda     #$01
+1046  19                                  daa
+1047  8C8140                              cmpx     #VRAM + 2 * COLSPERROW * BYTESPERCHAR ; 2 Bytes per character 0/even is character 1/odd is colour
+104A  2FF2                                ble      SECLINE1
                       
                       
-0050  8E9221          LOWLINE             ldx      #VRAM + 1 + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR 
-0053  8601                                lda      #$01
-0055  8D72            LOWLINE1            bsr      PRINTDIGIT
-0057  8B01                                adda     #$01
-0059  19                                  daa
-005A  8C92C0                              cmpx     #VRAM + COLSPERROW * BYTESPERCHAR * ROWSPERPAGE; 2 Bytes per character 0/even is character 1/odd is colour
-005D  2FF6                                ble      LOWLINE1
+104C  8E9221          LOWLINE             ldx      #VRAM + 1 + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR 
+104F  8601                                lda      #$01
+1051  8D72            LOWLINE1            bsr      PRINTDIGIT
+1053  8B01                                adda     #$01
+1055  19                                  daa
+1056  8C92C0                              cmpx     #VRAM + COLSPERROW * BYTESPERCHAR * ROWSPERPAGE; 2 Bytes per character 0/even is character 1/odd is colour
+1059  2FF6                                ble      LOWLINE1
                       
-005F  8E9193          LOWSECLINE          ldx      #VRAM + 1 + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - 2 * COLSPERROW * BYTESPERCHAR + 9 * BYTESPERCHAR ; Start at 10th Column
-0062  8601                                lda      #$1
-0064  8D63            LOWSECLINE1         bsr      PRINTDIGIT ; This will increase X by 2
-0066  308812                              leax     9*BYTESPERCHAR,X
-0069  8B01                                adda     #$01
-006B  19                                  daa
-006C  8C9220                              cmpx     #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR
-006F  2FF3                                ble      LOWSECLINE1
+105B  8E9193          LOWSECLINE          ldx      #VRAM + 1 + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - 2 * COLSPERROW * BYTESPERCHAR + 9 * BYTESPERCHAR ; Start at 10th Column
+105E  8601                                lda      #$1
+1060  8D63            LOWSECLINE1         bsr      PRINTDIGIT ; This will increase X by 2
+1062  308812                              leax     9*BYTESPERCHAR,X
+1065  8B01                                adda     #$01
+1067  19                                  daa
+1068  8C9220                              cmpx     #VRAM + ROWSPERPAGE * COLSPERROW * BYTESPERCHAR - COLSPERROW * BYTESPERCHAR
+106B  2FF3                                ble      LOWSECLINE1
                       
                       
-0071  8602            LINENO              lda      #$02
-0073  8E80A1                              ldx      #VRAM + 1 + COLSPERROW * BYTESPERCHAR
-0076  8D3D            LINENO1             bsr      PRINTNUM
-0078  30890098                            leax     76*BYTESPERCHAR,X  ; Move to end of line
-007C  8D37                                bsr      PRINTNUM ; X should be start of next line after this
-007E  8B01                                adda     #$01
-0080  19                                  daa
-0081  8130                                cmpa     #ROWSPERPAGEBCD
-0083  26F1                                bne      LINENO1
+106D  8602            LINENO              lda      #$02
+106F  8E80A1                              ldx      #VRAM + 1 + COLSPERROW * BYTESPERCHAR
+1072  8D3D            LINENO1             bsr      PRINTNUM
+1074  30890098                            leax     76*BYTESPERCHAR,X  ; Move to end of line
+1078  8D37                                bsr      PRINTNUM ; X should be start of next line after this
+107A  8B01                                adda     #$01
+107C  19                                  daa
+107D  8130                                cmpa     #ROWSPERPAGEBCD
+107F  26F1                                bne      LINENO1
                                           ;SWI
                                           ; +7 (4 char), 16 x 4 char= 64=128 bytes + 25
                                           ; Add 32 for end of line (16 char)
-0085  4F              CHARDUMP            clra      ; Display two digit character code, character, 1 spaces for 0-255, start at Col 4 (add 7)
-0086  8E8127                              ldx       #VRAM - 32 + 7 + 2 * COLSPERROW * BYTESPERCHAR
-0089  5F              CHARDUMP1           clrb
-008A  308820                              leax      16*BYTESPERCHAR,X
-008D  8D46            CHARDUMP2           bsr       PRINTHEX
-008F  A781                                sta       ,X++
-0091  3002                                leax      1*BYTESPERCHAR,X
-0093  4C                                  inca
-0094  5C                                  incb
-0095  C110                                cmpb      #$10
-0097  26F4                                bne       CHARDUMP2
-0099  4D                                  tsta
-009A  26ED                                bne       CHARDUMP1
+1081  4F              CHARDUMP            clra      ; Display two digit character code, character, 1 spaces for 0-255, start at Col 4 (add 7)
+1082  8E8127                              ldx       #VRAM - 32 + 7 + 2 * COLSPERROW * BYTESPERCHAR
+1085  5F              CHARDUMP1           clrb
+1086  308820                              leax      16*BYTESPERCHAR,X
+1089  8D46            CHARDUMP2           bsr       PRINTHEX
+108B  A781                                sta       ,X++
+108D  3002                                leax      1*BYTESPERCHAR,X
+108F  4C                                  inca
+1090  5C                                  incb
+1091  C110                                cmpb      #$10
+1093  26F4                                bne       CHARDUMP2
+1095  4D                                  tsta
+1096  26ED                                bne       CHARDUMP1
                       
                                           ; +7 (4 char), 16 x 4 char= 64=128 bytes + 25
                                           ; Add 32 for end of line (16 char)
-009C  4F              COLDUMP             clra      ; Display two digit character code, character, 1 spaces for 0-255, start at Col 4 (add 7)
-009D  8E8C67                              ldx       #VRAM - 32 + 7 + 20 * COLSPERROW * BYTESPERCHAR
-00A0  C620                                ldb       #$20
-00A2  308820                              leax      32,X
-00A5  8D2E            COLDUMP1            bsr       PRINTHEX
+1098  4F              COLDUMP             clra      ; Display two digit character code, character, 1 spaces for 0-255, start at Col 4 (add 7)
+1099  8E8C67                              ldx       #VRAM - 32 + 7 + 20 * COLSPERROW * BYTESPERCHAR
+109C  C620                                ldb       #$20
+109E  308820                              leax      32,X
+10A1  8D2E            COLDUMP1            bsr       PRINTHEX
                       ;COLDUMP1            leax      4,X
-00A7  8D4F                                bsr      WAITFORVSDE
-00A9  A71F                                sta       -1,X
-00AB  E784                                stb       ,X
-00AD  3004                                leax      4,X
-00AF  4C                                  inca
-00B0  8110                                cmpa      #$10
-00B2  26F1                                bne       COLDUMP1
+10A3  8D4F                                bsr      WAITFORVSDE
+10A5  A71F                                sta       -1,X
+10A7  E784                                stb       ,X
+10A9  3004                                leax      4,X
+10AB  4C                                  inca
+10AC  8110                                cmpa      #$10
+10AE  26F1                                bne       COLDUMP1
                       
-00B4                  CRTEND
-00B4  3F                                  swi
+10B0                  CRTEND
+10B0  3F                                  swi
                                           
                       ; 12345678901234567890
                       ; 02       1         2 ..... 02
                       
                       ; Take BCD two digit number in A and print at X
-00B5  3402            PRINTNUM            pshs     a           ; Save A twice
-00B7  3402                                pshs     a
-00B9  84F0                                anda     #%11110000  ; Mask LSB
-00BB  44                                  lsra                 ; Rotate MSB down to LSB
-00BC  44                                  lsra
-00BD  44                                  lsra
-00BE  44                                  lsra
-00BF  8D08                                bsr PRINTDIGIT
-00C1  3502                                puls     a           ; Restore A
-00C3  840F                                anda     #%00001111  ; Mask MSB
-00C5  8D02                                bsr PRINTDIGIT
-00C7  3582                                puls     a,pc
+10B1  3402            PRINTNUM            pshs     a           ; Save A twice
+10B3  3402                                pshs     a
+10B5  84F0                                anda     #%11110000  ; Mask LSB
+10B7  44                                  lsra                 ; Rotate MSB down to LSB
+10B8  44                                  lsra
+10B9  44                                  lsra
+10BA  44                                  lsra
+10BB  8D08                                bsr PRINTDIGIT
+10BD  3502                                puls     a           ; Restore A
+10BF  840F                                anda     #%00001111  ; Mask MSB
+10C1  8D02                                bsr PRINTDIGIT
+10C3  3582                                puls     a,pc
                       
                       ; Take Lower 4 bits in A and print ASCII digit at X and increment X
-00C9  3402            PRINTDIGIT          pshs     a
-00CB  840F                                anda     #%00001111  ; Strip any MSB
-00CD  8B30                                adda     #ASCII0     ; Add 48 decimal, 0=$30, 1=$31
-00CF  8D27                                bsr      WAITFORVSDE
-00D1  A781                                sta      ,X++
-00D3  3582                                puls     a,pc
+10C5  3402            PRINTDIGIT          pshs     a
+10C7  840F                                anda     #%00001111  ; Strip any MSB
+10C9  8B30                                adda     #ASCII0     ; Add 48 decimal, 0=$30, 1=$31
+10CB  8D27                                bsr      WAITFORVSDE
+10CD  A781                                sta      ,X++
+10CF  3582                                puls     a,pc
                       
-00D5  3402            PRINTHEX            pshs     a            ; Save byte value as need to return since used for checksum calc
-00D7  3402                                pshs     a            ; Save again so we can mask top and lower nibbles
-00D9  84F0                                anda     #%11110000   ; Mask High nibble
-00DB  44                                  lsra                  ; Shift to Low nibble
-00DC  44                                  lsra 
-00DD  44                                  lsra
-00DE  44                                  lsra
+10D1  3402            PRINTHEX            pshs     a            ; Save byte value as need to return since used for checksum calc
+10D3  3402                                pshs     a            ; Save again so we can mask top and lower nibbles
+10D5  84F0                                anda     #%11110000   ; Mask High nibble
+10D7  44                                  lsra                  ; Shift to Low nibble
+10D8  44                                  lsra 
+10D9  44                                  lsra
+10DA  44                                  lsra
                                      
-00DF  8B90                                adda     #$90          ; LSB to ASCII Hex as per page 7-2 of Leventhal
-00E1  19                                  daa                    ; 0-9  $30-$39 A-F $41-$46
-00E2  8940                                adca     #$40
-00E4  19                                  daa
-00E5  8D11                                bsr      WAITFORVSDE
-00E7  A781                                sta     ,X++
+10DB  8B90                                adda     #$90          ; LSB to ASCII Hex as per page 7-2 of Leventhal
+10DD  19                                  daa                    ; 0-9  $30-$39 A-F $41-$46
+10DE  8940                                adca     #$40
+10E0  19                                  daa
+10E1  8D11                                bsr      WAITFORVSDE
+10E3  A781                                sta     ,X++
                                      
-00E9  3502                                puls     a 
-00EB  840F                                anda     #%00001111    ; Mask Low nibble
+10E5  3502                                puls     a 
+10E7  840F                                anda     #%00001111    ; Mask Low nibble
                       
-00ED  8B90                                adda     #$90          ; LSB to ASCII Hex as per page 7-2 of Leventhal
-00EF  19                                  daa
-00F0  8940                                adca     #$40
-00F2  19                                  daa
-00F3  A781                                sta     ,X++
-00F5  3502                                puls     a
-00F7  39                                  rts
+10E9  8B90                                adda     #$90          ; LSB to ASCII Hex as per page 7-2 of Leventhal
+10EB  19                                  daa
+10EC  8940                                adca     #$40
+10EE  19                                  daa
+10EF  A781                                sta     ,X++
+10F1  3502                                puls     a
+10F3  39                                  rts
                                           
-00F8  3402            WAITFORVSDE         pshs     a
-00FA  8680            TESTDE              lda      #$80          ; Mask PB7 on Port B of PIA
-00FC  B5D001                              bita     PORTB        ; Test PB7 for Display Enable, when 1 then screen blanked
-                      ;                    nop                   ; Allow for 6 cycles, 6ms delay as HS DE is 6.3ms
-                      ;                    nop
-                      ;                    nop
-00FF  27F9                                beq      TESTDE       
-0101  B5D001                              bita     PORTB        ; Test PB7 again
-0104  27F4                                beq      TESTDE       ; If 0 then only HS or end of VS, so continue to wait for DE=1 for more than 6ms
-0106  3582                                puls     a,pc
+10F4  3402            WAITFORVSDE         pshs     a
+10F6  8680            TESTDE              lda      #$80          ; Mask PB7 on Port B of PIA
+10F8  B5D001                              bita     PORTB        ; Test PB7 for Display Enable, when 1 then screen blanked
+10FB  27F9                                beq      TESTDE       
+10FD  B5D001                              bita     PORTB        ; Test PB7 again
+1100  27F4                                beq      TESTDE       ; If 0 then only HS or end of VS, so continue to wait for DE=1 for more than 6ms
+1102  3582                                puls     a,pc
                                           
-0108  63              CRTCTAB             FCB      $63         ; R0 H 62 to 64 Total 99
-0109  50                                  FCB      $50         ; R1 H Displayed 80
-010A  53                                  FCB      $53         ; R2 H from 53 to 55 Sync Position 83
-010B  06                                  FCB      $06         ; R3 H Sync Width 6
-010C  1F                                  FCB      $1F         ; R4 V Total 31
-010D  14                                  FCB      $14         ; R5 V Total Adjust (was 13/$0D)
-010E  1E                                  FCB      $1E         ; R6 V Displayed 30
-010F  1F                                  FCB      $1F         ; R7 V Sync Position 31
-0110  00                                  FCB      $00         ; R8 Interlace mode - Non Interlaced
-0111  0F                                  FCB      $0F         ; R9 Maximum Scan Line Address 
-0112  6D                                  FCB      $6D         ; R10 Cursor Start - Slow Blink C0 + Line 13 Start was 6D Cursor off $20
-0113  6F                                  FCB      $6F         ; R11 Cursor End - Slow Blink C0 + Line 15 Finish 6F
-0114  0000                                FCB      $00,$00     ; R12,R13 Start Address
-0116  0000                                FCB      $00,$00     ; R14,R15 Cursor Address
                                           
                                           
