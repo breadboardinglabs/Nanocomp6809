@@ -1,0 +1,74 @@
+                      ; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt8.txt crt8.asm -o crt8.srec
+                      ; Updated 03 Feb 2023 for testing 'snow' updating video RAM
+                      
+D001                  PORTB               EQU $D001
+D003                  CTRLB               EQU $D003
+                      
+D400                  CRTCAR              EQU  $D400
+D401                  CRTCDR              EQU  CRTCAR+1
+8000                  VRAM                EQU  $8000
+BFFF                  VRAMTOP             EQU  $BFFF ; All Video RAM so nothing between frames during VS
+0030                  ASCII0              EQU  $30
+0020                  ASCIISPACE          EQU  $20
+0050                  COLSPERROW          EQU  $50
+001E                  ROWSPERPAGE         EQU  $1E
+0030                  ROWSPERPAGEBCD      EQU  $30
+0002                  BYTESPERCHAR        EQU  $02
+00F2                  CHARCOLOUR          EQU  %11110010 ; White foreground, blue background
+                      
+F6DE                  NCCLEARSCREEN       EQU  $F6DE
+F653                  NCCHROUT            EQU  $F653
+F74D                  NCDISABLECRTCCURSOR EQU  $F74D
+                      
+7FC0                  DISPROW             EQU  $7FC0                  
+7FC1                  DISPCOL             EQU  $7FC1
+                      
+0000                  EOS                 EQU  $00      end of string
+                      
+0000                                      ORG  $0000
+                                          
+0000                  CRTStart            ;jsr      NCCLEARSCREEN
+0000  8E8000          CLRSCREEN           ldx      #VRAM
+0003  8620                                lda      #ASCIISPACE
+0005  C6F2                                ldb      #CHARCOLOUR
+0007  8620            CLEARSCREEN1        lda      #ASCIISPACE
+0009  E780                                stb      ,X+
+000B  A780                                sta      ,X+         ; Could Use D and X++
+000D  86DB                                lda      #$DB   ; Solid 8 x 16
+000F  E780                                stb      ,X+
+0011  A780                                sta      ,X+         ; Could Use D and X++
+0013  8CBFFF                              cmpx     #VRAMTOP
+0016  2FEF                                ble      CLEARSCREEN1
+                      
+0018  BDF74D                              jsr      NCDISABLECRTCCURSOR
+                      
+001B  861D            TESTLOOP            lda      #$1D              ; 29 Lines down
+001D  B77FC0                              sta      DISPROW           ; Store Row
+0020  864F                                lda      #$4F              ; 79 Characters across
+0022  B77FC1                              sta      DISPCOL           ; Set Port B control register for Port Output, will be keypad row
+0025  86F2                                lda      #$F2
+0027  C6DB                                ldb      #$DB            ; DB solid
+0029  BDF653                              jsr      NCCHROUT
+                      ;WAITLOOP            ldy      #1
+                      ;                    leay     -1,y
+                      ;                    bne      WAITLOOP
+002C  861D                                lda      #$1D              ; 29 Lines down
+002E  B77FC0                              sta      DISPROW           ; Store Row
+0031  864F                                lda      #$4F              ; 79 Characters across
+0033  B77FC1                              sta      DISPCOL           ; Set Port B control register for Port Output, will be keypad row
+0036  86F2                                lda      #$F2
+0038  C620                                ldb      #$20              ; B1 Checkered
+003A  BDF653                              jsr      NCCHROUT
+003D  7E001B                              jmp      TESTLOOP
+                                          
+                                          
+0040  3402            WAITFORVSDE         pshs     a
+0042  8680            TESTDE              lda      #$80          ; Mask PB7 on Port B of PIA
+0044  B5D001                              bita     PORTB        ; Test PB7 for Display Enable, when 1 then screen blanked
+0047  27F9                                beq      TESTDE       
+0049  B5D001                              bita     PORTB        ; Test PB7 again
+004C  27F4                                beq      TESTDE       ; If 0 then only HS or end of VS, so continue to wait for DE=1 for more than 6ms
+004E  3582                                puls     a,pc
+                                          
+                                          
+                                          

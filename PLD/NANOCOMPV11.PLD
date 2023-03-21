@@ -1,0 +1,114 @@
+Name            Nanocomp V11 Memory Map Decoder;
+Partno          NANOCOMPV11;
+Revision        11;
+Date            08/03/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/* 01/01/2023 V6 Updated to add better Y0 timing for Video RAM using Q and E ANDed*/
+/*              and VRAM R/W only has Write low during CE low                    */
+/* 03/01/2023 V8 Added 80ns delay to VRAM R/W using DotClock, version as KiCad   */
+/* 09/01/2023 V9 Added Y0 Positive logic in place of Y6                          */
+/* 08/03/2023 V11 Now using 74LS138 to decode Y3CRTC using A7,A8,A8, replace Y6  */
+
+
+/*********************************************************************************/
+/*     0000  V1/V2/V3         RAM V4  32K RAM              0000-7FFF   /Y1RAM    */
+/*     1000  RAM V1/V2/V3     RAM V4                                             */
+/*     2000  V1/V2/V3 NA      RAM V4                                             */
+/*     3000  V1/V2/V3 NA      RAM V4                                             */
+/*     4000  PIA V1/V2/V3     RAM V4                                             */
+/*     5000  ACIA V2/V3       RAM V4                                             */
+/*     6000  V1/V2/V3 NA      RAM V4                                             */
+/*     7000  ROM V1/V2/V3     RAM V4                                             */
+/*     8000  V1/V2/V3 NA      VRAM V4 16K VIDEO RAM PAGE   8000-BFFF   /Y0VRAM   */
+/*     9000  V1/V2/V3 NA      VRAM V4                                  Y0VRAM    */
+/*     A000  V1/V2/V3 NA      VRAM V4                                            */
+/*     B000  V1/V2/V3 NA      VRAM V4                                            */
+/*     C000  V1/V2/V3 NA      VIDEO Character RAM 4K       C000-CFFF   /Y2CRAM   */
+/*     D000  V1/V2/V3 NA      PIA 1                        D000-D00F   /Y4PIA1   */
+/*     D000  V1/V2/V3 NA      PIA 2                        D100-D1FF             */
+/*     D000  V1/V2/V3 NA      ACIA 1                       D200-D2FF   /Y5SERIAL1*/
+/*     D000  V1/V2/V3 NA      ACIA 2                       D300-D3FF             */
+/*     D000  V1/V2/V3 NA      CRTC 6845                    D400-D47F   /Y3CRTC Y0*/
+/*     D000  V1/V2/V3 NA      PAGE REGISTER                D480-D4FF   /Y3CRTC Y1*/
+/*     D000  V1/V2/V3 NA      VIDEO COLOUR REGISTER        D500-D57F   /Y3CRTC Y2*/
+/*                                                         D580-D5FF   /Y3CRTC Y3*/
+/*                                                         D600-D67F   /Y3CRTC Y4*/
+/*                                                         D680-D6FF   /Y3CRTC Y5*/
+/*                                                         D700-D77F   /Y3CRTC Y6*/
+/*                                                         D780-D7FF   /Y3CRTC Y7*/
+/*     E000  V1/V2/V3 NA      ROM V4  4K Video Character Set E000-EFFF           */
+/*     F000  V1/V2/V3 NA      ROM V4  F000-F7FF Spare F800 Examples FC00 Monitor */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+DotClk|1     24| Vcc
+RW    |2     23| /Y0VRAM
+A15   |3     22| /Y1RAM
+A14   |4     21| /Y2CRAM
+A13   |5     20| /Y3CRTC
+A12   |6     19| /Y4PIA1
+A11   |7     18| /Y5SERIAL1
+A10   |8     17| Y0VRAM
+A9    |9     16| /Y7ROM
+A8    |10    15| VRAMRW1
+Q     |11    14| VRAMRW
+Gnd   |12    13| E 
+       --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6809
+ */
+
+Pin 1  =  DotClk;
+Pin 2  =  RW;
+Pin 3  =  A15;
+Pin 4  =  A14;
+Pin 5  =  A13;
+Pin 6  =  A12;
+Pin 7  =  A11;
+Pin 8  =  A10;
+Pin 9  =  A9;
+Pin 10 =  A8;
+Pin 11 =  Q;
+Pin 13 =  E;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+
+CLK=DotClk;
+
+Pin 23 = !Y0VRAM;     /* Video RAM Low */
+Pin 22 = !Y1RAM;      /* RAM /CS */
+Pin 21 = !Y2CRAM;     /* Video Character RAM */
+Pin 20 = !Y3CRTC;     /* CRTC */
+Pin 19 = !Y4PIA1;     /* PIA MC6821 /CS */
+Pin 18 = !Y5SERIAL1;  /* MC6850 /CS */
+Pin 17 = Y0VRAMH;      /* Video RAM High */
+Pin 16 = !Y7ROM;      /* ROM /CS */
+Pin 15 = VRAMRW1;     /* Video RAM R/W shortened by Q&E */
+Pin 14 = VRAMRW;      /* Video RAM R/W ORd with !Y0VRAMCE */
+/*
+ * Logic:  All outputs are active low signals in the target system.
+ */
+Y0VRAM =    (A15 & !A14) & E;
+Y0VRAMH = Y0VRAM;
+/* This was an output but not required externally, now used for delayed VRAMRW */
+Y0VRAMCE =  (A15 & !A14) & E & Q;
+Y1RAM =     !A15 & E;
+Y2CRAM =    A15 & A14 & !A13 & !A12 & E;
+Y3CRTC =    A15 & A14 & !A13 & A12 & !A11 &  A10 & E; /* take out A8 and A9 conditions now that 74LS138 is used in place of Y6 */
+Y4PIA1 =    A15 & A14 & !A13 & A12 & !A11 & !A10 & !A9 & !A8 & E;
+Y5SERIAL1 = A15 & A14 & !A13 & A12 & !A11 & !A10 &  A9 & !A8 & E;
+/* Y6VIDC1 =   A15 & A14 & !A13 & A12 & !A11 &  A10 & !A9 &  A8 & E; */
+Y7ROM =     A15 & A14 & A13 & E & RW;
+/* This narrows Write low level to only be when Y0 CE is low to resolve stray VRAM updates */
+/* V8 Also now delayed by 2 DotClock 2x40ns to ensure Video RAM R/W timing correct */ 
+VRAMRW1.d = (RW # !Y0VRAMCE);
+VRAMRW.d = VRAMRW1;

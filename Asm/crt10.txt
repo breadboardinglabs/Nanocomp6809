@@ -1,0 +1,60 @@
+                      ; C:\Users\Dave\Documents\_6809\asm6809-2.12-w64\asm6809.exe -S -l crt9.txt crt9.asm -o crt9.srec
+                      ; Updated 03 Feb 2023 for testing 'snow' updating video RAM, Output 0-255 for character
+                      
+D001                  PORTB               EQU $D001
+D003                  CTRLB               EQU $D003
+                      
+D400                  CRTCAR              EQU  $D400
+D401                  CRTCDR              EQU  CRTCAR+1
+8000                  VRAM                EQU  $8000
+BFFF                  VRAMTOP             EQU  $BFFF ; All Video RAM so nothing between frames during VS
+0030                  ASCII0              EQU  $30
+0020                  ASCIISPACE          EQU  $20
+0050                  COLSPERROW          EQU  $50
+001E                  ROWSPERPAGE         EQU  $1E
+0030                  ROWSPERPAGEBCD      EQU  $30
+0002                  BYTESPERCHAR        EQU  $02
+00F2                  CHARCOLOUR          EQU  %11110010 ; White foreground, blue background
+                      
+F6DE                  NCCLEARSCREEN       EQU  $F6DE
+F653                  NCCHROUT            EQU  $F653
+F74D                  NCDISABLECRTCCURSOR EQU  $F74D
+                      
+7FC0                  DISPROW             EQU  $7FC0                  
+7FC1                  DISPCOL             EQU  $7FC1
+                      
+0000                  EOS                 EQU  $00      end of string
+                      
+0000                                      ORG  $0000
+                                          
+0000                  CRTStart            ;jsr      NCCLEARSCREEN
+0000  8E8000          CLRSCREEN           ldx      #VRAM
+0003  8620                                lda      #ASCIISPACE
+0005  C6F2                                ldb      #CHARCOLOUR
+0007  4F                                  clra
+0008  E780            CLEARSCREEN1        stb      ,X+
+000A  A780                                sta      ,X+         ; Could Use D and X++
+000C  4C                                  inca
+000D  8CBFFF                              cmpx     #VRAMTOP
+0010  2FF6                                ble      CLEARSCREEN1
+                      
+0012  BDF74D                              jsr      NCDISABLECRTCCURSOR
+                      
+0015  8E8001          TESTLOOP            ldx      #VRAM+1
+0018  A684                                lda      ,x
+001A  A781                                sta      ,X++         ; Could Use D and X++
+001C  8CBFFF                              cmpx     #VRAMTOP
+001F  2FF4                                ble      TESTLOOP
+0021  7E0015                              jmp      TESTLOOP
+                                          
+                                          
+0024  3402            WAITFORVSDE         pshs     a
+0026  8680            TESTDE              lda      #$80          ; Mask PB7 on Port B of PIA
+0028  B5D001                              bita     PORTB        ; Test PB7 for Display Enable, when 1 then screen blanked
+002B  27F9                                beq      TESTDE       
+002D  B5D001                              bita     PORTB        ; Test PB7 again
+0030  27F4                                beq      TESTDE       ; If 0 then only HS or end of VS, so continue to wait for DE=1 for more than 6ms
+0032  3582                                puls     a,pc
+                                          
+                                          
+                                          

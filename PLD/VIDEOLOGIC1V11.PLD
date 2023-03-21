@@ -1,0 +1,99 @@
+Name            VGA1 Video Logic 1 V11 Schematic;
+Partno          NANOCVGA1;
+Revision        11;
+Date            11/03/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/*****************************************************************************/
+/* This PLD replaces multiple logic chips for the Video R/W, Output enable   */
+/* 09/01/2023 V9  Removed DE & DE1 and delayed Cursor by 2 Dot Clocks        */
+/* 11/03/2023 V11 Added Graphics Mode GM0, GM1 and Page Register 1           */
+/*                Clock now DotCLk/4=Qb, and replace DE2&DE3 with G1EN&G2EN  */
+/*                And added COLY2 signal to turn on 74LS245 when writing to  */
+/*                colour latch when CRTC Y3 and 74LS138 /Y2                  */
+/*****************************************************************************/
+
+/* Pin Map 
+         --------
+  QbClk |1     24| Vcc
+  A0    |2     23| /G1EN
+  MA12  |3     22| /G2EN
+  GM1   |4     21| DE1
+  GM0   |5     20| CHR/W
+  PA1   |6     19| /CHOE
+  VR/W  |7     18| /CH245CE
+  R/W   |8     17| /COOE
+  /Y0   |9     16| COR/W
+  Y0    |10    15| /CO245CE
+  DEin  |11    14| /DEout
+  Gnd   |12    13| COLY3 
+         --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6809, CRTC
+ */
+
+Pin 1  =  QbClk;
+Pin 2  =  A0;
+Pin 3  =  MA12;
+Pin 4  =  GM1;
+Pin 5  =  GM0;
+Pin 6  =  PA1;
+Pin 7  =  VRW;
+Pin 8  =  RW;
+Pin 9  =  NOTY0;
+Pin 10 =  Y0;
+Pin 11 =  DEin;
+Pin 13 =  COLY3;
+/*
+ * Outputs:  define outputs
+ */
+Pin 23 = !G1EN;        /* Graphics Latch 1 Enable, sends VRAM data to Shift Reg */
+Pin 22 = !G2EN;        /* Graphics Latch 2 Enable, sends VRAM data to Shift Reg */
+Pin 21 = DE1;         /* Intermediate DE 1 clock delay, not used now */
+Pin 20 = !CHRW;        /* Character RAM Read/Write control */
+Pin 19 = !CHOE;        /* Character RAM Output Enable control */
+Pin 18 = !CH245CE;     /* Character 245 Buffer Chip Enable */
+Pin 17 = !COOE;        /* Colour RAM Output Enable control */
+Pin 16 = !CORW;        /* Colour RAM Read/Write control */
+Pin 15 = !CO245CE;     /* Colour 245 Buffer Chip Enable */
+Pin 14 = DEout;       /* DE Inverted and delayed by 4 dot clock delays */
+/*
+ * Logic symbols
+ * ! NOT  # OR   & AND  $ XOR   .d D Flip-flop Input
+ */
+
+/* This allows conditions like & graphics_mode:0 for Character, & graphics_mode:2 for 2 colour 640x480 */
+field graphics_mode  = [GM1,GM0];
+
+CLK=QbClk;
+
+/* Map DEin to DEout flip flop now clocked by Qb gives delay of DE by 4 dot clocks */
+DEout.d=!DEin;
+
+/* Character RAM Read/Write control, VRW is combined with Y0 already */
+/* Character VRAM1 Character Mode A0=1 Graphics Mode 2 PA1=0 */
+CHRW = ((!VRW & A0 & graphics_mode:0) # (!VRW & !PA1 & graphics_mode:2));
+/* Colour RAM Read/Write control */
+/* Colour VRAM2 Character Mode A0=0 Graphics Mode 2 PA1=1 */
+CORW = ((!VRW & !A0 & graphics_mode:0) # (!VRW & PA1 & graphics_mode:2));        
+
+/* Character 245 Buffer Chip Enable Character #1 when A0=1, Colour #2 when A0=0 */
+CH245CE = ((Y0 & A0 & graphics_mode:0) # (Y0 & !PA1 & graphics_mode:2));
+/* Colour 245 Buffer Chip Enable, need COLY2 condition to allow CPU to write to colour reg for 2 colour graphics */
+CO245CE = ((Y0 & !A0 & graphics_mode:0) # (Y0 & PA1 & graphics_mode:2) # ( !COLY3 & graphics_mode:2));
+
+/* Character RAM Output Enable control When /Y0=1 then enable output Y0=1 when CPU accessing VRAM */
+CHOE = (((!CHRW # RW) & graphics_mode:0) # ((!(!VRW & !PA1) # (RW & !MA12)) & graphics_mode:2) );
+/* Colour RAM Output Enable control When /Y0=1 then enable output, disable RAM when updating colour latch */
+COOE =  (((!CORW # RW) & graphics_mode:0) # ((!(!VRW & PA1) # (RW & MA12)) & COLY3 & graphics_mode:2) );        
+
+/* Graphics Latch enable signals send VRAM data to Shift Register pins A-H when CPU not accessing VRAM */
+/* NOTY0=1, Graphics Mode=2 and VRAM # depends on MA12 */
+G1EN = (NOTY0 & !MA12 & graphics_mode:2);
+G2EN = (NOTY0 & MA12 & graphics_mode:2);

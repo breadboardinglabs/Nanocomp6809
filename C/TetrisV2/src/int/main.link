@@ -1,0 +1,18 @@
+define basesympat s_%s
+define lensympat l_%s
+section start load 0
+section code
+section constructors_start
+section constructors
+section constructors_end
+section destructors_start
+section destructors
+section destructors_end
+section initgl_start
+section initgl
+section initgl_end
+section rodata
+section rwdata load 5000
+section bss,bss
+section program_end
+entry program_start
