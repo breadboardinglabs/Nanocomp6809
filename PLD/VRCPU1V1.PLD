@@ -1,0 +1,74 @@
+Name            VRCPU1;
+Partno          VRCPU1;
+Revision        1;
+Date            24/05/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          g16v8a;
+
+/* 24/05/2023 V1   VGA Controller VRAM CPU Address Multiplexer 1                 */
+/*                                                                               */
+/*********************************************************************************/
+/* Switches Video Address Lines VA0-VA6 between CA1-CA7 for Character Mode       */
+/* and CA0-CA6 for Graphics modes 2 and 3 (GM1=1), /OE Low Output Enable
+/*********************************************************************************/
+
+/* Pin Map ATF16V8
+       --------
+GM1   |1     20| Vcc
+CA7   |2     19| VA6
+CA6   |3     18| VA5
+CA5   |4     17| VA4
+CA4   |5     16| VA3
+CA3   |6     15| VA2
+CA2   |7     14| VA1
+CA1   |8     13| VA0
+CA0   |9     12| NC
+Gnd   |10    11| /OE
+       --------
+*/
+
+/*
+ * Inputs:  CPU address lines 0-7
+ */
+
+Pin 1  = GM1 ;
+Pin 2  = CA7;
+Pin 3  = CA6; 
+Pin 4  = CA5;
+Pin 5  = CA4;
+Pin 6  = CA3;
+Pin 7  = CA2;
+Pin 8  = CA1;
+Pin 9  = CA0;
+Pin 11 = OEN;
+
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+
+//CLK=DotClk;
+
+Pin 19 = VA6; /*  */
+Pin 18 = VA5; /*  */
+Pin 17 = VA4; /*  */
+Pin 16 = VA3; /*  */
+Pin 15 = VA2; /*  */
+Pin 14 = VA1; /*  */
+Pin 13 = VA0; /*  */
+Pin 12 = NC;
+/*
+ * Logic:  Multiplex inputs on GM1=0 or GM1=1.
+ */
+VA6 =  (CA7 & !GM1)  #  (CA6 & GM1);
+VA5 =  (CA6 & !GM1)  #  (CA5 & GM1);
+VA4 =  (CA5 & !GM1)  #  (CA4 & GM1);
+VA3 =  (CA4 & !GM1)  #  (CA3 & GM1);
+VA2 =  (CA3 & !GM1)  #  (CA2 & GM1);
+VA1 =  (CA2 & !GM1)  #  (CA1 & GM1);
+VA0 =  (CA1 & !GM1)  #  (CA0 & GM1);
+
+[VA0..VA6].OE = !OEN; /* Outputs enabled when OE Low */
+

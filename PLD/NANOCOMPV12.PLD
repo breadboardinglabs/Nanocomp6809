@@ -1,7 +1,7 @@
-Name            Nanocomp V11 Memory Map Decoder;
-Partno          NANOCOMPV11;
+Name            Nanocomp V12 Memory Map Decoder;
+Partno          NANOCOMPV12;
 Revision        11;
-Date            05/02/23;
+Date            08/03/23;
 Designer        Dave Henry;
 Company         ;
 Location        UK;
@@ -13,6 +13,7 @@ Device          p22v10;
 /* 03/01/2023 V8 Added 80ns delay to VRAM R/W using DotClock, version as KiCad   */
 /* 09/01/2023 V9 Added Y0 Positive logic in place of Y6                          */
 /* 05/02/2023 V11 Change Y0 and VRAMRW to use Q low -didn't work!                */
+/* 08/03/2023 V12 Now using 74LS138 to decode Y3CRTC using A7,A8,A8, replace Y6  */
 
 
 /*********************************************************************************/
@@ -33,12 +34,14 @@ Device          p22v10;
 /*     D000  V1/V2/V3 NA      PIA 2                        D100-D1FF             */
 /*     D000  V1/V2/V3 NA      ACIA 1                       D200-D2FF   /Y5SERIAL1*/
 /*     D000  V1/V2/V3 NA      ACIA 2                       D300-D3FF             */
-/*     D000  V1/V2/V3 NA      CRTC 6845                    D400-D4FF   /Y3CRTC   */
-/*     D000  V1/V2/V3 NA      VIDEO CONTROL 1              D500-D5FF             */
-/*     D000  V1/V2/V3 NA      VIDEO CONTROL 2              D600-D6FF             */
-/*     D000  V1/V2/V3 NA      PAGE REGISTER                D700-D7FF             */
-/*                                    8(3) VIDEO 4(2) ROM 8(3) RAM               */
-/*                                    8k ROM               E000-FFFF             */
+/*     D000  V1/V2/V3 NA      CRTC 6845                    D400-D47F   /Y3CRTC Y0*/
+/*     D000  V1/V2/V3 NA      PAGE REGISTER                D480-D4FF   /Y3CRTC Y1*/
+/*     D000  V1/V2/V3 NA      VIDEO COLOUR REGISTER        D500-D57F   /Y3CRTC Y2*/
+/*                                                         D580-D5FF   /Y3CRTC Y3*/
+/*                                                         D600-D67F   /Y3CRTC Y4*/
+/*                                                         D680-D6FF   /Y3CRTC Y5*/
+/*                                                         D700-D77F   /Y3CRTC Y6*/
+/*                                                         D780-D7FF   /Y3CRTC Y7*/
 /*     E000  V1/V2/V3 NA      ROM V4  4K Video Character Set E000-EFFF           */
 /*     F000  V1/V2/V3 NA      ROM V4  F000-F7FF Spare F800 Examples FC00 Monitor */
 /*********************************************************************************/
@@ -95,19 +98,18 @@ Pin 14 = VRAMRW;      /* Video RAM R/W ORd with !Y0VRAMCE */
 /*
  * Logic:  All outputs are active low signals in the target system.
  */
-Y0VRAM =    (A15 & !A14) & E & !Q;
+Y0VRAM =    (A15 & !A14) & E;
 Y0VRAMH = Y0VRAM;
 /* This was an output but not required externally, now used for delayed VRAMRW */
-/* Y0VRAMCE =  (A15 & !A14) & E & !Q; */
+Y0VRAMCE =  (A15 & !A14) & E & Q;
 Y1RAM =     !A15 & E;
 Y2CRAM =    A15 & A14 & !A13 & !A12 & E;
-Y3CRTC =    A15 & A14 & !A13 & A12 & !A11 &  A10 & !A9 & !A8 & E;
+Y3CRTC =    A15 & A14 & !A13 & A12 & !A11 &  A10 & E; /* take out A8 and A9 conditions now that 74LS138 is used in place of Y6 */
 Y4PIA1 =    A15 & A14 & !A13 & A12 & !A11 & !A10 & !A9 & !A8 & E;
 Y5SERIAL1 = A15 & A14 & !A13 & A12 & !A11 & !A10 &  A9 & !A8 & E;
-Y6VIDC1 =   A15 & A14 & !A13 & A12 & !A11 &  A10 & !A9 &  A8 & E;
+/* Y6VIDC1 =   A15 & A14 & !A13 & A12 & !A11 &  A10 & !A9 &  A8 & E; */
 Y7ROM =     A15 & A14 & A13 & E & RW;
 /* This narrows Write low level to only be when Y0 CE is low to resolve stray VRAM updates */
 /* V8 Also now delayed by 2 DotClock 2x40ns to ensure Video RAM R/W timing correct */ 
-VRAMRW1.d = (RW # !Y0VRAM);
-/* OR with input will shorten end to same as input */
-VRAMRW.d = VRAMRW1 # (RW # !Y0VRAM);
+VRAMRW1.d = (RW # !Y0VRAMCE);
+VRAMRW.d = VRAMRW1;

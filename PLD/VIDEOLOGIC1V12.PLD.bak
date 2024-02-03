@@ -16,6 +16,7 @@ Device          p22v10;
 /*                And added COLY2 signal to turn on 74LS245 when writing to  */
 /*                colour latch when CRTC Y3 and 74LS138 /Y2                  */
 /* 09/07/2023 V12 Changed DEOut so no longer inverted due to VDAC /blank     */
+/*                Added conditions for Graphics Mode 3                       */
 /*****************************************************************************/
 
 /* Pin Map 
@@ -79,22 +80,22 @@ DEout.d=DEin;
 
 /* Character RAM Read/Write control, VRW is combined with Y0 already */
 /* Character VRAM1 Character Mode A0=1 Graphics Mode 2 PA1=0 */
-CHRW = ((!VRW & A0 & graphics_mode:0) # (!VRW & !PA1 & graphics_mode:2));
+CHRW = ((!VRW & A0 & graphics_mode:0) # (!VRW & !PA1 &  (graphics_mode:2 # graphics_mode:3)));
 /* Colour RAM Read/Write control */
 /* Colour VRAM2 Character Mode A0=0 Graphics Mode 2 PA1=1 */
-CORW = ((!VRW & !A0 & graphics_mode:0) # (!VRW & PA1 & graphics_mode:2));        
+CORW = ((!VRW & !A0 & graphics_mode:0) # (!VRW & PA1 &  (graphics_mode:2 # graphics_mode:3)));        
 
 /* Character 245 Buffer Chip Enable Character #1 when A0=1, Colour #2 when A0=0 */
-CH245CE = ((Y0 & A0 & graphics_mode:0) # (Y0 & !PA1 & graphics_mode:2));
+CH245CE = ((Y0 & A0 & graphics_mode:0) # (Y0 & !PA1 &  (graphics_mode:2 # graphics_mode:3)));
 /* Colour 245 Buffer Chip Enable, need COLY2 condition to allow CPU to write to colour reg for 2 colour graphics */
-CO245CE = ((Y0 & !A0 & graphics_mode:0) # (Y0 & PA1 & graphics_mode:2) # ( !COLY3 & graphics_mode:2));
+CO245CE = ((Y0 & !A0 & graphics_mode:0) # (Y0 & PA1 &  (graphics_mode:2 # graphics_mode:3)) # ( !COLY3 & graphics_mode:2));
 
 /* Character RAM Output Enable control When /Y0=1 then enable output Y0=1 when CPU accessing VRAM */
-CHOE = (((!CHRW # RW) & graphics_mode:0) # ((!(!VRW & !PA1) # (RW & !MA12)) & graphics_mode:2) );
+CHOE = (((!CHRW # RW) & graphics_mode:0) # ((!(!VRW & !PA1) # (RW & !MA12)) &  (graphics_mode:2 # graphics_mode:3)) );
 /* Colour RAM Output Enable control When /Y0=1 then enable output, disable RAM when updating colour latch */
-COOE =  (((!CORW # RW) & graphics_mode:0) # ((!(!VRW & PA1) # (RW & MA12)) & COLY3 & graphics_mode:2) );        
+COOE =  (((!CORW # RW) & graphics_mode:0) # ((!(!VRW & PA1) # (RW & MA12)) & COLY3 &  (graphics_mode:2 # graphics_mode:3)) );        
 
 /* Graphics Latch enable signals send VRAM data to Shift Register pins A-H when CPU not accessing VRAM */
 /* NOTY0=1, Graphics Mode=2 and VRAM # depends on MA12 */
-G1EN = (NOTY0 & !MA12 & graphics_mode:2);
-G2EN = (NOTY0 & MA12 & graphics_mode:2);
+G1EN = (NOTY0 & !MA12 &  (graphics_mode:2 # graphics_mode:3));
+G2EN = (NOTY0 & MA12 &  (graphics_mode:2 # graphics_mode:3));

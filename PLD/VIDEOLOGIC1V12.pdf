@@ -1,0 +1,227 @@
+{COMPONENT C:\USERS\DAVE\ONEDRIVE\DOCUMENTS\GITHUB\NANOCOMP6809\PLD\VIDEOLOGIC1V12.SYM
+
+ {ENVIRONMENT
+  {PDIFvrev 3.00}
+  {Program "CUPL(WM) Version 5.0a"}
+  {DBtype "Schematic"}
+  {DBvrev 1.01}
+  {DBtime "Sat Jul 29 16:02:37 2023 "}
+  {DBunit "MIL"}
+  {DBgrid 10}
+  {Lyrstr "WIRES" 1 "BUS" 1 "GATE" 2 "IEEE" 2 "PINFUN" 3 "PINNUM" 1 
+          "PINNAM" 6 "PINCON" 4 "REFDES" 2 "ATTR" 6 "SDOT" 1 
+          "DEVICE" 5 "OUTLIN" 5 "ATTR2" 6 "NOTES" 6 "NETNAM" 4 
+          "CMPNAM" 5 "BORDER" 5}
+ }
+
+ {USER
+  {VIEW
+   {Mode SYMB}
+   {Nlst OPEN}
+   {Vw 0 0 2}
+   {Lv 12 2 2 2 0 0 2 2 2 2 0 0 2 1 2 0 0 0 0}
+   {Gs 10 10}
+  }
+ }
+
+ {DISPLAY
+  [Ly "PINNUM"]
+  [Ls "SOLID"][Wd 0]
+  [Ts 15][Tj "LC"][Tr 0][Tm "N"]
+ }
+
+ {SYMBOL
+  {PIN_DEF
+   [Ly "PINCON"]
+   {P QBCLK {Pt "INPUT"}{Lq 0}{Ploc 100 280}}
+   {P A0 {Pt "INPUT"}{Lq 0}{Ploc 100 240}}
+   {P MA12 {Pt "INPUT"}{Lq 0}{Ploc 100 220}}
+   {P GM1 {Pt "INPUT"}{Lq 0}{Ploc 100 200}}
+   {P GM0 {Pt "INPUT"}{Lq 0}{Ploc 100 180}}
+   {P PA1 {Pt "INPUT"}{Lq 0}{Ploc 100 160}}
+   {P VRW {Pt "INPUT"}{Lq 0}{Ploc 100 140}}
+   {P RW {Pt "INPUT"}{Lq 0}{Ploc 100 120}}
+   {P NOTY0 {Pt "INPUT"}{Lq 0}{Ploc 100 100}}
+   {P Y0 {Pt "INPUT"}{Lq 0}{Ploc 100 80}}
+   {P DEIN {Pt "INPUT"}{Lq 0}{Ploc 100 60}}
+   {P COLY3 {Pt "INPUT"}{Lq 0}{Ploc 100 40}}
+   {P DE1 {Pt "INPUT"}{Lq 0}{Ploc 100 20}}
+   {P CO245CE' {Pt "I/O"}{Lq 0}{Ploc 320 20}}
+   {P CORW' {Pt "I/O"}{Lq 0}{Ploc 320 40}}
+   {P COOE' {Pt "I/O"}{Lq 0}{Ploc 320 60}}
+   {P CH245CE' {Pt "I/O"}{Lq 0}{Ploc 320 80}}
+   {P CHOE' {Pt "I/O"}{Lq 0}{Ploc 320 100}}
+   {P CHRW' {Pt "I/O"}{Lq 0}{Ploc 320 120}}
+   {P G2EN' {Pt "I/O"}{Lq 0}{Ploc 320 140}}
+   {P G1EN' {Pt "I/O"}{Lq 0}{Ploc 320 160}}
+   {P DEOUT {Pt "OUTPUT"}{Lq 0}{Ploc 320 180}}
+  }
+
+  {PKG
+   [Ly "REFDES"]
+   [Ts 25][Tj "CB"][Tr 0][Tm "N"]
+   {Rdl 210 310}
+
+   [Ly "PINNUM"]
+   [Ts 15][Tj "RC"]
+   {Pnl 120 290}
+   [Ts 15][Tj "RC"]
+   {Pnl 120 250}
+   {Pnl 120 230}
+   {Pnl 120 210}
+   {Pnl 120 190}
+   {Pnl 120 170}
+   {Pnl 120 150}
+   {Pnl 120 130}
+   {Pnl 120 110}
+   {Pnl 120 90}
+   {Pnl 120 70}
+   {Pnl 120 50}
+   {Pnl 120 30}
+   [Ts 15][Tj "LC"]
+   {Pnl 300 30}
+   {Pnl 300 50}
+   {Pnl 300 70}
+   {Pnl 300 90}
+   {Pnl 300 110}
+   {Pnl 300 130}
+   {Pnl 300 150}
+   {Pnl 300 170}
+   {Pnl 300 190}
+
+   {Sd A 1 2 3 4 5 6 7 8 9 10 11 13 21 15 16 17 18 19 20 22 23 14}
+  }
+
+  {PIC
+   [Ly "GATE"]
+   [Ts 15][Tj "LC"][Tr 0][Tm "N"]
+   {R 130 300 290 0}
+   {L 130 280 100 280}
+   {L 130 290 140 280 130 270}
+   {L 130 240 100 240}
+   {L 130 220 100 220}
+   {L 130 200 100 200}
+   {L 130 180 100 180}
+   {L 130 160 100 160}
+   {L 130 140 100 140}
+   {L 130 120 100 120}
+   {L 130 100 100 100}
+   {L 130 80 100 80}
+   {L 130 60 100 60}
+   {L 130 40 100 40}
+   {L 130 20 100 20}
+   {C 295 20 5}
+   {L 300 20 320 20}
+   {C 295 40 5}
+   {L 300 40 320 40}
+   {C 295 60 5}
+   {L 300 60 320 60}
+   {C 295 80 5}
+   {L 300 80 320 80}
+   {C 295 100 5}
+   {L 300 100 320 100}
+   {C 295 120 5}
+   {L 300 120 320 120}
+   {C 295 140 5}
+   {L 300 140 320 140}
+   {C 295 160 5}
+   {L 300 160 320 160}
+   {L 290 180 320 180}
+   [Ly "PINNAM"]
+   [Tj "LC"]
+   {T "QBCLK" 140 280}
+   {T "A0" 140 240}
+   {T "MA12" 140 220}
+   {T "GM1" 140 200}
+   {T "GM0" 140 180}
+   {T "PA1" 140 160}
+   {T "VRW" 140 140}
+   {T "RW" 140 120}
+   {T "NOTY0" 140 100}
+   {T "Y0" 140 80}
+   {T "DEIN" 140 60}
+   {T "COLY3" 140 40}
+   {T "DE1" 140 20}
+   [Tj "RC"]
+   {T "CO245CE'" 280 20}
+   {T "CORW'" 280 40}
+   {T "COOE'" 280 60}
+   {T "CH245CE'" 280 80}
+   {T "CHOE'" 280 100}
+   {T "CHRW'" 280 120}
+   {T "G2EN'" 280 140}
+   {T "G1EN'" 280 160}
+   {T "DEOUT" 280 180}
+   [Ly "DEVICE"]
+   [Tj "CT"]
+   {T "P22V10" 210 -10}
+  }
+
+  {ATR
+   {IN
+    {Org 100 20}
+    {Ty 255}
+   }
+   {EX
+    [Ly "ATTR2"]
+    [Ts 12][Tj "CT"][Tr 0][Tm "N"]
+    {At PLD C:\USERS\DAVE\ONEDRIVE\DOCUMENTS\GITHUB\NANOCOMP6809\PLD\VIDEOLOGIC1V12 210 300}
+   }
+  }
+ }
+
+ {DETAIL
+  {ANNOTATE
+  }
+
+  {NET_DEF
+   {N QBCLK
+   }
+   {N A0
+   }
+   {N MA12
+   }
+   {N GM1
+   }
+   {N GM0
+   }
+   {N PA1
+   }
+   {N VRW
+   }
+   {N RW
+   }
+   {N NOTY0
+   }
+   {N Y0
+   }
+   {N DEIN
+   }
+   {N COLY3
+   }
+   {N DE1
+   }
+   {N CO245CE'
+   }
+   {N CORW'
+   }
+   {N COOE'
+   }
+   {N CH245CE'
+   }
+   {N CHOE'
+   }
+   {N CHRW'
+   }
+   {N G2EN'
+   }
+   {N G1EN'
+   }
+   {N DEOUT
+   }
+  }
+
+  {SUBCOMP
+  }
+ }
+}

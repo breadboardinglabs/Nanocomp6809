@@ -1,0 +1,78 @@
+Name            DAC2;
+Partno          DAC2;
+Revision        2;
+Date            28/06/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          G16V8MA;
+
+/* 28/06/2023 V2   VGA Controller DAC RD/WR PLD                                     */
+/* 19/08/2023 V2.1 Swapped logic for /RD and /WR so pins don't need reversing on BB */
+/************************************************************************************/
+/* Provides decoding of CRTC Y3 chip select with R/W and E for DAC /RE & /WR        */
+/* and latch/mux control signals for 256 Colour Graphics                            */
+/************************************************************************************/
+
+/* Pin Map ATF16V8
+       --------
+GM0   |1     20| Vcc
+GM1   |2     19| GM3
+R/W   |3     18| /G2OE
+Y3CLAT|4     17| /G2LATCH
+DotClk|5     16| MA12
+NOTY0 |6     15| /G1DLATCH
+CHLAT |7     14| /G1DOE
+Qa    |8     13| /WR
+E     |9     12| /RD 
+Gnd   |10    11| CRY3
+       --------
+*/
+
+/*
+ * Inputs:  
+ */
+
+Pin 1  = GM0;
+Pin 2  = GM1;
+Pin 3  = RW;
+Pin 4  = Y3CLAT; 
+Pin 5  = DotClk;
+Pin 6  = NOTY0;
+Pin 7  = CHLAT;
+Pin 8  = Qa; 
+Pin 9  = E;
+Pin 11 = CRY3;
+Pin 16 = MA12;
+
+field graphics_mode  = [GM1,GM0];
+
+
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+
+Pin 19 = GM3; /* Graphics Mode 3 to provide input to Colour Multiplexer to switch 4x Fore or 4x Back vs 8 x Colour */
+Pin 18 = G2OE;
+Pin 17 = G2LATCH; /*  */
+Pin 15 = G1DLATCH; /*  */
+Pin 14 = G1DOE; /*  */
+Pin 13 = RD; /*  */
+Pin 12 = WR; /*  */
+
+/*
+ * Logic:  Multiplex inputs on GM1=0 or GM1=1.
+ */
+/* WR Goes low when E is High and R/W is high and CRTC Y3 Low */
+/* V2.1 the WR and RD labels were swapped as pre debugging */
+WR = !(RW & E) # CRY3;
+/* RD Goes low when E is High and R/W is low and CRTC Y3 Low */
+RD = (RW # !E) # CRY3;
+G2OE = !graphics_mode:0 & !(NOTY0 & MA12 & (graphics_mode:2 # graphics_mode:3));
+/* Any one of these terms go low then output needs to be low so combine with &. 
+OR of the inverted graphics mode means low only when GM selected and latch low */
+G2LATCH = (!graphics_mode:0 # CHLAT) & (!graphics_mode:2 # Y3CLAT ) & (!graphics_mode:3 # !DotClk & Qa);
+G1DLATCH = !DotClk & Qa;
+GM3 = GM0 & GM1;
+G1DOE = !(NOTY0 & !MA12 & graphics_mode:3);

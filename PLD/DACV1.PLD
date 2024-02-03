@@ -1,0 +1,69 @@
+Name            DAC1;
+Partno          DAC1;
+Revision        1;
+Date            14/06/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          g16v8a;
+
+/* 14/06/2023 V1   VGA Controller DAC RD/WR PLD                                  */
+/*                                                                               */
+/*********************************************************************************/
+/* Provides decoding of CTTC Y3 chip select with R/W and E for DAC /RE & /WR     */
+/* and latch/mux control signals for 256 Colour Graphics                         */
+/*********************************************************************************/
+
+/* Pin Map ATF16V8
+       --------
+GM1   |1     20| Vcc
+E     |2     19| /WR
+R/W   |3     18| /RD
+CRY3  |4     17| G2DLATCH
+CA4   |5     16| G2OE
+CA3   |6     15| G1DLATCH
+CA2   |7     14| G1OE
+CA1   |8     13| NC
+CA0   |9     12| NC
+Gnd   |10    11| /OE
+       --------
+*/
+
+/*
+ * Inputs:  CPU address lines 0-7
+ */
+
+Pin 1  = GM1 ;
+Pin 2  = E;
+Pin 3  = RW; 
+Pin 4  = CRY3;
+Pin 5  = CA4;
+Pin 6  = CA3;
+Pin 7  = CA2;
+Pin 8  = CA1;
+Pin 9  = CA0;
+Pin 11 = OEN;
+
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+
+//CLK=DotClk;
+
+Pin 19 = WR; /*  */
+Pin 18 = RD; /*  */
+Pin 17 = G2DLATCH; /*  */
+Pin 16 = G2OE; /*  */
+Pin 15 = G1DLATCH; /*  */
+Pin 14 = G1OE; /*  */
+Pin 13 = NC2; /*  */
+Pin 12 = NC;
+/*
+ * Logic:  Multiplex inputs on GM1=0 or GM1=1.
+ */
+// RD Goes low when E is High and R/W is high and CRTC Y3 Low
+RD = !(RW & E) # CRY3;
+// WR Goes low when E is High and R/W is low and CRTC Y3 Low
+WR = (RW # !E) # CRY3;
+

@@ -1,0 +1,615 @@
+/***************************************************************************//**
+
+  @file         nanocomp.h
+
+  @author       Dave Henry
+
+  @date         Created Friday, 20 January 2023
+
+  @brief        Nanocomp 6809 specific declarations.
+
+  @copyright    Based on Tetris C source by Stephen Brennan.  Released under the Revised
+                BSD License.  See LICENSE.txt for details.
+
+*******************************************************************************/
+#include "cmoc.h"
+#include "cmocextra.h"
+
+#ifndef NANOCOMP_H
+#define NANOCOMP_H
+
+/*
+  Nanocomp VGA controller colours
+ */
+
+#define COLOR_BLACK 0
+#define COLOR_DARK_GREY 1
+#define COLOR_BLUE 2
+#define COLOR_LIGHT_BLUE 3
+#define COLOR_GREEN 4
+#define COLOR_LIGHT_GREEN 5
+#define COLOR_DARK_CYAN 6
+#define COLOR_CYAN 7
+#define COLOR_RED 8
+#define COLOR_ORANGE 9
+#define COLOR_MAGENTA 10
+#define COLOR_PINK 11
+#define COLOR_DARK_YELLOW 12
+#define COLOR_YELLOW 13
+#define COLOR_GREY 14
+#define COLOR_WHITE 15
+
+
+/* Keyboard Controller Constants based on BIOS by Sergey Kiselev.
+*/
+
+// keyboard controller return codes
+#define kbc_ret_test 0xAA // keyboard controller test passed
+// keyboard controller status register and its bits
+#define kbc_stat_obf 0x01	// output buffer full flag
+#define kbc_stat_ibf 0x02 // input buffer full flag
+#define kbc_stat_aobf 0x20	// auxiliary output buffer full flag
+#define kbc_stat_tout	0x40 // receive/transmit timeout
+#define kbc_stat_perr	0x80 // parity error
+
+// keyboard contoller command register and commands
+#define kbc_cmd_rd_ctr	0x20 // read controller configuration byte command
+#define kbc_cmd_wr_ctr 0x60 // write controller configruation byte command
+
+#define kbc_cmd_aux_dis 0xA7	// disable auxiliary interface command
+#define kbc_cmd_aux_ena 0xA8	// enable auxiliary interface command
+#define kbc_cmd_aux_tst 0xA9	// test auxiliary interface command
+#define kbc_cmd_test 0xAA	// keyboard controller self-test command
+#define kbc_cmd_kbd_tst 0xAB	// test keyboard interface command
+#define kbc_cmd_kbd_dis 0xAD	// disable keyboard interface command
+#define kbc_cmd_kbd_ena 0xAE	// enable keyboard interface command
+#define kbc_cmd_rd_in 0xC0	// read keyboard input port
+#define kbc_cmd_aux_snd 0xD4	// send command byte to auxiliary device command
+// keyboard controller control register bits
+#define kbc_ctr_kbd_int 0x01	// enable keyboard OBF interrupt
+#define kbc_ctr_aux_int 0x02	// enable auxiliary OBF interrupt
+#define kbc_ctr_no_lock 0x08	// ignore keyboard inhibit (keyboard lock)
+#define kbc_ctr_kbd_dis	0x10	// disable keyboard interface
+#define kbc_ctr_aux_dis 0x20	// disable auxiliary interface
+#define kbc_ctr_xlat 0x40	// enable keyboard scancode translation
+
+// keyboard and auxiliary device commands
+#define dev_cmd_enable 0xF4	// device enable
+#define dev_cmd_disable 0xF5	// device disable
+#define dev_cmd_reset 0xFF	// reset and self-test
+#define dev_cmd_echo 0xEE	// Echo test
+
+// keyboard and auxiliary device responses
+#define dev_rsp_bat_ok 0xAA	// basic assurance test is OK
+#define dev_rsp_ack	0xFA	// acknowledge
+#define dev_rsp_error	0xFC	// error (basic assurance test failed)
+#define dev_rsp_resend 0xFE	// resend (invalid command or argument)
+#define kbc_ctr_timeout 500 // Was 500/ 20,000 in original 8088 BIOS
+/*
+  Nanocomp memory map constants
+ */
+
+#define RAM_START           0x0000
+#define PIA_PORTA           0xD000
+#define PIA_PORTB           0xD001
+#define PIA_CTRLA           0xD002
+#define PIA_CTRLB           0xD003
+#define CRTC_ADDRESS        0xD400
+#define PAGE_REGISTER       0xD480
+#define KBD_DATA_REG       0xD600  // Read/Write D600-D67F   /Y3CRTC
+#define KBD_STATUS_REG      0xD601  // Read D600-D67F   /Y3CRTC Note that PC uses A2 for A0 so would be D600 and D604
+#define KBD_COMMAND_REG     0xD601  // Write D600-D67F   /Y3CRTC
+
+#define PSG_PORTA           0xD680 // Programable Sound Generator
+#define PSG_PORTB           0xD682
+#define PSG_CTRLA           0xD681
+#define PSG_CTRLB           0xD683
+
+
+#define CRTC_DATA_REGISTER  0xD401
+#define CRTC_DAC_ADD_WR     0xD580
+#define CRTC_DAC_COL_VALUE  0xD581
+#define CRTC_DAC_PIXEL_MASK 0xD582
+#define CRTC_DAC_ADD_RD     0xD583
+
+#define VIDEO_RAM           0x8000 // Start of Video RAM
+#define VIDEO_RAM_END       0xBFFF // End of Video RAM
+#define CG_RAM              0xC000 // Start of character generator RAM
+#define CG_RAM_END          0xCFFF // End of character generator RAM
+#define CG_RAM_F0           0xCF00 // End of character generator RAM
+#define CG_ROM              0xE000 // Start of character generator ROM
+#define PALETTE_SIZE        256
+//#define PALETTE_SIZE        2
+#define PALETTE_COLOURS     3
+
+// AY-3-8910 Sound chip register addresses.
+#define PSG_CHA_TONE_PERIOD_FINE_REG     0x00  // 8 bits
+#define PSG_CHA_TONE_PERIOD_COARSE_REG   0x01 // 4 bits
+#define PSG_CHB_TONE_PERIOD_FINE_REG     0x02  // 8 bits
+#define PSG_CHB_TONE_PERIOD_COARSE_REG   0x03  // 4 bits
+#define PSG_CHC_TONE_PERIOD_FINE_REG     0x04  // 8 bits
+#define PSG_CHC_TONE_PERIOD_COARSE_REG   0x05  // 4 bits
+#define PSG_NOISE_PERIOD_REG             0x06  // 5 bits
+#define PSG_ENABLE_REG                   0x07  // 8 bits
+#define PSG_CHA_AMPLITUDE                0x08  // 5 bits
+#define PSG_CHB_AMPLITUDE                0x09  // 5 bits
+#define PSG_CHC_AMPLITUDE                0x0A // 5 bits
+#define PSG_ENV_PERIOD_FINE_REG          0x0B // 8 bits
+#define PSG_ENV_PERIOD_COARSE_REG        0x0C // 8 bits
+#define PSG_ENV_SHAPE_CYCLE              0x0D // 4 bits
+#define PSG_IO_PORT_A_REG                0x0E // 8 bits
+#define PSG_IO_PORT_B_REG                0x0F // 8 bits
+// Tone Generator Control, Course and Fine
+// Register 0x0 - PSG_CHA_TONE_PERIOD_FINE_REG
+// Register 0x1 - PSG_CHA_TONE_PERIOD_COARSE_REG
+// Register 0x2 - PSG_CHB_TONE_PERIOD_FINE_REG
+// Register 0x3 - PSG_CHB_TONE_PERIOD_COARSE_REG
+// Register 0x4 - PSG_CHC_TONE_PERIOD_FINE_REG
+// Register 0x5 - PSG_CHC_TONE_PERIOD_COARSE_REG
+#define PSG_TONE_GENERATOR_COARSE      0x0F
+#define PSG_TONE_GENERATOR_FINE        0xFF
+// Noise Generator Control
+// Register 0x6 - PSG_NOISE_PERIOD_REG
+#define PSG_NOISE_GENERATOR_PERIOD     0x1F
+// Mixer Control - I/O Enable
+// Register 0x7 - PSG_ENABLE_REG
+// Note that the MIXER enable bits are active LOW
+#define PSG_MIXER_INPUT_B_DISABLE      0x80
+#define PSG_MIXER_INPUT_A_DISABLE      0x40
+#define PSG_MIXER_NOISE_C_DISABLE      0x20
+#define PSG_MIXER_NOISE_B_DISABLE      0x10
+#define PSG_MIXER_NOISE_A_DISABLE      0x08
+#define PSG_MIXER_TONE_C_DISABLE       0x04
+#define PSG_MIXER_TONE_B_DISABLE       0x02
+#define PSG_MIXER_TONE_A_DISABLE       0x01
+#define PSG_MIXER_INPUTS_DISABLE       (PSG_MIXER_INPUT_B_DISABLE | PSG_MIXER_INPUT_A_DISABLE)
+#define PSG_MIXER_NOISES_DISABLE       (PSG_MIXER_NOISE_C_DISABLE | PSG_MIXER_NOISE_B_DISABLE | PSG_MIXER_NOISE_A_DISABLE)
+#define PSG_MIXER_TONES_DISABLE        (PSG_MIXER_TONE_C_DISABLE | PSG_MIXER_TONE_B_DISABLE | PSG_MIXER_TONE_A_DISABLE)
+#define PSG_MIXER_ALL_DISABLED         (PSG_MIXER_INPUTS_DISABLE | PSG_MIXER_NOISES_DISABLE | PSG_MIXER_TONES_DISABLE)
+// Amplitude Control
+// Registers 0x8 - PSG_CHA_AMPLITUDE
+// Registers 0x9 - PSG_CHB_AMPLITUDE
+// Registers 0xA - PSG_CHC_AMPLITUDE
+#define PSG_AMPLITUDE_CONTROL_MODE      0x10
+#define PSG_AMPLITUDE_CONTROL_LEVEL     0x0F
+// Envelope Period Control
+// Register 0xB - PSG_ENV_PERIOD_FINE_REG
+// Register 0xC - PSG_ENV_PERIOD_COARSE_REG
+// Envelop3 Shape/Cycle Control
+// Register 0xD - PSG_ENV_SHAPE_CYCLE
+#define PSG_ENVELOPE_CONTROL_CONTINUE     0x08
+#define PSG_ENVELOPE_CONTROL_ATTACK       0x04
+#define PSG_ENVELOPE_CONTROL_ALTERNATE    0x02
+#define PSG_ENVELOPE_CONTROL_HOLD         0x01
+#define PSG_ENVELOPE_CONTROL_DECAY        0x00
+
+// I/O Port Data Store
+// Register 0xE - PSG_IO_PORT_A_REG
+// Register 0xF - PSG_IO_PORT_B_REG
+
+// PSG BDIR, BC2, BC1 decoding
+#define PSG_INACTIVE_000 0b000; //NACT
+#define PSG_INACTIVE_010 0b010; //IAB
+#define PSG_LATCH_ADDR   0b111; //INTAK
+#define PSG_READ_DATA    0b011; //DTB
+#define PSG_WRITE_DATA   0b110; //DWS
+
+extern const word VRAMOFFSET;
+extern const word VRAMPAGE;
+extern const word VRAMTOP;
+extern const word VRAMPAGE3TOP;
+ 
+//extern const word GMODE2;
+extern const word PIXELSPERLINE;
+extern const word BYTESPERROW;
+extern const word BYTESPERCHARROW;
+
+extern const word CHARSPERROW;
+extern const word ROWSPERPAGE;
+extern const byte LINEFEED;
+
+
+extern const unsigned int CRTCAR;
+extern const unsigned int CRTCDR;
+extern const unsigned int COLOURLATCH;
+
+extern byte *pageRegister;
+extern int  page;
+extern byte current_video_mode;
+                                                             // Global VRAM page so don't have to keep updating
+//unsigned int yLookup[59];                                               // This stores the pre-calculated addresses for each yrow
+extern word yLookup[60];                                               // This stores the pre-calculated addresses for each yrow
+extern byte pixelmaskLookup[8];
+
+const byte VIDEO_MODE0 = 0x00;
+const byte VIDEO_MODE1 = 0x04;
+const byte VIDEO_MODE2 = 0x08;
+const byte VIDEO_MODE3 = 0x0c;
+
+/*
+  Reserved Variables above stack for Video Controller
+*/
+#define DISP_ROW            0x7FC0 // Current Cursor Row 0-29
+#define DISP_COL            0x7FC1 // Current Cursor Column 0-79
+#define DISP_ROW_OFFSET     0x7FC2 // Starting byte of current row, will increment by 160 for each row
+#define DISP_CLS            0x7FC4 // Clear screen word Colour Byte + Character $F320 White on Blue space
+#define DISP_START_ADDRESS  0x7FC6 //Current CRTC Start Address value R12 High, R13 Low, scroll display buffer 
+#define DISP_CURSOR_H       0x7FC8 //
+#define DISP_CURSOR_L       0x7FC9 //
+#define DISP_BYTES_PER_ROW  0xA0;  // 160 Bytes per row
+
+/* Nanocomp 6809 Key Definitions for original keypad */
+#define KEY_CN 0x25
+#define KEY_G 0x35
+#define KEY_I 0x32
+#define KEY_L 0x05
+#define KEY_M 0x31
+#define KEY_P 0x15 /* P Punch replaced with S Save */
+#define KEY_S 0x15
+#define KEY_R 0x30
+
+#define KEY_0 0x22
+#define KEY_1 0x24
+#define KEY_2 0x02
+#define KEY_3 0x12
+#define KEY_4 0x14
+#define KEY_5 0x00
+#define KEY_6 0x10
+#define KEY_7 0x04
+#define KEY_8 0x01
+#define KEY_9 0x11
+#define KEY_A 0x03
+#define KEY_B 0x13
+#define KEY_C 0x23
+#define KEY_D 0x33
+#define KEY_E 0x21
+#define KEY_F 0x20
+
+
+/* Nanocomp 6809 7 Segment Display Definitions */
+#define SEG_0 0x7E
+#define SEG_1 0x06
+#define SEG_2 0x5B
+#define SEG_3 0x1F
+#define SEG_4 0x27
+#define SEG_5 0x3D
+#define SEG_6 0x7D
+#define SEG_7 0x0E
+#define SEG_8 0x7F
+#define SEG_9 0x3F
+#define SEG_A 0x6F
+#define SEG_B 0x75
+#define SEG_C 0x78
+#define SEG_D 0x57
+#define SEG_E 0x79
+#define SEG_F 0x69
+#define SEG_G 0x7C
+#define SEG_M 0x6E /* (upside down U) */
+#define SEG_P 0x6B
+#define SEG_S 0x3D /* (Same as 5) */
+#define SEG_U 0x76
+#define SEG_X 0x67
+#define SEG_Y 0x37
+#define SEG_DASH 0x01
+#define SEG_SPACE 0x00
+
+// const definition means gets populated from assembley FCB rather than ldb # stb > saves a lot of bytes
+const byte VGAPalette[PALETTE_SIZE][PALETTE_COLOURS] = {
+  {0x00, 0x00, 0x00},
+  {0x1f, 0x1f, 0x1f},
+  {0x00, 0x00, 0x2a},
+  {0x00, 0x00, 0x3f},
+  {0x00, 0x2a, 0x00},
+  {0x00, 0x3f, 0x00},
+  {0x00, 0x2a, 0x2a},
+  {0x00, 0x3f, 0x3f},
+  {0x2a, 0x00, 0x00},
+  {0x3f, 0x00, 0x00},
+  {0x2a, 0x00, 0x2a},
+  {0x3f, 0x00, 0x3f},
+  {0x2a, 0x2a, 0x00},
+  {0x3f, 0x3f, 0x00},
+  {0x2a, 0x2a, 0x2a},
+  {0x3f, 0x3f, 0x3f},
+  {0x00, 0x00, 0x00},
+  {0x05, 0x05, 0x05},
+  {0x08, 0x08, 0x08},
+  {0x0B, 0x0B, 0x0B},
+  {0x0E, 0x0E, 0x0E},
+  {0x11, 0x11, 0x11},
+  {0x14, 0x14, 0x14},
+  {0x18, 0x18, 0x18},
+  {0x1C, 0x1C, 0x1C},
+  {0x20, 0x20, 0x20},
+  {0x24, 0x24, 0x24},
+  {0x28, 0x28, 0x28},
+  {0x2D, 0x2D, 0x2D},
+  {0x32, 0x32, 0x32},
+  {0x38, 0x38, 0x38},
+  {0x3F, 0x3F, 0x3F},
+  {0x00, 0x00, 0x3F},
+  {0x10, 0x00, 0x3F},
+  {0x1F, 0x00, 0x3F},
+  {0x2F, 0x00, 0x3F},
+  {0x3F, 0x00, 0x3F},
+  {0x3F, 0x00, 0x2F},
+  {0x3F, 0x00, 0x1F},
+  {0x3F, 0x00, 0x10},
+  {0x3F, 0x00, 0x00},
+  {0x3F, 0x10, 0x00},
+  {0x3F, 0x1F, 0x00},
+  {0x3F, 0x2F, 0x00},
+  {0x3F, 0x3F, 0x00},
+  {0x2F, 0x3F, 0x00},
+  {0x1F, 0x3F, 0x00},
+  {0x10, 0x3F, 0x00},
+  {0x00, 0x3F, 0x00},
+  {0x00, 0x3F, 0x10},
+  {0x00, 0x3F, 0x1F},
+  {0x00, 0x3F, 0x2F},
+  {0x00, 0x3F, 0x3F},
+  {0x00, 0x2F, 0x3F},
+  {0x00, 0x1F, 0x3F},
+  {0x00, 0x10, 0x3F},
+  {0x1F, 0x1F, 0x3F},
+  {0x27, 0x1F, 0x3F},
+  {0x2F, 0x1F, 0x3F},
+  {0x37, 0x1F, 0x3F},
+  {0x3F, 0x1F, 0x3F},
+  {0x3F, 0x1F, 0x37},
+  {0x3F, 0x1F, 0x2F},
+  {0x3F, 0x1F, 0x27},
+  {0x3F, 0x1F, 0x1F},
+  {0x3F, 0x27, 0x1F},
+  {0x3F, 0x2F, 0x1F},
+  {0x3F, 0x37, 0x1F},
+  {0x3F, 0x3F, 0x1F},
+  {0x37, 0x3F, 0x1F},
+  {0x2F, 0x3F, 0x1F},
+  {0x27, 0x3F, 0x1F},
+  {0x1F, 0x3F, 0x1F},
+  {0x1F, 0x3F, 0x27},
+  {0x1F, 0x3F, 0x2F},
+  {0x1F, 0x3F, 0x37},
+  {0x1F, 0x3F, 0x3F},
+  {0x1F, 0x37, 0x3F},
+  {0x1F, 0x2F, 0x3F},
+  {0x1F, 0x27, 0x3F},
+  {0x2D, 0x2D, 0x3F},
+  {0x31, 0x2D, 0x3F},
+  {0x36, 0x2D, 0x3F},
+  {0x3A, 0x2D, 0x3F},
+  {0x3F, 0x2D, 0x3F},
+  {0x3F, 0x2D, 0x3A},
+  {0x3F, 0x2D, 0x36},
+  {0x3F, 0x2D, 0x31},
+  {0x3F, 0x2D, 0x2D},
+  {0x3F, 0x31, 0x2D},
+  {0x3F, 0x36, 0x2D},
+  {0x3F, 0x3A, 0x2D},
+  {0x3F, 0x3F, 0x2D},
+  {0x3A, 0x3F, 0x2D},
+  {0x36, 0x3F, 0x2D},
+  {0x31, 0x3F, 0x2D},
+  {0x2D, 0x3F, 0x2D},
+  {0x2D, 0x3F, 0x31},
+  {0x2D, 0x3F, 0x36},
+  {0x2D, 0x3F, 0x3A},
+  {0x2D, 0x3F, 0x3F},
+  {0x2D, 0x3A, 0x3F},
+  {0x2D, 0x36, 0x3F},
+  {0x2D, 0x31, 0x3F},
+  {0x00, 0x00, 0x1C},
+  {0x07, 0x00, 0x1C},
+  {0x0E, 0x00, 0x1C},
+  {0x15, 0x00, 0x1C},
+  {0x1C, 0x00, 0x1C},
+  {0x1C, 0x00, 0x15},
+  {0x1C, 0x00, 0x0E},
+  {0x1C, 0x00, 0x07},
+  {0x1C, 0x00, 0x00},
+  {0x1C, 0x07, 0x00},
+  {0x1C, 0x0E, 0x00},
+  {0x1C, 0x15, 0x00},
+  {0x1C, 0x1C, 0x00},
+  {0x15, 0x1C, 0x00},
+  {0x0E, 0x1C, 0x00},
+  {0x07, 0x1C, 0x00},
+  {0x00, 0x1C, 0x00},
+  {0x00, 0x1C, 0x07},
+  {0x00, 0x1C, 0x0E},
+  {0x00, 0x1C, 0x15},
+  {0x00, 0x1C, 0x1C},
+  {0x00, 0x15, 0x1C},
+  {0x00, 0x0E, 0x1C},
+  {0x00, 0x07, 0x1C},
+  {0x0E, 0x0E, 0x1C},
+  {0x11, 0x0E, 0x1C},
+  {0x15, 0x0E, 0x1C},
+  {0x18, 0x0E, 0x1C},
+  {0x1C, 0x0E, 0x1C},
+  {0x1C, 0x0E, 0x18},
+  {0x1C, 0x0E, 0x15},
+  {0x1C, 0x0E, 0x11},
+  {0x1C, 0x0E, 0x0E},
+  {0x1C, 0x11, 0x0E},
+  {0x1C, 0x15, 0x0E},
+  {0x1C, 0x18, 0x0E},
+  {0x1C, 0x1C, 0x0E},
+  {0x18, 0x1C, 0x0E},
+  {0x15, 0x1C, 0x0E},
+  {0x11, 0x1C, 0x0E},
+  {0x0E, 0x1C, 0x0E},
+  {0x0E, 0x1C, 0x11},
+  {0x0E, 0x1C, 0x15},
+  {0x0E, 0x1C, 0x18},
+  {0x0E, 0x1C, 0x1C},
+  {0x0E, 0x18, 0x1C},
+  {0x0E, 0x15, 0x1C},
+  {0x0E, 0x11, 0x1C},
+  {0x14, 0x14, 0x1C},
+  {0x16, 0x14, 0x1C},
+  {0x18, 0x14, 0x1C},
+  {0x1A, 0x14, 0x1C},
+  {0x1C, 0x14, 0x1C},
+  {0x1C, 0x14, 0x1A},
+  {0x1C, 0x14, 0x18},
+  {0x1C, 0x14, 0x16},
+  {0x1C, 0x14, 0x14},
+  {0x1C, 0x16, 0x14},
+  {0x1C, 0x18, 0x14},
+  {0x1C, 0x1A, 0x14},
+  {0x1C, 0x1C, 0x14},
+  {0x1A, 0x1C, 0x14},
+  {0x18, 0x1C, 0x14},
+  {0x16, 0x1C, 0x14},
+  {0x14, 0x1C, 0x14},
+  {0x14, 0x1C, 0x16},
+  {0x14, 0x1C, 0x18},
+  {0x14, 0x1C, 0x1A},
+  {0x14, 0x1C, 0x1C},
+  {0x14, 0x1A, 0x1C},
+  {0x14, 0x18, 0x1C},
+  {0x14, 0x16, 0x1C},
+  {0x00, 0x00, 0x10},
+  {0x04, 0x00, 0x10},
+  {0x08, 0x00, 0x10},
+  {0x0C, 0x00, 0x10},
+  {0x10, 0x00, 0x10},
+  {0x10, 0x00, 0x0C},
+  {0x10, 0x00, 0x08},
+  {0x10, 0x00, 0x04},
+  {0x10, 0x00, 0x00},
+  {0x10, 0x04, 0x00},
+  {0x10, 0x08, 0x00},
+  {0x10, 0x0C, 0x00},
+  {0x10, 0x10, 0x00},
+  {0x0C, 0x10, 0x00},
+  {0x08, 0x10, 0x00},
+  {0x04, 0x10, 0x00},
+  {0x00, 0x10, 0x00},
+  {0x00, 0x10, 0x04},
+  {0x00, 0x10, 0x08},
+  {0x00, 0x10, 0x0C},
+  {0x00, 0x10, 0x10},
+  {0x00, 0x0C, 0x10},
+  {0x00, 0x08, 0x10},
+  {0x00, 0x04, 0x10},
+  {0x08, 0x08, 0x10},
+  {0x0A, 0x08, 0x10},
+  {0x0C, 0x08, 0x10},
+  {0x0E, 0x08, 0x10},
+  {0x10, 0x08, 0x10},
+  {0x10, 0x08, 0x0E},
+  {0x10, 0x08, 0x0C},
+  {0x10, 0x08, 0x0A},
+  {0x10, 0x08, 0x08},
+  {0x10, 0x0A, 0x08},
+  {0x10, 0x0C, 0x08},
+  {0x10, 0x0E, 0x08},
+  {0x10, 0x10, 0x08},
+  {0x0E, 0x10, 0x08},
+  {0x0C, 0x10, 0x08},
+  {0x0A, 0x10, 0x08},
+  {0x08, 0x10, 0x08},
+  {0x08, 0x10, 0x0A},
+  {0x08, 0x10, 0x0C},
+  {0x08, 0x10, 0x0E},
+  {0x08, 0x10, 0x10},
+  {0x08, 0x0E, 0x10},
+  {0x0B, 0x0B, 0x10},
+  {0x08, 0x0C, 0x10},
+  {0x08, 0x0A, 0x10},
+  {0x0C, 0x0B, 0x10},
+  {0x0D, 0x0B, 0x10},
+  {0x0F, 0x0B, 0x10},
+  {0x10, 0x0B, 0x10},
+  {0x10, 0x0B, 0x0F},
+  {0x10, 0x0B, 0x0D},
+  {0x10, 0x0B, 0x0C},
+  {0x10, 0x0B, 0x0B},
+  {0x10, 0x0C, 0x0B},
+  {0x10, 0x0D, 0x0B},
+  {0x10, 0x0F, 0x0B},
+  {0x10, 0x10, 0x0B},
+  {0x0F, 0x10, 0x0B},
+  {0x0D, 0x10, 0x0B},
+  {0x0C, 0x10, 0x0B},
+  {0x0B, 0x10, 0x0B},
+  {0x0B, 0x10, 0x0C},
+  {0x0B, 0x10, 0x0D},
+  {0x0B, 0x10, 0x0F},
+  {0x0B, 0x10, 0x10},
+  {0x0B, 0x0F, 0x10},
+  {0x0B, 0x0D, 0x10},
+  {0x0B, 0x0C, 0x10},
+  {0x00, 0x00, 0x00},
+  {0x00, 0x00, 0x00},
+  {0x00, 0x00, 0x00},
+  {0x00, 0x00, 0x00},
+  {0x00, 0x00, 0x00},
+  {0x00, 0x00, 0x00},
+  {0x3F, 0x3F, 0x3F},
+  {0x3F, 0x3F, 0x3F}
+};
+
+
+/*  Sin  Cos
+0	    0	1000
+18	309	 951
+36	588	 809
+54	809	 588
+72	951	 309
+90 1000	   0 */
+//  0=-90, 5=0, 11=90 -90, -72, -54, -36, -18, 0, 18, 36, 54, 72, 90 
+extern int sin[11];
+extern int cos[11];
+
+long roundl(long x);
+word rawAddressToPaged (word address);
+void ClearScreenGraphics();
+void CRTCInit(int video_mode);
+void plotPoint(int x, int y, byte colour);
+void DrawLine(int x0, int y0, int x1, int y1, byte colour);
+void DrawCircle(int xc,int yc,int r, byte colour);
+void DrawFill(int x0, int y0, int x1, int y1, byte colour);
+int clamp(int value, int min, int max);
+
+byte HexToAscii(byte inputByte);
+void Delay(int w);
+void ClearScreen();
+void PrintChr(byte ch);
+void PrintColChr(byte colour, byte ch);
+void newOutputRoutine();
+void serialOutputRoutine();
+byte GetKey();
+byte PollChr(int wait);
+void ncMove (int ncRow, int ncCol);
+void returnNC();
+void WaitForScreenBlank();
+void WaitForScreenBlankInit();
+void CopyCharGenRAM();
+void DisableCursor();
+void AddBlock (byte colour);
+void ClearBlock ();
+void DrawChar (int x, int y, byte character);
+void DrawMessage(int x, int y, char * msg);
+void ClearMessage(int x, int y, char * msg);
+void PaletteInit();
+void PaletteTest();
+
+int keyboardInit();
+int keyboardFlush();
+int kbc_send_cmd(byte kbdCommand, byte kbdArgument);
+int kbc_write_command(byte kbdCommand);
+int kbc_write_data(byte kbdData);
+int kbc_wait_write();
+int kbc_read_data(byte *kbdStatus, byte *kbdData);
+
+void sound_init();
+void sound_address(byte address);
+void sound_write(byte sound_data);
+void sound_address_write(byte address, byte sound_data);
+byte read_joystick();
+
+#endif // NANOCOMP_H

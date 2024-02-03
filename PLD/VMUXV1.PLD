@@ -1,0 +1,73 @@
+Name            VMUX1;
+Partno          VMUX1;
+Revision        1;
+Date            28/06/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          g16v8a;
+
+/* 28/06/2023 V1   VGA Controller Video Multiplexer Between Fore/Back colour and 256 colour graphics */
+/*                                                                                                   */
+/*****************************************************************************************************/
+/* Switches Colour Latch/256 Colour Latch output between Foreground and Background  lower 4 bits     */
+/* and Graphics mode 3 (GM0=1, GM1=1) 8 bits                                                         */
+/*****************************************************************************************************/
+
+/* Pin Map ATF16V8
+       --------
+C0    |1     20| Vcc
+C1    |2     19| P0  Char Intensity / 256 P0
+C2    |3     18| P1  Char Blue      / 256 P1
+C3    |4     17| P2  Char Green     / 256 P2
+C4    |5     16| P3  Char Red       / 256 P3
+C5    |6     15| P4                 / 256 P4
+C6    |7     14| P5                 / 256 P5  
+C7    |8     13| P6                 / 256 P6 
+GM3   |9     12| P7                 / 256 P7
+Gnd   |10    11| Fore/Back
+       --------
+*/
+
+/*
+ * Inputs:  Colour Latch (Character Mode, High Res Graphics), 256 Colour Latch for 256 High Colour mode C0-7
+ */
+
+Pin 1  = C0; // Intensity Background
+Pin 2  = C1; // Blue Background
+Pin 3  = C2; // Green Background
+Pin 4  = C3; // Red Background
+Pin 5  = C4; // Intensity Foreground
+Pin 6  = C5; // Blue Foreground
+Pin 7  = C6; // Green Foreground
+Pin 8  = C7; // Red Foreground
+Pin 9  = GM3;
+Pin 11 = FB;
+
+/*
+ * Outputs:  P0-P3 for Character and High Res Graphics, P0-P7 for 256 High Colour Graphics
+ */
+
+Pin 19 = P0; /* DAC Pixel Inputs P0-P7 chooses one of 256 colour palette RGB combinations  */
+Pin 18 = P1; /* Palette values for 0-15 will match original Nanocomp Resistor DAC values   */
+Pin 17 = P2;
+Pin 16 = P3;
+Pin 15 = P4;
+Pin 14 = P5;
+Pin 13 = P6;
+Pin 12 = P7;
+/*
+ * Logic:  Multiplex inputs on (GM3=0 & FB) or GM3=1.
+ * GM3=0 And ForeBack=1 P0-3 = C4-7, Foreback=0 P0-3=C0-3
+ * GM3=1 P0-7=C0-7
+ */
+
+P0 =  (C0 & !GM3  & !FB) #  (C4 & !GM3  & FB) # (C0 & GM3);
+P1 =  (C1 & !GM3  & !FB) #  (C5 & !GM3  & FB) # (C1 & GM3);
+P2 =  (C2 & !GM3  & !FB) #  (C6 & !GM3  & FB) # (C2 & GM3);
+P3 =  (C3 & !GM3  & !FB) #  (C7 & !GM3  & FB) # (C3 & GM3);
+P4 =  (C4 & GM3);
+P5 =  (C5 & GM3);
+P6 =  (C6 & GM3);
+P7 =  (C7 & GM3);

@@ -1,0 +1,101 @@
+%SIGNAL
+PIN   2 =  A0 
+PIN  18 = !CH245CE 
+PIN  19 = !CHOE 
+PIN  20 = !CHRW 
+PIN  15 = !CO245CE 
+PIN  13 =  COLY3 
+PIN  17 = !COOE 
+PIN  16 = !CORW 
+PIN  21 =  DE1 
+PIN  11 =  DEin 
+PIN  14 =  DEout 
+PIN  23 = !G1EN 
+PIN  22 = !G2EN 
+PIN   5 =  GM0 
+PIN   4 =  GM1 
+PIN   3 =  MA12 
+PIN   9 =  NOTY0 
+PIN   6 =  PA1 
+PIN   1 =  QbClk 
+PIN   8 =  RW 
+PIN   7 =  VRW 
+PIN  10 =  Y0 
+%END
+
+%FIELD
+FIELD graphics_mode = GM1,GM0
+%END
+
+%EQUATION
+CH245CE =>
+    A0 & !GM0 & !GM1 & Y0
+  # GM1 & !PA1 & Y0
+
+CHOE =>
+    CHRW & !GM0 & !GM1
+  # !GM0 & !GM1 & RW
+  # GM1 & !MA12 & RW
+  # GM1 & VRW
+  # GM1 & PA1
+
+CHRW =>
+    A0 & !GM0 & !GM1 & !VRW
+  # GM1 & !PA1 & !VRW
+
+CLK =>
+    QbClk
+
+CO245CE =>
+    !A0 & !GM0 & !GM1 & Y0
+  # GM1 & PA1 & Y0
+  # !COLY3 & !GM0 & GM1
+
+COOE =>
+    CORW & !GM0 & !GM1
+  # !GM0 & !GM1 & RW
+  # COLY3 & GM1 & MA12 & RW
+  # COLY3 & GM1 & VRW
+  # COLY3 & GM1 & !PA1
+
+CORW =>
+    !A0 & !GM0 & !GM1 & !VRW
+  # GM1 & PA1 & !VRW
+
+DEout.d  =>
+    DEin
+
+G1EN =>
+    GM1 & !MA12 & NOTY0
+
+G2EN =>
+    GM1 & MA12 & NOTY0
+
+CH245CE.oe  =>
+    1 
+
+CHOE.oe  =>
+    1 
+
+CHRW.oe  =>
+    1 
+
+CO245CE.oe  =>
+    1 
+
+COOE.oe  =>
+    1 
+
+CORW.oe  =>
+    1 
+
+DEout.oe  =>
+    1 
+
+G1EN.oe  =>
+    1 
+
+G2EN.oe  =>
+    1 
+
+%END

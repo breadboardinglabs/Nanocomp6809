@@ -1,0 +1,80 @@
+Name            VRCPU2;
+Partno          VRCPU2;
+Revision        1;
+Date            24/05/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10;
+
+/* 24/05/2023 V1   VGA Controller VRAM CPU Address Multiplexer 2                   */
+/*                                                                                 */
+/***********************************************************************************/
+/* Switches Video Address Lines VA7-VA14 between CA8-CA13,PA0-1 for Character Mode */
+/* and CA7-CA13,PA0 for Graphics modes 2 and 3 (GM1=1), /OE Low Output Enable      */
+/***********************************************************************************/
+
+/* Pin Map AFT22V10
+       --------
+PA1   |1     24| Vcc
+PA0   |2     23| VA14
+CA13  |3     22| VA13
+CA12  |4     21| VA12
+CA11  |5     20| VA11
+CA10  |6     19| VA10
+CA9   |7     18| VA9
+CA8   |8     17| VA8
+CA7   |9     16| VA7
+GM1   |10    15| NC2
+NC1   |11    14| NC3
+Gnd   |12    13| /OE
+       --------
+*/
+
+/*
+ * Inputs:  CPU address lines 0-7
+ */
+
+Pin 1  = PA1;
+Pin 2  = PA0;
+Pin 3  = CA13; 
+Pin 4  = CA12;
+Pin 5  = CA11;
+Pin 6  = CA10;
+Pin 7  = CA9;
+Pin 8  = CA8;
+Pin 9  = CA7;
+Pin 10 = GM1;
+Pin 11 = NC1;
+
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+
+//CLK=DotClk;
+Pin 23 = VA14;
+Pin 22 = VA13;
+Pin 21 = VA12;
+Pin 20 = VA11;
+Pin 19 = VA10; /*  */
+Pin 18 = VA9; /*  */
+Pin 17 = VA8; /*  */
+Pin 16 = VA7; /*  */
+Pin 15 = NC2; /*  */
+Pin 14 = NC3; /*  */
+Pin 13 = OEN; /*  */
+/*
+ * Logic:  Multiplex inputs on GM1=0 or GM1=1.
+ */
+VA14 =  (PA1  & !GM1) #  (PA0  & GM1);
+VA13 =  (PA0  & !GM1) #  (CA13 & GM1);
+VA12 =  (CA13 & !GM1) #  (CA12 & GM1);
+VA11 =  (CA12 & !GM1) #  (CA11 & GM1);
+VA10 =  (CA11 & !GM1) #  (CA10 & GM1);
+VA9 =   (CA10 & !GM1) #  (CA9  & GM1);
+VA8 =   (CA9  & !GM1) #  (CA8  & GM1);
+VA7 =   (CA8  & !GM1) #  (CA7  & GM1);
+
+[VA7..VA14].OE = !OEN; /* Outputs enabled when OE Low */
+

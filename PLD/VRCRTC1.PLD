@@ -1,0 +1,77 @@
+Name            VRCRTC1;
+Partno          VRCRTC1;
+Revision        1;
+Date            24/05/23;
+Designer        Dave Henry;
+Company         ;
+Location        UK;
+Assembly        None;
+Device          p22v10; //g16v8a
+
+/* 24/05/2023 V1                                                                 */
+/*                                                                               */
+/*********************************************************************************/
+/*                                                                               */
+/*********************************************************************************/
+
+/* Pin Map AFT22V10
+       --------
+MA6   |1     24| Vcc
+MA5   |2     23| VA6
+MA4   |3     22| VA5
+MA3   |4     21| VA4
+MA2   |5     20| VA3
+MA1   |6     19| VA2
+MA0   |7     18| VA1
+RA2   |8     17| VA0
+RA1   |9     16| Qb
+RA0   |10    15| GM1
+Qc    |11    14| GM0
+Gnd   |12    13| /OE
+       --------
+*/
+
+/*
+ * Inputs:  
+ */
+
+Pin 1  =  MA6;
+Pin 2  =  MA5;
+Pin 3  =  MA4; 
+Pin 4  =  MA3;
+Pin 5  =  MA2;
+Pin 6  =  MA1;
+Pin 7  =  MA0;
+Pin 8  =  RA2;
+Pin 9  =  RA1;
+Pin 10 =  RA0;
+Pin 11 =  Qc;
+Pin 13 =  OEN;
+Pin 14 =  GM0;
+Pin 15 =  GM1;
+Pin 16 =  Qb;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+/* This allows conditions like & graphics_mode:0 for Character, & graphics_mode:2 for 2 colour 640x480 */
+field graphics_mode  = [GM1,GM0];
+
+Pin 23 = VA6; /*  */
+Pin 22 = VA5; /*  */
+Pin 21 = VA4; /*  */
+Pin 20 = VA3; /*  */
+Pin 19 = VA2; /*  */
+Pin 18 = VA1; /*  */
+Pin 17 = VA0; /*  */
+/*
+ * Logic:  All outputs are active low signals in the target system.
+ */
+VA6 =  (MA6 & (graphics_mode:0))  #  (MA3 & (graphics_mode:2 # graphics_mode:3));
+VA5 =  (MA5 & (graphics_mode:0))  #  (MA2 & (graphics_mode:2 # graphics_mode:3));
+VA4 =  (MA4 & (graphics_mode:0))  #  (MA1 & (graphics_mode:2 # graphics_mode:3));
+VA3 =  (MA3 & (graphics_mode:0))  #  (MA0 & (graphics_mode:2 # graphics_mode:3));
+VA2 =  (MA2 & (graphics_mode:0))  #  (RA2 & (graphics_mode:2)) # (RA1 & (graphics_mode:3));
+VA1 =  (MA1 & (graphics_mode:0))  #  (RA1 & (graphics_mode:2)) # (Qc & (graphics_mode:3));
+VA0 =  (MA0 & (graphics_mode:0))  #  (RA0 & (graphics_mode:2)) # (Qb & (graphics_mode:3));
+
+[VA0..VA6].OE = !OEN; /* Outputs enabled when OE Low */
